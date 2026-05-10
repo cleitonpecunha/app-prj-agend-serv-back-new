@@ -46,7 +46,7 @@ API REST para agendamento de serviços, construída com **Fastify**, **Prisma** 
 
 ```bash
 git clone <url-do-repositorio>
-cd app-prj-agend-serv-back
+cd app-prj-agend-serv-back-new
 npm install
 ```
 
@@ -78,7 +78,13 @@ Variáveis principais:
 docker compose up -d
 ```
 
-### 4. Execute as migrations do Prisma
+### 5. Execute o generate do Prisma
+
+```bash
+npx prisma generate
+```
+
+### 6. Execute as migrations do Prisma
 
 ```bash
 npx prisma migrate deploy
@@ -107,33 +113,39 @@ A API estará disponível em `http://localhost:3333`.
 
 Todas as rotas estão prefixadas em `/api`.
 
-| Método   | Rota                              | Descrição                        |
-| -------- | --------------------------------- | -------------------------------- |
-| `POST`   | `/api/auth/login`                 | Login do prestador               |
-| `POST`   | `/api/auth/refresh`               | Renovação do access token        |
-| `GET`    | `/api/ping`                       | Health check                     |
-| `POST`   | `/api/providers`                  | Cadastrar prestador              |
-| `GET`    | `/api/providers/:id`              | Buscar prestador por ID          |
-| `PUT`    | `/api/providers/:id`              | Atualizar prestador              |
-| `DELETE` | `/api/providers/:id`              | Remover prestador                |
-| `GET`    | `/api/providers/:id/dashboard`    | Dashboard com métricas           |
-| `GET`    | `/api/providers/:id/revenue`      | Relatório de receita             |
-| `GET`    | `/api/providers/:id/services`     | Listar serviços do prestador     |
-| `GET`    | `/api/providers/:id/schedules`    | Listar horários do prestador     |
-| `GET`    | `/api/providers/:id/appointments` | Listar agendamentos do prestador |
-| `GET`    | `/api/services`                   | Listar todos os serviços         |
-| `POST`   | `/api/services`                   | Criar serviço                    |
-| `GET`    | `/api/services/:id`               | Buscar serviço                   |
-| `PUT`    | `/api/services/:id`               | Atualizar serviço                |
-| `DELETE` | `/api/services/:id`               | Remover serviço                  |
-| `GET`    | `/api/services/:id/appointments`  | Agendamentos de um serviço       |
-| `POST`   | `/api/schedules`                  | Criar horário de atendimento     |
-| `GET`    | `/api/schedules/:id`              | Buscar horário                   |
-| `PUT`    | `/api/schedules/:id`              | Atualizar horário                |
-| `DELETE` | `/api/schedules/:id`              | Remover horário                  |
-| `POST`   | `/api/appointments`               | Criar agendamento                |
-| `GET`    | `/api/appointments/:id`           | Buscar agendamento               |
-| `PATCH`  | `/api/appointments/:id/status`    | Atualizar status do agendamento  |
+| Método   | Rota de API                       | Descrição do que faz a rota      | Status   |
+| -------- | --------------------------------- | -------------------------------- | -------- |
+| `GET`    | `/api/ping`                       | Health check                     | DONE     |
+| -------- | --------------------------------- | -------------------------------- | -------- |
+| `POST`   | `/api/user`                       | Cadastrar o usuário prestador    | DONE     |
+| `GET`    | `/api/user/:id`                   | Buscar usuário por ID            | DONE     |
+| `PUT`    | `/api/user/:id`                   | Atualizar usuário por ID         | DONE     |
+| `DELETE` | `/api/user/:id`                   | Remover usuário                  | DONE     |
+| -------- | --------------------------------- | -------------------------------- | -------- |
+| `POST`   | `/api/auth/login`                 | Login do prestador               | DONE     |
+| `POST`   | `/api/auth/refresh`               | Renovação do access token        | TO DO    |
+| -------- | --------------------------------- | -------------------------------- | -------- |
+| `GET`    | `/api/providers/:id/dashboard`    | Dashboard com métricas           | TO DO    |
+| `GET`    | `/api/providers/:id/revenue`      | Relatório de receita             | TO DO    |
+| `GET`    | `/api/providers/:id/services`     | Listar serviços do prestador     | TO DO    |
+| `GET`    | `/api/providers/:id/schedules`    | Listar horários do prestador     | TO DO    |
+| `GET`    | `/api/providers/:id/appointments` | Listar agendamentos do prestador | TO DO    |
+| -------- | --------------------------------- | -------------------------------- | -------- |
+| `GET`    | `/api/services`                   | Listar todos os serviços         | TO DO    |
+| `POST`   | `/api/services`                   | Criar serviço                    | TO DO    |
+| `GET`    | `/api/services/:id`               | Buscar serviço                   | TO DO    |
+| `PUT`    | `/api/services/:id`               | Atualizar serviço                | TO DO    |
+| `DELETE` | `/api/services/:id`               | Remover serviço                  | TO DO    |
+| `GET`    | `/api/services/:id/appointments`  | Agendamentos de um serviço       | TO DO    |
+| -------- | --------------------------------- | -------------------------------- | -------- |
+| `POST`   | `/api/schedules`                  | Criar horário de atendimento     | TO DO    |
+| `GET`    | `/api/schedules/:id`              | Buscar horário                   | TO DO    |
+| `PUT`    | `/api/schedules/:id`              | Atualizar horário                | TO DO    |
+| `DELETE` | `/api/schedules/:id`              | Remover horário                  | TO DO    |
+| -------- | --------------------------------- | -------------------------------- | -------- |
+| `POST`   | `/api/appointments`               | Criar agendamento                | TO DO    |
+| `GET`    | `/api/appointments/:id`           | Buscar agendamento               | TO DO    |
+| `PATCH`  | `/api/appointments/:id/status`    | Atualizar status do agendamento  | TO DO    |
 
 Consulte a documentação completa em [`docs/openapi/openapi.yaml`](docs/openapi/openapi.yaml) ou utilize os arquivos `.http` na pasta [`http/`](http/).
 
@@ -170,6 +182,13 @@ src/
 │       └── schedules/
 ├── config/
 │   └── env.ts              # Variáveis de ambiente validadas com Zod
+|── core
+│   └── src                 # definir
+│       ├── auth            # autenticação de usuário
+|       ├── error           # definor
+|       ├── shared          # componentes compartilhados
+|       ├── user            # usuários
+│   └── test                # testes unitários
 └── lib/
     ├── auth.ts             # Helpers JWT
     ├── mail.ts             # Cliente de e-mail
