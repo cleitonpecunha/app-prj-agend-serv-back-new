@@ -1,0 +1,180 @@
+get:
+  tags:
+    - Providers
+  summary: Buscar prestador por ID
+  description: Retorna os dados de um prestador de serviço pelo seu ID numérico.
+  security: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "200":
+      description: Prestador encontrado
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/providers/Provider.yaml"
+          example:
+            id: 1
+            name: João Silva
+            businessName: Barbearia do João
+            slug: barbearia-do-joao
+            email: joao@barbearia.com
+            phone: "(11) 99999-0001"
+            address: Rua das Flores, 123 - São Paulo, SP
+            createdAt: "2026-04-25T12:00:00.000Z"
+            updatedAt: "2026-04-25T12:00:00.000Z"
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "422":
+      description: ID inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: id
+                message: ID deve ser um número inteiro positivo.
+
+put:
+  tags:
+    - Providers
+  summary: Atualizar dados do prestador
+  description: |
+    Atualiza todos os dados de um prestador existente (PUT completo — todos os campos são obrigatórios).
+    O campo `slug` é recalculado automaticamente a partir do novo `businessName` — não deve ser enviado.
+    Requer autenticação do próprio prestador.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/providers/UpdateProviderInput.yaml"
+        example:
+          name: João Silva Atualizado
+          businessName: Barbearia do João Premium
+          email: joao@barbearia.com
+          phone: "(11) 99999-0001"
+          address: Rua das Flores, 200 - São Paulo, SP
+  responses:
+    "200":
+      description: Prestador atualizado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/providers/Provider.yaml"
+          example:
+            id: 1
+            name: João Silva Atualizado
+            businessName: Barbearia do João Premium
+            slug: barbearia-do-joao-premium
+            email: joao@barbearia.com
+            phone: "(11) 99999-0001"
+            address: Rua das Flores, 200 - São Paulo, SP
+            createdAt: "2026-04-25T12:00:00.000Z"
+            updatedAt: "2026-04-25T13:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "409":
+      description: Conflito — e-mail ou nome de negócio já pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ConflictError
+            message: Já existe um prestador com este e-mail.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: businessName
+                message: Nome do negócio é obrigatório.
+
+delete:
+  tags:
+    - Providers
+  summary: Remover prestador
+  description: Remove permanentemente um prestador de serviço pelo seu ID. Requer autenticação do próprio prestador.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "204":
+      description: Prestador removido com sucesso (sem corpo de resposta)
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "422":
+      description: ID inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: id
+                message: ID deve ser um número inteiro positivo.

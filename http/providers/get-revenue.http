@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:3333
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Faturamento do mês com agrupamento padrão (por dia)
+# Esperado: 200 com summary e buckets agrupados por dia
+GET {{baseUrl}}/api/providers/revenue?month=2026-05
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [SUCESSO] Faturamento agrupado por semana
+# Esperado: 200 com buckets com label "Semana 1", "Semana 2", etc.
+GET {{baseUrl}}/api/providers/revenue?month=2026-05&groupBy=week
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [SUCESSO] Faturamento agrupado por mês (bucket único)
+# Esperado: 200 com único bucket consolidando todo o mês
+GET {{baseUrl}}/api/providers/revenue?month=2026-05&groupBy=month
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [SUCESSO] Mês sem agendamentos
+# Esperado: 200 com summary zerado e buckets vazio
+GET {{baseUrl}}/api/providers/revenue?month=2024-01
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+GET {{baseUrl}}/api/providers/revenue?month=2026-05
+
+###
+
+### [FALHA] month ausente na query
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/providers/revenue
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] month com formato inválido (DD-YYYY)
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/providers/revenue?month=05-2026
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] month com mês inexistente (00)
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/providers/revenue?month=2026-00
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] groupBy com valor inválido
+# Esperado: 422 Validation Error com field "groupBy"
+GET {{baseUrl}}/api/providers/revenue?month=2026-05&groupBy=year
+Authorization: Bearer {{accessToken}}

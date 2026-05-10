@@ -1,0 +1,182 @@
+# AgendServiços — API Backend
+
+API REST para agendamento de serviços, construída com **Fastify**, **Prisma** e **PostgreSQL**. Permite que prestadores de serviço gerenciem seus serviços, horários de atendimento e agendamentos de clientes, com notificações por e-mail integradas.
+
+---
+
+## Recursos
+
+- **Autenticação JWT** — login com access token (15 min) e refresh token (7 dias)
+- **Gestão de prestadores** — cadastro, atualização, exclusão e dashboard com métricas
+- **Serviços** — CRUD completo de serviços por prestador (nome, descrição, duração, preço)
+- **Horários de atendimento** — configuração de dias da semana e janelas de horário
+- **Agendamentos** — criação e atualização de status (`scheduled`, `completed`, `canceled`, `no_show`)
+- **Receita** — endpoint de relatório de receita por período
+- **Notificações por e-mail** — confirmação para o cliente e notificação para o prestador via SMTP (Mailtrap compatível)
+- **Validação de dados** — schemas com Zod em todas as rotas
+- **Documentação OpenAPI** — especificação completa em `docs/openapi/openapi.yaml`
+
+---
+
+## Tecnologias
+
+| Camada         | Tecnologia                                             |
+| -------------- | ------------------------------------------------------ |
+| Framework HTTP | [Fastify 5](https://fastify.dev/)                      |
+| ORM            | [Prisma 7](https://www.prisma.io/)                     |
+| Banco de dados | PostgreSQL 15                                          |
+| Autenticação   | [@fastify/jwt](https://github.com/fastify/fastify-jwt) |
+| Validação      | [Zod 4](https://zod.dev/)                              |
+| E-mail         | [Nodemailer](https://nodemailer.com/)                  |
+| Linguagem      | TypeScript 5                                           |
+| Testes         | Jest                                                   |
+
+---
+
+## Pré-requisitos
+
+- [Node.js](https://nodejs.org/) >= 20
+- [Docker](https://www.docker.com/) e Docker Compose (para o banco de dados)
+
+---
+
+## Como executar
+
+### 1. Clone o repositório e instale as dependências
+
+```bash
+git clone <url-do-repositorio>
+cd app-prj-agend-serv-back
+npm install
+```
+
+### 2. Configure as variáveis de ambiente
+
+Copie o arquivo de exemplo e preencha os valores:
+
+```bash
+cp env.example .env
+```
+
+Variáveis principais:
+
+| Variável                  | Descrição                                  |
+| ------------------------- | ------------------------------------------ |
+| `PORT`                    | Porta da API (padrão: `3333`)              |
+| `DATABASE_URL`            | URL de conexão PostgreSQL                  |
+| `JWT_SECRET`              | Segredo para o access token                |
+| `JWT_REFRESH_SECRET`      | Segredo para o refresh token               |
+| `MAIL_ENABLED`            | Habilita envio de e-mails (`true`/`false`) |
+| `SMTP_HOST`               | Host do servidor SMTP                      |
+| `SMTP_USER` / `SMTP_PASS` | Credenciais SMTP                           |
+
+> Para gerar segredos JWT seguros: `openssl rand -hex 64`
+
+### 3. Suba o banco de dados com Docker
+
+```bash
+docker compose up -d
+```
+
+### 4. Execute as migrations do Prisma
+
+```bash
+npx prisma migrate deploy
+```
+
+### 5. Inicie o servidor
+
+**Modo desenvolvimento (com hot reload):**
+
+```bash
+npm run dev
+```
+
+**Modo produção:**
+
+```bash
+npm run build
+npm start
+```
+
+A API estará disponível em `http://localhost:3333`.
+
+---
+
+## Rotas da API
+
+Todas as rotas estão prefixadas em `/api`.
+
+| Método   | Rota                              | Descrição                        |
+| -------- | --------------------------------- | -------------------------------- |
+| `POST`   | `/api/auth/login`                 | Login do prestador               |
+| `POST`   | `/api/auth/refresh`               | Renovação do access token        |
+| `GET`    | `/api/ping`                       | Health check                     |
+| `POST`   | `/api/providers`                  | Cadastrar prestador              |
+| `GET`    | `/api/providers/:id`              | Buscar prestador por ID          |
+| `PUT`    | `/api/providers/:id`              | Atualizar prestador              |
+| `DELETE` | `/api/providers/:id`              | Remover prestador                |
+| `GET`    | `/api/providers/:id/dashboard`    | Dashboard com métricas           |
+| `GET`    | `/api/providers/:id/revenue`      | Relatório de receita             |
+| `GET`    | `/api/providers/:id/services`     | Listar serviços do prestador     |
+| `GET`    | `/api/providers/:id/schedules`    | Listar horários do prestador     |
+| `GET`    | `/api/providers/:id/appointments` | Listar agendamentos do prestador |
+| `GET`    | `/api/services`                   | Listar todos os serviços         |
+| `POST`   | `/api/services`                   | Criar serviço                    |
+| `GET`    | `/api/services/:id`               | Buscar serviço                   |
+| `PUT`    | `/api/services/:id`               | Atualizar serviço                |
+| `DELETE` | `/api/services/:id`               | Remover serviço                  |
+| `GET`    | `/api/services/:id/appointments`  | Agendamentos de um serviço       |
+| `POST`   | `/api/schedules`                  | Criar horário de atendimento     |
+| `GET`    | `/api/schedules/:id`              | Buscar horário                   |
+| `PUT`    | `/api/schedules/:id`              | Atualizar horário                |
+| `DELETE` | `/api/schedules/:id`              | Remover horário                  |
+| `POST`   | `/api/appointments`               | Criar agendamento                |
+| `GET`    | `/api/appointments/:id`           | Buscar agendamento               |
+| `PATCH`  | `/api/appointments/:id/status`    | Atualizar status do agendamento  |
+
+Consulte a documentação completa em [`docs/openapi/openapi.yaml`](docs/openapi/openapi.yaml) ou utilize os arquivos `.http` na pasta [`http/`](http/).
+
+---
+
+## Testes
+
+```bash
+# Executar todos os testes
+npm test
+
+# Modo watch
+npm run test:watch
+
+# Com cobertura
+npm run test:coverage
+```
+
+---
+
+## Estrutura do projeto
+
+```
+src/
+├── app.ts                  # Configuração do Fastify (plugins, rotas)
+├── server.ts               # Ponto de entrada
+├── api/
+│   ├── routes.ts           # Registro de todas as rotas
+│   └── controllers/        # Controllers por domínio
+│       ├── auth/
+│       ├── appointments/
+│       ├── providers/
+│       ├── services/
+│       └── schedules/
+├── config/
+│   └── env.ts              # Variáveis de ambiente validadas com Zod
+└── lib/
+    ├── auth.ts             # Helpers JWT
+    ├── mail.ts             # Cliente de e-mail
+    ├── prisma.ts           # Cliente Prisma singleton
+    ├── errors.ts           # Erros de domínio
+    └── error-handler.ts    # Handler global de erros
+prisma/
+├── schema.prisma           # Schema do banco de dados
+└── migrations/             # Histórico de migrations
+```

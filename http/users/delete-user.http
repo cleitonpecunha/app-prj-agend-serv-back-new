@@ -1,0 +1,29 @@
+@baseUrl = http://localhost:3333
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Remover prestador existente
+# # Pré-requisito: ter ao menos um usuário criado para usar seu ID neste teste
+# Esperado: 204 sem corpo de resposta
+DELETE {{baseUrl}}/api/users/5db50d51-c3d8-4c92-8068-8bff9079fa6c
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Remover prestador inexistente
+# Esperado: 404 NotFoundError com mensagem "Prestador não encontrado."
+DELETE {{baseUrl}}/api/users/999999
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+DELETE {{baseUrl}}/api/users/1
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para remover este recurso)
+# Pré-requisito: @accessToken pertence ao prestador id=2; tentando remover id=1
+# Esperado: 403 ForbiddenError
+DELETE {{baseUrl}}/api/users/1
+Authorization: Bearer {{accessToken}}

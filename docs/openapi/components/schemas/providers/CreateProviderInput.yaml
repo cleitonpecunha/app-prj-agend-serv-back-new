@@ -1,0 +1,37 @@
+type: object
+description: |
+  Dados para cadastrar um novo prestador de serviço.
+  O campo `slug` não deve ser enviado — ele é gerado automaticamente pela aplicação a partir de `businessName`.
+properties:
+  name:
+    type: string
+    minLength: 1
+    example: João Silva
+  businessName:
+    type: string
+    minLength: 1
+    example: Barbearia do João
+  email:
+    type: string
+    format: email
+    example: joao@barbearia.com
+  password:
+    type: string
+    format: password
+    minLength: 8
+    example: "12345678"
+  phone:
+    type: string
+    minLength: 1
+    example: "(11) 99999-0001"
+  address:
+    type: string
+    minLength: 1
+    example: Rua das Flores, 123 - São Paulo, SP
+required:
+  - name
+  - businessName
+  - email
+  - password
+  - phone
+  - address

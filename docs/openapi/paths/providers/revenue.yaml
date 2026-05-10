@@ -1,0 +1,78 @@
+get:
+  tags:
+    - Providers
+  summary: Faturamento previsto e realizado
+  description: |
+    Retorna o faturamento do prestador autenticado para o mês informado,
+    agregado por período (dia, semana ou mês).
+
+    - **scheduledRevenue**: soma dos preços dos agendamentos com status `scheduled` (faturamento previsto).
+    - **completedRevenue**: soma dos preços dos agendamentos com status `completed` (faturamento realizado).
+    - Agendamentos com status `canceled` e `no_show` são excluídos do cálculo.
+
+    O `providerId` é obtido diretamente do token JWT. Requer autenticação.
+  parameters:
+    - name: month
+      in: query
+      required: true
+      schema:
+        type: string
+        pattern: '^\d{4}-(0[1-9]|1[0-2])$'
+        example: "2026-05"
+      description: Mês de referência no formato YYYY-MM.
+    - name: groupBy
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [day, week, month]
+        default: day
+      description: |
+        Unidade de agrupamento dos buckets.
+        - `day`: um bucket por dia com agendamentos.
+        - `week`: um bucket por semana do mês (semana 1 = dias 1-7, semana 2 = dias 8-14, etc.).
+        - `month`: um único bucket com o total do mês.
+  responses:
+    "200":
+      description: Faturamento calculado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/providers/RevenueResponse.yaml"
+          example:
+            month: "2026-05"
+            groupBy: "day"
+            summary:
+              scheduledRevenue: 150.00
+              completedRevenue: 50.00
+              totalAppointmentsConsidered: 4
+            buckets:
+              - label: "2026-05-05"
+                startDate: "2026-05-05"
+                endDate: "2026-05-05"
+                scheduledRevenue: 100.00
+                completedRevenue: 0
+                appointmentCount: 2
+              - label: "2026-05-12"
+                startDate: "2026-05-12"
+                endDate: "2026-05-12"
+                scheduledRevenue: 50.00
+                completedRevenue: 50.00
+                appointmentCount: 2
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "422":
+      description: Parâmetros inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: month
+                message: "Mês inválido. Use o formato YYYY-MM."

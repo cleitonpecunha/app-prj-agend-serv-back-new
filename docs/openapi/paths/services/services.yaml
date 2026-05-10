@@ -1,0 +1,96 @@
+post:
+  tags:
+    - Services
+  summary: Cadastrar serviço
+  description: |
+    Cria um novo serviço vinculado a um prestador existente.
+    O campo `providerId` é obrigatório e o prestador referenciado deve existir.
+    O campo `isActive` tem padrão `true` quando não enviado.
+    Requer autenticação e o `providerId` do body deve corresponder ao prestador autenticado.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/services/CreateServiceInput.yaml"
+        example:
+          providerId: 1
+          name: Corte de cabelo
+          description: Corte masculino completo com navalha
+          durationMinutes: 30
+          price: 50.00
+          isActive: true
+  responses:
+    "201":
+      description: Serviço cadastrado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/services/Service.yaml"
+          example:
+            id: 1
+            providerId: 1
+            name: Corte de cabelo
+            description: Corte masculino completo com navalha
+            durationMinutes: 30
+            price: 50.00
+            isActive: true
+            createdAt: "2026-04-25T12:00:00.000Z"
+            updatedAt: "2026-04-25T12:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: durationMinutes
+                message: Duração deve ser um número inteiro positivo.
+
+get:
+  tags:
+    - Services
+  summary: Listar todos os serviços
+  description: Retorna todos os serviços cadastrados de todos os prestadores.
+  security: []
+  responses:
+    "200":
+      description: Lista de serviços
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/services/Service.yaml"
+          example:
+            - id: 1
+              providerId: 1
+              name: Corte de cabelo
+              description: Corte masculino completo com navalha
+              durationMinutes: 30
+              price: 50.00
+              isActive: true
+              createdAt: "2026-04-25T12:00:00.000Z"
+              updatedAt: "2026-04-25T12:00:00.000Z"

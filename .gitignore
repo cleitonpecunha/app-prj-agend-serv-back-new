@@ -1,0 +1,58 @@
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Keep environment variables out of version control
+.env
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*.swn
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS specific
+.DS_Store
+Thumbs.db
+*.tmp
+.cache/
+.parcel-cache
+
+# Testing
+coverage/
+.nyc_output/
+
+# Miscellaneous
+*.pem
+.next
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode

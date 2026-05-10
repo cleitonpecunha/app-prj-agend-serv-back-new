@@ -1,0 +1,62 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+  providerId:
+    type: integer
+    example: 1
+  serviceId:
+    type: integer
+    example: 10
+  appointmentDate:
+    type: string
+    format: date
+    example: "2026-05-11"
+  startTime:
+    type: string
+    description: Horário de início no formato HH:MM (24h).
+    pattern: "^([01]\\d|2[0-3]):([0-5]\\d)$"
+    example: "09:00"
+  status:
+    type: string
+    enum:
+      - scheduled
+      - completed
+      - canceled
+      - no_show
+    example: scheduled
+  clientName:
+    type: string
+    example: Maria Souza
+  clientEmail:
+    type: string
+    format: email
+    example: maria@email.com
+  clientPhone:
+    type: string
+    example: "11999991111"
+  notes:
+    type: string
+    nullable: true
+    example: Primeira visita
+  createdAt:
+    type: string
+    format: date-time
+    example: "2026-04-27T10:00:00.000Z"
+  updatedAt:
+    type: string
+    format: date-time
+    example: "2026-04-27T10:00:00.000Z"
+required:
+  - id
+  - providerId
+  - serviceId
+  - appointmentDate
+  - startTime
+  - status
+  - clientName
+  - clientEmail
+  - clientPhone
+  - createdAt
+  - updatedAt

@@ -1,0 +1,5 @@
+@baseUrl = http://localhost:3333
+
+### [SUCESSO] Listar todos os serviços
+# Esperado: 200 com array de todos os serviços cadastrados
+GET {{baseUrl}}/api/services

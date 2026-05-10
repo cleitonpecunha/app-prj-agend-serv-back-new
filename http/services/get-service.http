@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:3333
+@serviceId = 1
+
+### [SUCESSO] Buscar serviço por ID existente
+# Pré-requisito: ter ao menos um serviço criado (id = 1)
+# Esperado: 200 com objeto do serviço incluindo price como número
+GET {{baseUrl}}/api/services/{{serviceId}}
+
+###
+
+### [FALHA] Buscar serviço por ID inexistente
+# Esperado: 404 NotFoundError com mensagem "Serviço não encontrado."
+GET {{baseUrl}}/api/services/999999
+
+###
+
+### [FALHA] Buscar com ID inválido (texto)
+# Esperado: 422 Validation Error com campo id nos issues
+GET {{baseUrl}}/api/services/abc
+
+###
+
+### [FALHA] Buscar com ID zero (valor inválido)
+# Esperado: 422 Validation Error — ID deve ser inteiro positivo
+GET {{baseUrl}}/api/services/0
+
+###
+
+### [FALHA] Buscar com ID negativo
+# Esperado: 422 Validation Error — ID deve ser inteiro positivo
+GET {{baseUrl}}/api/services/-1

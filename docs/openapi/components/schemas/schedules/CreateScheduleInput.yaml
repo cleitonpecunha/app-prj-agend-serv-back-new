@@ -1,0 +1,31 @@
+type: object
+description: |
+  Payload para criação de um horário de atendimento.
+  O `providerId` é informado pelo path, não pelo body.
+  `startTime` deve ser menor que `endTime`.
+properties:
+  dayOfWeek:
+    type: string
+    enum:
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - sunday
+    example: monday
+  startTime:
+    type: string
+    description: Horário de início no formato HH:MM (24h).
+    pattern: "^([01]\\d|2[0-3]):([0-5]\\d)$"
+    example: "09:00"
+  endTime:
+    type: string
+    description: Horário de término no formato HH:MM (24h). Deve ser maior que startTime.
+    pattern: "^([01]\\d|2[0-3]):([0-5]\\d)$"
+    example: "17:00"
+required:
+  - dayOfWeek
+  - startTime
+  - endTime

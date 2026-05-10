@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enum para status do agendamento
+enum AppointmentStatus {
+  scheduled
+  completed
+  canceled
+  no_show
+}
+
+// Model: Prestador de Serviço
+model User {
+  id            String @id
+  name          String
+  businessName  String
+  slug          String @unique
+  email         String @unique
+  passwordHash  String
+  phone         String
+  address       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relacionamentos
+  services      Service[]
+  schedules     Schedule[]
+  appointments  Appointment[]
+  
+  @@map("users")
+}
+
+// Model: Serviço oferecido
+model Service {
+  id              String @id
+  userId          String
+  name            String
+  description     String
+  durationMinutes Int
+  priceInCents    Int
+  isActive        Boolean @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relacionamentos
+  provider        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  
+  @@index([userId])
+  @@map("services")
+}
+
+// Model: Horários de atendimento
+model Schedule {
+  id          String @id
+  userId     String
+  dayOfWeek   String   // "monday", "tuesday", etc.
+  startTime   String   // "09:00"
+  endTime     String   // "17:00"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relacionamentos
+  provider User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("schedules")
+}
+
+// Model: Agendamentos
+model Appointment {
+  id              String @id
+  userId          String
+  serviceId       String
+  appointmentDate DateTime // Data do agendamento
+  startTime       String   // "14:30"
+  status          AppointmentStatus @default(scheduled)
+  clientName      String
+  clientEmail     String
+  clientPhone     String
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relacionamentos
+  provider User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, appointmentDate])
+  @@index([serviceId, appointmentDate])
+  @@map("appointments")
+}

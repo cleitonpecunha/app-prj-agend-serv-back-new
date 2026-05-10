@@ -1,0 +1,34 @@
+type: object
+description: |
+  Payload para criação de um agendamento.
+  O `serviceId` é informado pelo path, e o `providerId` é derivado do serviço.
+  O status inicial é sempre `scheduled`.
+properties:
+  appointmentDate:
+    type: string
+    format: date
+    example: "2026-05-11"
+  startTime:
+    type: string
+    description: Horário de início no formato HH:MM (24h).
+    pattern: "^([01]\\d|2[0-3]):([0-5]\\d)$"
+    example: "09:00"
+  clientName:
+    type: string
+    example: Maria Souza
+  clientEmail:
+    type: string
+    format: email
+    example: maria@email.com
+  clientPhone:
+    type: string
+    example: "11999991111"
+  notes:
+    type: string
+    example: Primeira visita
+required:
+  - appointmentDate
+  - startTime
+  - clientName
+  - clientEmail
+  - clientPhone

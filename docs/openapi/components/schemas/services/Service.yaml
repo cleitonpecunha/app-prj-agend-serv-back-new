@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+  providerId:
+    type: integer
+    example: 1
+  name:
+    type: string
+    example: Corte de cabelo
+  description:
+    type: string
+    example: Corte masculino completo com navalha
+  durationMinutes:
+    type: integer
+    example: 30
+  price:
+    type: number
+    format: float
+    example: 50.00
+  isActive:
+    type: boolean
+    example: true
+  createdAt:
+    type: string
+    format: date-time
+    example: "2026-04-25T12:00:00.000Z"
+  updatedAt:
+    type: string
+    format: date-time
+    example: "2026-04-25T12:00:00.000Z"
+required:
+  - id
+  - providerId
+  - name
+  - description
+  - durationMinutes
+  - price
+  - isActive
+  - createdAt
+  - updatedAt

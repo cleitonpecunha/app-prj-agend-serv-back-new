@@ -1,0 +1,14 @@
+type: object
+properties:
+  accessToken:
+    type: string
+    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  refreshToken:
+    type: string
+    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  provider:
+    $ref: "../providers/Provider.yaml"
+required:
+  - accessToken
+  - refreshToken
+  - provider

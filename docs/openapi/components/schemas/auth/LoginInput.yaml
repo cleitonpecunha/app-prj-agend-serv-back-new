@@ -1,0 +1,14 @@
+type: object
+properties:
+  email:
+    type: string
+    format: email
+    example: joao@barbearia.com
+  password:
+    type: string
+    format: password
+    minLength: 1
+    example: "12345678"
+required:
+  - email
+  - password

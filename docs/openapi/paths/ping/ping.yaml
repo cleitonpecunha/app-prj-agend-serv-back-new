@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Ping
+  summary: Verifica se a API está ativa
+  description: Endpoint para verificar se a API está ativa
+  security: []
+  responses:
+    '200':
+      description: API está ativa
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/common/MessageResponse.yaml'
+          example:
+            message: Pong!

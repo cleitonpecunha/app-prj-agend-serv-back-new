@@ -1,0 +1,113 @@
+@baseUrl = http://localhost:3333
+
+### [SUCESSO] Criar prestador com payload válido
+# Esperado: 201 com objeto do prestador, incluindo slug gerado pela aplicação
+POST {{baseUrl}}/api/providers
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "businessName": "Barbearia do João",
+  "email": "joao@barbearia.com",
+  "password": "12345678",
+  "phone": "(11) 99999-0001",
+  "address": "Rua das Flores, 123 - São Paulo, SP"
+}
+
+###
+
+### [SUCESSO] Criar prestador confirmando que slug omitido é aceito
+# Esperado: 201 — slug NÃO deve ser enviado pelo cliente; a aplicação o gera internamente
+POST {{baseUrl}}/api/providers
+Content-Type: application/json
+
+{
+  "name": "Maria Souza",
+  "businessName": "Studio Beleza Maria",
+  "email": "maria@studio.com",
+  "password": "12345678",
+  "phone": "(11) 98888-0002",
+  "address": "Av. Paulista, 456 - São Paulo, SP"
+}
+
+###
+
+### [FALHA] Slug enviado no payload deve ser ignorado
+# Esperado: 201 — slug do body é descartado; a aplicação gera o seu próprio a partir de businessName
+POST {{baseUrl}}/api/providers
+Content-Type: application/json
+
+{
+  "name": "Carlos Lima",
+  "businessName": "Lima Elétrica",
+  "slug": "slug-enviado-pelo-cliente",
+  "email": "carlos@lima.com",
+  "password": "12345678",
+  "phone": "(21) 97777-0003",
+  "address": "Rua Eletricidade, 789 - Rio de Janeiro, RJ"
+}
+
+###
+
+### [FALHA] Campo obrigatório ausente (name)
+# Esperado: 422 Validation Error com campo name nos issues
+POST {{baseUrl}}/api/providers
+Content-Type: application/json
+
+{
+  "businessName": "Sem Nome",
+  "email": "semnome@test.com",
+  "password": "12345678",
+  "phone": "(11) 90000-0001",
+  "address": "Rua Teste, 1"
+}
+
+###
+
+### [FALHA] E-mail com formato inválido
+# Esperado: 422 Validation Error com campo email nos issues
+POST {{baseUrl}}/api/providers
+Content-Type: application/json
+
+{
+  "name": "Teste Email",
+  "businessName": "Empresa Teste",
+  "email": "emailinvalido",
+  "password": "12345678",
+  "phone": "(11) 90000-0002",
+  "address": "Rua Teste, 2"
+}
+
+###
+
+### [FALHA] E-mail duplicado
+# Pré-requisito: executar o primeiro request desta seção antes
+# Esperado: 409 ConflictError com mensagem sobre e-mail duplicado
+POST {{baseUrl}}/api/providers
+Content-Type: application/json
+
+{
+  "name": "Outro João",
+  "businessName": "Outra Barbearia",
+  "email": "joao@barbearia.com",
+  "password": "12345678",
+  "phone": "(11) 91111-0001",
+  "address": "Rua das Rosas, 99 - São Paulo, SP"
+}
+
+###
+
+### [FALHA] Nome de negócio duplicado (gera slug duplicado)
+# Pré-requisito: executar o primeiro request desta seção antes
+# Esperado: 409 ConflictError com mensagem sobre nome de negócio duplicado
+POST {{baseUrl}}/api/providers
+Content-Type: application/json
+
+{
+  "name": "João Outro",
+  "businessName": "Barbearia do João",
+  "email": "joao.outro@barbearia.com",
+  "password": "12345678",
+  "phone": "(11) 92222-0001",
+  "address": "Rua das Violetas, 10 - São Paulo, SP"
+}

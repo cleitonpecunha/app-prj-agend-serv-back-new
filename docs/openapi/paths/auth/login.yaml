@@ -1,0 +1,41 @@
+post:
+  tags:
+    - Auth
+  summary: Login do prestador
+  description: |
+    Autentica um prestador por e-mail e senha e retorna um par de tokens JWT.
+    O payload do prestador na resposta não inclui o hash da senha.
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/auth/LoginInput.yaml"
+        example:
+          email: joao@barbearia.com
+          password: "12345678"
+  responses:
+    "200":
+      description: Login realizado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/auth/AuthTokenResponse.yaml"
+    "401":
+      description: Credenciais inválidas
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: E-mail ou senha inválidos.
+    "422":
+      description: Dados inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: email
+                message: E-mail inválido.

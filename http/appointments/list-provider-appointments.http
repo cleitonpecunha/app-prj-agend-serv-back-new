@@ -1,0 +1,43 @@
+@baseUrl = http://localhost:3333
+@providerId = 1
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Listar agendamentos do prestador
+# Esperado: 200 com array de agendamentos ordenado por data e hora
+GET {{baseUrl}}/api/providers/{{providerId}}/appointments
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [SUCESSO] Prestador existente sem agendamentos
+# Esperado: 200 com array vazio
+GET {{baseUrl}}/api/providers/{{providerId}}/appointments
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Prestador inexistente
+# Esperado: 404 NotFoundError
+GET {{baseUrl}}/api/providers/999999/appointments
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] providerId inválido no path
+# Esperado: 422 Validation Error
+GET {{baseUrl}}/api/providers/abc/appointments
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+GET {{baseUrl}}/api/providers/{{providerId}}/appointments
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para ver agendamentos deste prestador)
+# Pré-requisito: @accessToken pertence ao prestador id=2; tentando listar agendamentos do id=1
+# Esperado: 403 ForbiddenError
+GET {{baseUrl}}/api/providers/{{providerId}}/appointments
+Authorization: Bearer {{accessToken}}

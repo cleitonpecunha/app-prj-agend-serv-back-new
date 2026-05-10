@@ -1,0 +1,129 @@
+@baseUrl = http://localhost:3333
+@serviceId = 1
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Atualizar serviço com payload válido
+# Pré-requisito: serviço com id = 1 deve existir
+# Esperado: 200 com objeto do serviço atualizado
+PUT {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Corte de cabelo premium",
+  "description": "Corte masculino com acabamento e penteado",
+  "durationMinutes": 45,
+  "price": 75.00,
+  "isActive": true
+}
+
+###
+
+### [SUCESSO] Desativar serviço via atualização
+# Esperado: 200 com isActive = false na resposta
+PUT {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Corte de cabelo",
+  "description": "Corte masculino completo",
+  "durationMinutes": 30,
+  "price": 50.00,
+  "isActive": false
+}
+
+###
+
+### [FALHA] Atualizar serviço inexistente
+# Esperado: 404 NotFoundError
+PUT {{baseUrl}}/api/services/999999
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Serviço inexistente",
+  "description": "Descrição",
+  "durationMinutes": 30,
+  "price": 50.00,
+  "isActive": true
+}
+
+###
+
+### [FALHA] Campo obrigatório ausente (description)
+# Esperado: 422 Validation Error com campo description nos issues
+PUT {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Sem descrição",
+  "durationMinutes": 30,
+  "price": 50.00,
+  "isActive": true
+}
+
+###
+
+### [FALHA] durationMinutes inválido (negativo)
+# Esperado: 422 Validation Error com campo durationMinutes nos issues
+PUT {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Serviço inválido",
+  "description": "Duração negativa",
+  "durationMinutes": -5,
+  "price": 50.00,
+  "isActive": true
+}
+
+###
+
+### [FALHA] ID do path inválido (texto)
+# Esperado: 422 Validation Error com campo id nos issues
+PUT {{baseUrl}}/api/services/abc
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Serviço",
+  "description": "Descrição",
+  "durationMinutes": 30,
+  "price": 50.00,
+  "isActive": true
+}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+PUT {{baseUrl}}/api/services/{{serviceId}}
+Content-Type: application/json
+
+{
+  "name": "Corte de cabelo premium",
+  "description": "Corte com acabamento",
+  "durationMinutes": 45,
+  "price": 75.00,
+  "isActive": true
+}
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para atualizar este serviço)
+# Pré-requisito: @accessToken pertence ao prestador id=2; serviço id=1 pertence ao id=1
+# Esperado: 403 ForbiddenError
+PUT {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Corte de cabelo premium",
+  "description": "Corte com acabamento",
+  "durationMinutes": 45,
+  "price": 75.00,
+  "isActive": true
+}

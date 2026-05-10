@@ -1,0 +1,43 @@
+@baseUrl = http://localhost:3333
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Remover prestador existente
+# Pré-requisito: ter prestador com id = 1 criado
+# Esperado: 204 sem corpo de resposta
+DELETE {{baseUrl}}/api/providers/1
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Remover prestador inexistente
+# Esperado: 404 NotFoundError com mensagem "Prestador não encontrado."
+DELETE {{baseUrl}}/api/providers/999999
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Remover com ID inválido (texto)
+# Esperado: 422 Validation Error com campo id nos issues
+DELETE {{baseUrl}}/api/providers/abc
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Remover com ID zero
+# Esperado: 422 Validation Error — ID deve ser inteiro positivo
+DELETE {{baseUrl}}/api/providers/0
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+DELETE {{baseUrl}}/api/providers/1
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para remover este recurso)
+# Pré-requisito: @accessToken pertence ao prestador id=2; tentando remover id=1
+# Esperado: 403 ForbiddenError
+DELETE {{baseUrl}}/api/providers/1
+Authorization: Bearer {{accessToken}}

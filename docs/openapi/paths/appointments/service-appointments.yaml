@@ -1,0 +1,85 @@
+post:
+  tags:
+    - Appointments
+  summary: Criar agendamento para um serviço
+  description: |
+    Cria um novo agendamento para o serviço informado.
+    Este endpoint é público e não exige autenticação.
+    O sistema valida se o serviço está ativo, se o horário solicitado cabe dentro
+    da disponibilidade do prestador e se não existe conflito com outros agendamentos.
+  security: []
+  parameters:
+    - name: serviceId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 10
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/appointments/CreateAppointmentInput.yaml"
+        example:
+          appointmentDate: "2026-05-11"
+          startTime: "09:00"
+          clientName: Maria Souza
+          clientEmail: maria@email.com
+          clientPhone: "11999991111"
+          notes: Primeira visita
+  responses:
+    "201":
+      description: Agendamento criado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/appointments/Appointment.yaml"
+          example:
+            id: 1
+            providerId: 1
+            serviceId: 10
+            appointmentDate: "2026-05-11"
+            startTime: "09:00"
+            status: scheduled
+            clientName: Maria Souza
+            clientEmail: maria@email.com
+            clientPhone: "11999991111"
+            notes: Primeira visita
+            createdAt: "2026-04-27T10:00:00.000Z"
+            updatedAt: "2026-04-27T10:00:00.000Z"
+    "404":
+      description: Serviço não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Serviço não encontrado.
+    "409":
+      description: Conflito de disponibilidade ou serviço inativo
+      content:
+        application/json:
+          examples:
+            serviceInactive:
+              value:
+                error: ConflictError
+                message: O serviço informado está inativo.
+            unavailableSlot:
+              value:
+                error: ConflictError
+                message: O horário solicitado não está dentro da disponibilidade do prestador.
+            overlappingAppointment:
+              value:
+                error: ConflictError
+                message: Já existe um agendamento para o intervalo informado.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: clientEmail
+                message: E-mail do cliente inválido.

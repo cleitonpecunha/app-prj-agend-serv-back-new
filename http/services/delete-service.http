@@ -1,0 +1,52 @@
+@baseUrl = http://localhost:3333
+@serviceId = 1
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Remover serviço sem agendamentos vinculados
+# Pré-requisito: serviço com id = 1 deve existir e não ter agendamentos
+# Esperado: 204 sem corpo de resposta
+DELETE {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Remover serviço com agendamentos vinculados
+# Pré-requisito: serviço deve ter ao menos um agendamento associado
+# Esperado: 409 ConflictError — "Não é possível remover um serviço com agendamentos vinculados."
+DELETE {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Remover serviço inexistente
+# Esperado: 404 NotFoundError com mensagem "Serviço não encontrado."
+DELETE {{baseUrl}}/api/services/999999
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] ID inválido (texto)
+# Esperado: 422 Validation Error com campo id nos issues
+DELETE {{baseUrl}}/api/services/abc
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] ID zero (inválido)
+# Esperado: 422 Validation Error — ID deve ser inteiro positivo
+DELETE {{baseUrl}}/api/services/0
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+DELETE {{baseUrl}}/api/services/{{serviceId}}
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para remover este serviço)
+# Pré-requisito: @accessToken pertence ao prestador id=2; serviço id=1 pertence ao id=1
+# Esperado: 403 ForbiddenError
+DELETE {{baseUrl}}/api/services/{{serviceId}}
+Authorization: Bearer {{accessToken}}

@@ -1,0 +1,130 @@
+put:
+  tags:
+    - Schedules
+  summary: Atualizar horário
+  description: |
+    Atualiza todos os campos de um horário existente (PUT completo — todos os campos são obrigatórios).
+    O `providerId` do horário não pode ser alterado.
+    `startTime` deve ser menor que `endTime`.
+    Conflitos com outros horários do mesmo prestador e dia retornam 409.
+    O próprio registro é ignorado na checagem de conflito.
+    Requer autenticação do prestador dono do horário.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/schedules/UpdateScheduleInput.yaml"
+        example:
+          dayOfWeek: tuesday
+          startTime: "08:00"
+          endTime: "12:00"
+  responses:
+    "200":
+      description: Horário atualizado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/schedules/Schedule.yaml"
+          example:
+            id: 1
+            providerId: 1
+            dayOfWeek: tuesday
+            startTime: "08:00"
+            endTime: "12:00"
+            createdAt: "2026-04-27T10:00:00.000Z"
+            updatedAt: "2026-04-27T11:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Horário não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Horário não encontrado.
+    "409":
+      description: Conflito de horário
+      content:
+        application/json:
+          example:
+            error: ConflictError
+            message: Já existe um horário cadastrado que conflita com o intervalo informado.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: dayOfWeek
+                message: Dia da semana inválido.
+
+delete:
+  tags:
+    - Schedules
+  summary: Remover horário
+  description: Remove permanentemente um horário de atendimento pelo seu ID. Requer autenticação do prestador dono do horário.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "204":
+      description: Horário removido com sucesso
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Horário não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Horário não encontrado.
+    "422":
+      description: ID inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: id
+                message: ID deve ser um número inteiro positivo.

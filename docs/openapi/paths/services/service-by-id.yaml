@@ -1,0 +1,184 @@
+get:
+  tags:
+    - Services
+  summary: Buscar serviço por ID
+  description: Retorna os dados de um serviço pelo seu ID numérico.
+  security: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "200":
+      description: Serviço encontrado
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/services/Service.yaml"
+          example:
+            id: 1
+            providerId: 1
+            name: Corte de cabelo
+            description: Corte masculino completo com navalha
+            durationMinutes: 30
+            price: 50.00
+            isActive: true
+            createdAt: "2026-04-25T12:00:00.000Z"
+            updatedAt: "2026-04-25T12:00:00.000Z"
+    "404":
+      description: Serviço não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Serviço não encontrado.
+    "422":
+      description: ID inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: id
+                message: ID deve ser um número inteiro positivo.
+
+put:
+  tags:
+    - Services
+  summary: Atualizar serviço
+  description: |
+    Atualiza todos os dados de um serviço existente (PUT completo — todos os campos são obrigatórios).
+    O campo `providerId` não pode ser alterado via atualização.
+    Requer autenticação do prestador dono do serviço.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/services/UpdateServiceInput.yaml"
+        example:
+          name: Corte de cabelo premium
+          description: Corte masculino com acabamento e penteado
+          durationMinutes: 45
+          price: 75.00
+          isActive: true
+  responses:
+    "200":
+      description: Serviço atualizado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/services/Service.yaml"
+          example:
+            id: 1
+            providerId: 1
+            name: Corte de cabelo premium
+            description: Corte masculino com acabamento e penteado
+            durationMinutes: 45
+            price: 75.00
+            isActive: true
+            createdAt: "2026-04-25T12:00:00.000Z"
+            updatedAt: "2026-04-25T13:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Serviço não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Serviço não encontrado.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: description
+                message: Descrição é obrigatória.
+
+delete:
+  tags:
+    - Services
+  summary: Remover serviço
+  description: |
+    Remove permanentemente um serviço pelo seu ID.
+    A exclusão é bloqueada quando existirem agendamentos vinculados ao serviço,
+    retornando 409 com mensagem explicativa.
+    Requer autenticação do prestador dono do serviço.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "204":
+      description: Serviço removido com sucesso (sem corpo de resposta)
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Serviço não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Serviço não encontrado.
+    "409":
+      description: Exclusão bloqueada por agendamentos vinculados
+      content:
+        application/json:
+          example:
+            error: ConflictError
+            message: Não é possível remover um serviço com agendamentos vinculados.
+    "422":
+      description: ID inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: id
+                message: ID deve ser um número inteiro positivo.

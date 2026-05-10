@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:3333
+@providerId = 1
+
+### [SUCESSO] Listar horários de prestador com horários cadastrados
+# Esperado: 200 com array de horários ordenados por dia e hora
+GET {{baseUrl}}/api/providers/{{providerId}}/schedules
+
+###
+
+### [SUCESSO] Listar horários de prestador sem horários cadastrados
+# Esperado: 200 com array vazio []
+GET {{baseUrl}}/api/providers/2/schedules
+
+###
+
+### [FALHA] Prestador inexistente
+# Esperado: 404 NotFoundError
+GET {{baseUrl}}/api/providers/999999/schedules
+
+###
+
+### [FALHA] providerId inválido no path
+# Esperado: 422 Validation Error
+GET {{baseUrl}}/api/providers/abc/schedules

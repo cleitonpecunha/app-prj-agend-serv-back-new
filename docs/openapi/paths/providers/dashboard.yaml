@@ -1,0 +1,68 @@
+get:
+  tags:
+    - Providers
+  summary: Resumo geral do prestador
+  description: |
+    Retorna um painel de resumo mensal do prestador autenticado, incluindo
+    contagem de agendamentos por status, taxa de comparecimento, faturamento
+    previsto e realizado, e os próximos agendamentos futuros do mês.
+
+    - **attendanceRate**: percentual de `completed / (completed + no_show)`. Retorna `null`
+      quando não há nenhum agendamento finalizado no mês.
+    - **nextAppointments**: até 5 agendamentos com status `scheduled` e data ≥ hoje,
+      ordenados por data e hora.
+
+    O `providerId` é obtido diretamente do token JWT. Requer autenticação.
+  parameters:
+    - name: month
+      in: query
+      required: false
+      schema:
+        type: string
+        pattern: '^\d{4}-(0[1-9]|1[0-2])$'
+        example: "2026-05"
+      description: |
+        Mês de referência no formato YYYY-MM.
+        Quando omitido, usa o mês corrente em UTC.
+  responses:
+    "200":
+      description: Resumo calculado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/providers/DashboardResponse.yaml"
+          example:
+            referenceMonth: "2026-05"
+            totalAppointments: 12
+            scheduledAppointments: 5
+            completedAppointments: 5
+            canceledAppointments: 1
+            noShowAppointments: 1
+            attendanceRate: 83.33
+            scheduledRevenue: 250.00
+            completedRevenue: 250.00
+            nextAppointments:
+              - id: 42
+                appointmentDate: "2026-05-28"
+                startTime: "09:00"
+                status: scheduled
+                clientName: "Maria Souza"
+                serviceId: 10
+                serviceName: "Corte de cabelo"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "422":
+      description: Parâmetros inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: month
+                message: "Mês inválido. Use o formato YYYY-MM."

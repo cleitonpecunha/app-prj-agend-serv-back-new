@@ -1,0 +1,88 @@
+type: object
+properties:
+  referenceMonth:
+    type: string
+    description: Mês de referência consultado no formato YYYY-MM.
+    example: "2026-05"
+  totalAppointments:
+    type: integer
+    description: Total de agendamentos no mês, independente do status.
+    example: 12
+  scheduledAppointments:
+    type: integer
+    example: 5
+  completedAppointments:
+    type: integer
+    example: 5
+  canceledAppointments:
+    type: integer
+    example: 1
+  noShowAppointments:
+    type: integer
+    example: 1
+  attendanceRate:
+    type: number
+    format: float
+    nullable: true
+    description: |
+      Percentual de comparecimento: `completed / (completed + no_show) * 100`.
+      Retorna `null` quando não há nenhum agendamento finalizado (completed ou no_show) no mês.
+    example: 83.33
+  scheduledRevenue:
+    type: number
+    format: float
+    description: Soma dos preços dos agendamentos scheduled (faturamento previsto).
+    example: 250.00
+  completedRevenue:
+    type: number
+    format: float
+    description: Soma dos preços dos agendamentos completed (faturamento realizado).
+    example: 250.00
+  nextAppointments:
+    type: array
+    description: Até 5 próximos agendamentos futuros com status scheduled, ordenados por data e hora.
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        appointmentDate:
+          type: string
+          format: date
+          example: "2026-05-28"
+        startTime:
+          type: string
+          example: "09:00"
+        status:
+          type: string
+          enum: [scheduled]
+          example: scheduled
+        clientName:
+          type: string
+          example: "Maria Souza"
+        serviceId:
+          type: integer
+          example: 10
+        serviceName:
+          type: string
+          example: "Corte de cabelo"
+      required:
+        - id
+        - appointmentDate
+        - startTime
+        - status
+        - clientName
+        - serviceId
+        - serviceName
+required:
+  - referenceMonth
+  - totalAppointments
+  - scheduledAppointments
+  - completedAppointments
+  - canceledAppointments
+  - noShowAppointments
+  - attendanceRate
+  - scheduledRevenue
+  - completedRevenue
+  - nextAppointments

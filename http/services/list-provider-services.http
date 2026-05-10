@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:3333
+@providerId = 1
+
+### [SUCESSO] Listar serviços de prestador existente
+# Esperado: 200 com array de serviços do prestador
+GET {{baseUrl}}/api/providers/{{providerId}}/services
+
+###
+
+### [FALHA] Listar serviços de prestador inexistente
+# Esperado: 404 NotFoundError
+GET {{baseUrl}}/api/providers/999999/services
+
+###
+
+### [FALHA] providerId inválido (texto)
+# Esperado: 422 Validation Error com campo providerId nos issues
+GET {{baseUrl}}/api/providers/abc/services
+
+###
+
+### [FALHA] providerId zero (inválido)
+# Esperado: 422 Validation Error — providerId deve ser inteiro positivo
+GET {{baseUrl}}/api/providers/0/services

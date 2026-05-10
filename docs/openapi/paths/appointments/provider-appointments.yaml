@@ -1,0 +1,69 @@
+get:
+  tags:
+    - Appointments
+  summary: Listar agendamentos do prestador
+  description: |
+    Retorna os agendamentos do prestador informado, ordenados por data e horário.
+    Retorna 404 quando o prestador não existir e 200 com array vazio quando existir,
+    mas ainda não tiver agendamentos.
+  parameters:
+    - name: providerId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "200":
+      description: Lista de agendamentos do prestador
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/appointments/Appointment.yaml"
+          example:
+            - id: 1
+              providerId: 1
+              serviceId: 10
+              appointmentDate: "2026-05-11"
+              startTime: "09:00"
+              status: scheduled
+              clientName: Maria Souza
+              clientEmail: maria@email.com
+              clientPhone: "11999991111"
+              notes: Primeira visita
+              createdAt: "2026-04-27T10:00:00.000Z"
+              updatedAt: "2026-04-27T10:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "422":
+      description: providerId inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: providerId
+                message: providerId deve ser um número inteiro positivo.

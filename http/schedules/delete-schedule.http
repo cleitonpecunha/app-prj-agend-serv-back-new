@@ -1,0 +1,43 @@
+@baseUrl = http://localhost:3333
+@scheduleId = 1
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Remover horário existente
+# Esperado: 204 sem corpo
+DELETE {{baseUrl}}/api/schedules/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Horário inexistente
+# Esperado: 404 NotFoundError
+DELETE {{baseUrl}}/api/schedules/999999
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] ID inválido no path
+# Esperado: 422 Validation Error
+DELETE {{baseUrl}}/api/schedules/abc
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] ID zero (inválido)
+# Esperado: 422 Validation Error
+DELETE {{baseUrl}}/api/schedules/0
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+DELETE {{baseUrl}}/api/schedules/{{scheduleId}}
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para remover este horário)
+# Pré-requisito: @accessToken pertence ao prestador id=2; horário id=1 pertence ao id=1
+# Esperado: 403 ForbiddenError
+DELETE {{baseUrl}}/api/schedules/{{scheduleId}}
+Authorization: Bearer {{accessToken}}

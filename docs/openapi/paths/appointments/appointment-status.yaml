@@ -1,0 +1,82 @@
+patch:
+  tags:
+    - Appointments
+  summary: Atualizar status do agendamento
+  description: |
+    Atualiza o status de um agendamento existente.
+    Apenas os valores `completed`, `canceled` e `no_show` são aceitos.
+    O status só pode ser alterado enquanto o agendamento estiver em `scheduled`.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/appointments/UpdateAppointmentStatusInput.yaml"
+        example:
+          status: completed
+  responses:
+    "200":
+      description: Status atualizado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/appointments/Appointment.yaml"
+          example:
+            id: 1
+            providerId: 1
+            serviceId: 10
+            appointmentDate: "2026-05-11"
+            startTime: "09:00"
+            status: completed
+            clientName: Maria Souza
+            clientEmail: maria@email.com
+            clientPhone: "11999991111"
+            notes: Primeira visita
+            createdAt: "2026-04-27T10:00:00.000Z"
+            updatedAt: "2026-04-27T11:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Agendamento não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Agendamento não encontrado.
+    "409":
+      description: Transição de status inválida
+      content:
+        application/json:
+          example:
+            error: ConflictError
+            message: O status do agendamento não pode mais ser alterado.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: status
+                message: Status inválido para atualização.

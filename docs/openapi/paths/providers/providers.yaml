@@ -1,0 +1,59 @@
+post:
+  tags:
+    - Providers
+  summary: Cadastrar prestador
+  description: |
+    Cria um novo prestador de serviço. O campo `slug` é gerado automaticamente pela aplicação
+    a partir do `businessName` — não deve ser enviado no payload. Os campos `email` e `slug`
+    (derivado de `businessName`) devem ser únicos.
+    O campo `password` é obrigatório no cadastro e é persistido apenas como hash.
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/providers/CreateProviderInput.yaml"
+        example:
+          name: João Silva
+          businessName: Barbearia do João
+          email: joao@barbearia.com
+          password: "12345678"
+          phone: "(11) 99999-0001"
+          address: Rua das Flores, 123 - São Paulo, SP
+  responses:
+    "201":
+      description: Prestador cadastrado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/providers/Provider.yaml"
+          example:
+            id: 1
+            name: João Silva
+            businessName: Barbearia do João
+            slug: barbearia-do-joao
+            email: joao@barbearia.com
+            phone: "(11) 99999-0001"
+            address: Rua das Flores, 123 - São Paulo, SP
+            createdAt: "2026-04-25T12:00:00.000Z"
+            updatedAt: "2026-04-25T12:00:00.000Z"
+    "409":
+      description: Conflito — e-mail ou nome de negócio já cadastrado
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/common/MessageResponse.yaml"
+          example:
+            error: ConflictError
+            message: Já existe um prestador com este e-mail.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: email
+                message: E-mail inválido.

@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3333
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJhNmY3YTNlLWQ1YzAtNDllMC05ZDNhLTE0MDdjMjg1Zjg3NCIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImVtYWlsIjoiam9hb0BiYXJiZWFyaWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4NDA1NzY4LCJleHAiOjE3Nzk3MDE3Njh9.rc0xFLwGENtPr83bHauCOl6JDwHrGGNPtnvSFpfhvKE
+
+@idjoao = ba6f7a3e-d5c0-49e0-9d3a-1407c285f874
+@idmaria = 9e407a55-12a0-4c23-97c2-795cee162303
+@idcarlos = 8b89e3fc-16e6-45cd-ba9d-2e1dd076a170
+@idnexiste = 7b89e3fc-16e6-45cd-ba9d-2e1dd076a179
+
+### [SUCESSO] Listar todos os usuários cadastrados deste que existam ou mostrar lista vazia
+GET {{baseUrl}}/api/users
+
+### [SUCESSO] Buscar usuário por ID existente
+# Pré-requisito: ter ao menos um usuário criado para usar seu ID neste teste
+# Esperado: 200 com objeto do usuário incluindo o campo slug
+GET {{baseUrl}}/api/users/{{idjoao}}
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Buscar usuário por ID inexistente
+# Esperado: 404 NotFoundError com mensagem "Usuário não encontrado."
+GET {{baseUrl}}/api/users/{{idnexiste}}
+Authorization: Bearer {{accessToken}}
+
+###

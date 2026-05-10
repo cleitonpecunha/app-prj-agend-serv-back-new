@@ -1,0 +1,39 @@
+post:
+  tags:
+    - Auth
+  summary: Renovar tokens de sessão
+  description: |
+    Recebe um refresh token válido e devolve um novo par de tokens JWT.
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/auth/RefreshTokenInput.yaml"
+        example:
+          refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  responses:
+    "200":
+      description: Tokens renovados com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/auth/AuthTokenResponse.yaml"
+    "401":
+      description: Sessão inválida
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Sessão inválida.
+    "422":
+      description: Dados inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: refreshToken
+                message: Refresh token é obrigatório.

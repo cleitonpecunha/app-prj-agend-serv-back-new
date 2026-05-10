@@ -1,0 +1,36 @@
+@baseUrl = http://localhost:3333
+@appointmentId = 1
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Buscar agendamento por ID
+# Esperado: 200 com objeto do agendamento
+GET {{baseUrl}}/api/appointments/{{appointmentId}}
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Agendamento inexistente
+# Esperado: 404 NotFoundError
+GET {{baseUrl}}/api/appointments/999999
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] ID inválido no path
+# Esperado: 422 Validation Error
+GET {{baseUrl}}/api/appointments/abc
+Authorization: Bearer {{accessToken}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+GET {{baseUrl}}/api/appointments/{{appointmentId}}
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para ver este agendamento)
+# Pré-requisito: @accessToken pertence ao prestador id=2; agendamento id=1 pertence ao id=1
+# Esperado: 403 ForbiddenError
+GET {{baseUrl}}/api/appointments/{{appointmentId}}
+Authorization: Bearer {{accessToken}}

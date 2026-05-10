@@ -1,0 +1,141 @@
+post:
+  tags:
+    - Schedules
+  summary: Definir horário de atendimento
+  description: |
+    Cria um intervalo de atendimento para um prestador em um dia da semana.
+    O `providerId` é informado pelo path.
+    `startTime` deve ser menor que `endTime`.
+    Horários que se sobreponham a intervalos já cadastrados para o mesmo prestador
+    e dia da semana são rejeitados com status 409.
+    Horários adjacentes (ex.: 09:00–12:00 e 12:00–15:00) são permitidos.
+    Requer autenticação do prestador dono do `providerId` informado.
+  parameters:
+    - name: providerId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/schedules/CreateScheduleInput.yaml"
+        example:
+          dayOfWeek: monday
+          startTime: "09:00"
+          endTime: "17:00"
+  responses:
+    "201":
+      description: Horário criado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/schedules/Schedule.yaml"
+          example:
+            id: 1
+            providerId: 1
+            dayOfWeek: monday
+            startTime: "09:00"
+            endTime: "17:00"
+            createdAt: "2026-04-27T10:00:00.000Z"
+            updatedAt: "2026-04-27T10:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "409":
+      description: Conflito de horário
+      content:
+        application/json:
+          example:
+            error: ConflictError
+            message: Já existe um horário cadastrado que conflita com o intervalo informado.
+    "422":
+      description: Dados de entrada inválidos
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: startTime
+                message: O horário inicial deve ser menor que o horário final.
+
+get:
+  tags:
+    - Schedules
+  summary: Listar horários do prestador
+  description: |
+    Retorna todos os horários de atendimento do prestador, ordenados por dia da semana
+    (segunda a domingo) e por horário de início.
+  security: []
+  parameters:
+    - name: providerId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "200":
+      description: Lista de horários
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/schedules/Schedule.yaml"
+          example:
+            - id: 1
+              providerId: 1
+              dayOfWeek: monday
+              startTime: "09:00"
+              endTime: "12:00"
+              createdAt: "2026-04-27T10:00:00.000Z"
+              updatedAt: "2026-04-27T10:00:00.000Z"
+            - id: 2
+              providerId: 1
+              dayOfWeek: monday
+              startTime: "13:00"
+              endTime: "18:00"
+              createdAt: "2026-04-27T10:00:00.000Z"
+              updatedAt: "2026-04-27T10:00:00.000Z"
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "422":
+      description: providerId inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: providerId
+                message: providerId deve ser um número inteiro positivo.

@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:3333
+@refreshToken = COLE_SEU_REFRESH_TOKEN_AQUI
+
+### [SUCESSO] Renovar sessão com refresh token válido
+# Esperado: 200 com novo accessToken e novo refreshToken
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###
+
+### [FALHA] Refresh token inválido
+# Esperado: 401 UnauthorizedError
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "token-invalido"
+}
+
+###
+
+### [FALHA] Refresh token ausente
+# Esperado: 422 Validation Error
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+{}

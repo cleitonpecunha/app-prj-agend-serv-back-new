@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: TWAgenda API
+  version: 1.0.0
+  contact:
+    name: TreinaWeb
+    url: https://www.treinaweb.com.br
+
+servers:
+  - url: http://localhost:3333
+    description: Servidor de desenvolvimento
+
+tags:
+  - name: Auth
+    description: Autenticação e renovação de sessão dos prestadores
+  - name: Ping
+    description: Endpoint para verificar se a API está ativa
+  - name: Providers
+    description: Gerenciamento de prestadores de serviço
+  - name: Services
+    description: Gerenciamento de serviços oferecidos pelos prestadores
+  - name: Schedules
+    description: Gerenciamento de horários de atendimento dos prestadores
+  - name: Appointments
+    description: Gerenciamento de agendamentos dos prestadores
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/auth/login:
+    $ref: "./paths/auth/login.yaml"
+  /api/auth/refresh:
+    $ref: "./paths/auth/refresh.yaml"
+  /api/ping:
+    $ref: "./paths/ping/ping.yaml"
+  /api/providers:
+    $ref: "./paths/providers/providers.yaml"
+  /api/providers/{id}:
+    $ref: "./paths/providers/provider-by-id.yaml"
+  /api/providers/revenue:
+    $ref: "./paths/providers/revenue.yaml"
+  /api/providers/dashboard:
+    $ref: "./paths/providers/dashboard.yaml"
+  /api/providers/{providerId}/services:
+    $ref: "./paths/services/provider-services.yaml"
+  /api/services:
+    $ref: "./paths/services/services.yaml"
+  /api/services/{id}:
+    $ref: "./paths/services/service-by-id.yaml"
+  /api/services/{serviceId}/appointments:
+    $ref: "./paths/appointments/service-appointments.yaml"
+  /api/providers/{providerId}/schedules:
+    $ref: "./paths/schedules/provider-schedules.yaml"
+  /api/schedules/{id}:
+    $ref: "./paths/schedules/schedule-by-id.yaml"
+  /api/providers/{providerId}/appointments:
+    $ref: "./paths/appointments/provider-appointments.yaml"
+  /api/appointments/{id}:
+    $ref: "./paths/appointments/appointment-by-id.yaml"
+  /api/appointments/{id}/status:
+    $ref: "./paths/appointments/appointment-status.yaml"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Token JWT obtido através do endpoint de login.
+
+        Formato: `Bearer {accessToken}`
+
+  schemas:
+    # Auth Schemas
+    LoginInput:
+      $ref: "./components/schemas/auth/LoginInput.yaml"
+    RefreshTokenInput:
+      $ref: "./components/schemas/auth/RefreshTokenInput.yaml"
+    AuthTokenResponse:
+      $ref: "./components/schemas/auth/AuthTokenResponse.yaml"
+
+    # Common Schemas
+    MessageResponse:
+      $ref: "./components/schemas/common/MessageResponse.yaml"
+
+    # Provider Schemas
+    Provider:
+      $ref: "./components/schemas/providers/Provider.yaml"
+    CreateProviderInput:
+      $ref: "./components/schemas/providers/CreateProviderInput.yaml"
+    UpdateProviderInput:
+      $ref: "./components/schemas/providers/UpdateProviderInput.yaml"
+    RevenueResponse:
+      $ref: "./components/schemas/providers/RevenueResponse.yaml"
+    DashboardResponse:
+      $ref: "./components/schemas/providers/DashboardResponse.yaml"
+
+    # Service Schemas
+    Service:
+      $ref: "./components/schemas/services/Service.yaml"
+    CreateServiceInput:
+      $ref: "./components/schemas/services/CreateServiceInput.yaml"
+    UpdateServiceInput:
+      $ref: "./components/schemas/services/UpdateServiceInput.yaml"
+
+    # Schedule Schemas
+    Schedule:
+      $ref: "./components/schemas/schedules/Schedule.yaml"
+    CreateScheduleInput:
+      $ref: "./components/schemas/schedules/CreateScheduleInput.yaml"
+    UpdateScheduleInput:
+      $ref: "./components/schemas/schedules/UpdateScheduleInput.yaml"
+
+    # Appointment Schemas
+    Appointment:
+      $ref: "./components/schemas/appointments/Appointment.yaml"
+    CreateAppointmentInput:
+      $ref: "./components/schemas/appointments/CreateAppointmentInput.yaml"
+    UpdateAppointmentStatusInput:
+      $ref: "./components/schemas/appointments/UpdateAppointmentStatusInput.yaml"

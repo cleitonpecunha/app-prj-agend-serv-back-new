@@ -1,0 +1,64 @@
+get:
+  tags:
+    - Appointments
+  summary: Buscar agendamento por ID
+  description: Retorna os dados de um agendamento pelo seu ID numérico.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "200":
+      description: Agendamento encontrado
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/appointments/Appointment.yaml"
+          example:
+            id: 1
+            providerId: 1
+            serviceId: 10
+            appointmentDate: "2026-05-11"
+            startTime: "09:00"
+            status: scheduled
+            clientName: Maria Souza
+            clientEmail: maria@email.com
+            clientPhone: "11999991111"
+            notes: Primeira visita
+            createdAt: "2026-04-27T10:00:00.000Z"
+            updatedAt: "2026-04-27T10:00:00.000Z"
+    "401":
+      description: Token ausente ou inválido
+      content:
+        application/json:
+          example:
+            error: UnauthorizedError
+            message: Não autorizado.
+    "403":
+      description: Token pertence a outro prestador
+      content:
+        application/json:
+          example:
+            error: ForbiddenError
+            message: Acesso negado.
+    "404":
+      description: Agendamento não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Agendamento não encontrado.
+    "422":
+      description: ID inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: id
+                message: ID deve ser um número inteiro positivo.

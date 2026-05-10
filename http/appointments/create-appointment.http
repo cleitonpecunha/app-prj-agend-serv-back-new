@@ -1,0 +1,109 @@
+@baseUrl = http://localhost:3333
+@serviceId = 1
+
+### [SUCESSO] Criar agendamento válido para serviço ativo
+# Esperado: 201 com objeto do agendamento criado e status scheduled
+# Efeito colateral: dois e-mails enviados via SMTP
+#   - cliente (clientEmail): confirmação de agendamento
+#   - prestador (provider.email): notificação de novo agendamento
+POST {{baseUrl}}/api/services/{{serviceId}}/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-05-11",
+  "startTime": "09:00",
+  "clientName": "Maria Souza",
+  "clientEmail": "maria@email.com",
+  "clientPhone": "11999991111",
+  "notes": "Primeira visita"
+}
+
+###
+
+### [FALHA] Serviço inexistente
+# Esperado: 404 NotFoundError
+POST {{baseUrl}}/api/services/999999/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-05-11",
+  "startTime": "09:00",
+  "clientName": "Maria Souza",
+  "clientEmail": "maria@email.com",
+  "clientPhone": "11999991111"
+}
+
+###
+
+### [FALHA] Horário fora da disponibilidade do prestador
+# Esperado: 409 ConflictError
+POST {{baseUrl}}/api/services/{{serviceId}}/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-05-11",
+  "startTime": "06:00",
+  "clientName": "Cliente Fora do Turno",
+  "clientEmail": "fora@email.com",
+  "clientPhone": "11999992222"
+}
+
+###
+
+### [FALHA] Horário com conflito de agendamento
+# Esperado: 409 ConflictError
+POST {{baseUrl}}/api/services/{{serviceId}}/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-05-11",
+  "startTime": "09:15",
+  "clientName": "Cliente em Conflito",
+  "clientEmail": "conflito@email.com",
+  "clientPhone": "11999993333"
+}
+
+###
+
+### [FALHA] clientEmail inválido
+# Esperado: 422 Validation Error com campo clientEmail nos issues
+POST {{baseUrl}}/api/services/{{serviceId}}/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-05-11",
+  "startTime": "09:00",
+  "clientName": "Email Inválido",
+  "clientEmail": "email-invalido",
+  "clientPhone": "11999994444"
+}
+
+###
+
+### [FALHA] Data inválida
+# Esperado: 422 Validation Error com campo appointmentDate nos issues
+POST {{baseUrl}}/api/services/{{serviceId}}/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-13-40",
+  "startTime": "09:00",
+  "clientName": "Data Inválida",
+  "clientEmail": "data@email.com",
+  "clientPhone": "11999995555"
+}
+
+###
+
+### [FALHA] serviceId inválido no path
+# Esperado: 422 Validation Error
+POST {{baseUrl}}/api/services/abc/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-05-11",
+  "startTime": "09:00",
+  "clientName": "ID Inválido",
+  "clientEmail": "id@email.com",
+  "clientPhone": "11999996666"
+}

@@ -1,0 +1,70 @@
+type: object
+properties:
+  month:
+    type: string
+    example: "2026-05"
+  groupBy:
+    type: string
+    enum: [day, week, month]
+    example: day
+  summary:
+    type: object
+    properties:
+      scheduledRevenue:
+        type: number
+        format: float
+        description: Soma dos preços dos agendamentos scheduled (faturamento previsto).
+        example: 150.00
+      completedRevenue:
+        type: number
+        format: float
+        description: Soma dos preços dos agendamentos completed (faturamento realizado).
+        example: 50.00
+      totalAppointmentsConsidered:
+        type: integer
+        description: Total de agendamentos considerados no cálculo (scheduled + completed).
+        example: 4
+    required:
+      - scheduledRevenue
+      - completedRevenue
+      - totalAppointmentsConsidered
+  buckets:
+    type: array
+    items:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Rótulo legível do período (ex. "2026-05-05", "Semana 1", "2026-05").
+          example: "2026-05-05"
+        startDate:
+          type: string
+          format: date
+          example: "2026-05-05"
+        endDate:
+          type: string
+          format: date
+          example: "2026-05-05"
+        scheduledRevenue:
+          type: number
+          format: float
+          example: 100.00
+        completedRevenue:
+          type: number
+          format: float
+          example: 0
+        appointmentCount:
+          type: integer
+          example: 2
+      required:
+        - label
+        - startDate
+        - endDate
+        - scheduledRevenue
+        - completedRevenue
+        - appointmentCount
+required:
+  - month
+  - groupBy
+  - summary
+  - buckets

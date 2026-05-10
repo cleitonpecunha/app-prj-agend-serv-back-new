@@ -1,0 +1,14 @@
+type: object
+description: |
+  Payload para atualização do status do agendamento.
+  Apenas transições saindo de `scheduled` são permitidas.
+properties:
+  status:
+    type: string
+    enum:
+      - completed
+      - canceled
+      - no_show
+    example: completed
+required:
+  - status

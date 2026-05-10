@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:3333
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYTZmN2EzZS1kNWMwLTQ5ZTAtOWQzYS0xNDA3YzI4NWY4NzQiLCJpZCI6ImJhNmY3YTNlLWQ1YzAtNDllMC05ZDNhLTE0MDdjMjg1Zjg3NCIsIm5hbWUiOiJKb8OjbyBTaWx2YSBBdHVhbGl6YWRvIiwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg0MTc1MzksImV4cCI6MTc3ODQzMTkzOX0.zxtoPxjFYfh9Qu_rVaLNnpAlAFxKxb7BSpsR-9olDR0
+
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYTZmN2EzZS1kNWMwLTQ5ZTAtOWQzYS0xNDA3YzI4NWY4NzQiLCJpZCI6ImJhNmY3YTNlLWQ1YzAtNDllMC05ZDNhLTE0MDdjMjg1Zjg3NCIsIm5hbWUiOiJKb8OjbyBTaWx2YSBBdHVhbGl6YWRvIiwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc4NDE3NTM5LCJleHAiOjE3Nzg0MTg0Mzl9.0QtgX5VbOQQFcrUjGVS630iPIxc8AD0aaKF06G7PH9w
+
+### [SUCESSO] Login com credenciais válidas
+# Esperado: 200 com accessToken, refreshToken e dados públicos do prestador
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "joao@barbearia.com",
+  "passwordHash": "#Senha123"
+}
+
+###
+
+### [FALHA] Senha inválida
+# Esperado: 401 UnauthorizedError
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "joao@barbearia.com",
+  "passwordHash": "senha-errada"
+}
+
+###
+
+### [FALHA] E-mail inválido
+# Esperado: 422 Validation Error
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "email-invalido",
+  "passwordHash": "12345678"
+}

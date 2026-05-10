@@ -1,0 +1,32 @@
+type: object
+properties:
+  providerId:
+    type: integer
+    description: ID do prestador ao qual o serviço pertence.
+    example: 1
+  name:
+    type: string
+    example: Corte de cabelo
+  description:
+    type: string
+    example: Corte masculino completo com navalha
+  durationMinutes:
+    type: integer
+    description: Duração do serviço em minutos. Deve ser um inteiro positivo.
+    example: 30
+  price:
+    type: number
+    format: float
+    description: Preço do serviço. Deve ser um número positivo.
+    example: 50.00
+  isActive:
+    type: boolean
+    description: Indica se o serviço está ativo. Padrão true quando não enviado.
+    default: true
+    example: true
+required:
+  - providerId
+  - name
+  - description
+  - durationMinutes
+  - price

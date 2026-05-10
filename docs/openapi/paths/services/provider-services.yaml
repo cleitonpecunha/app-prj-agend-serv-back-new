@@ -1,0 +1,62 @@
+get:
+  tags:
+    - Services
+  summary: Listar serviços do prestador
+  description: |
+    Retorna todos os serviços de um prestador específico.
+    Retorna 404 quando o prestador não existir, diferenciando o caso de
+    prestador inexistente de prestador sem serviços (que retorna 200 com array vazio).
+  security: []
+  parameters:
+    - name: providerId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+  responses:
+    "200":
+      description: Lista de serviços do prestador
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/services/Service.yaml"
+          example:
+            - id: 1
+              providerId: 1
+              name: Corte de cabelo
+              description: Corte masculino completo com navalha
+              durationMinutes: 30
+              price: 50.00
+              isActive: true
+              createdAt: "2026-04-25T12:00:00.000Z"
+              updatedAt: "2026-04-25T12:00:00.000Z"
+            - id: 2
+              providerId: 1
+              name: Barba completa
+              description: Serviço de barba com toalha quente
+              durationMinutes: 20
+              price: 35.00
+              isActive: true
+              createdAt: "2026-04-25T12:00:00.000Z"
+              updatedAt: "2026-04-25T12:00:00.000Z"
+    "404":
+      description: Prestador não encontrado
+      content:
+        application/json:
+          example:
+            error: NotFoundError
+            message: Prestador não encontrado.
+    "422":
+      description: providerId inválido
+      content:
+        application/json:
+          example:
+            error: Validation Error
+            message: Os dados enviados são inválidos.
+            issues:
+              - field: providerId
+                message: providerId deve ser um número inteiro positivo.

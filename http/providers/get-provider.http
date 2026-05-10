@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3333
+
+### [SUCESSO] Buscar prestador por ID existente
+# Pré-requisito: ter ao menos um prestador criado (id = 1)
+# Esperado: 200 com objeto do prestador incluindo o campo slug
+GET {{baseUrl}}/api/providers/1
+
+###
+
+### [FALHA] Buscar prestador por ID inexistente
+# Esperado: 404 NotFoundError com mensagem "Prestador não encontrado."
+GET {{baseUrl}}/api/providers/999999
+
+###
+
+### [FALHA] Buscar com ID inválido (texto no lugar de número)
+# Esperado: 422 Validation Error com campo id nos issues
+GET {{baseUrl}}/api/providers/abc
+
+###
+
+### [FALHA] Buscar com ID zero (valor inválido)
+# Esperado: 422 Validation Error — ID deve ser inteiro positivo
+GET {{baseUrl}}/api/providers/0
+
+###
+
+### [FALHA] Buscar com ID negativo
+# Esperado: 422 Validation Error — ID deve ser inteiro positivo
+GET {{baseUrl}}/api/providers/-1

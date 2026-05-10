@@ -1,0 +1,31 @@
+type: object
+description: |
+  Dados para atualizar um prestador de serviço existente. Todos os campos são obrigatórios (PUT completo).
+  O campo `slug` não deve ser enviado — ele é recalculado automaticamente a partir do novo `businessName`.
+properties:
+  name:
+    type: string
+    minLength: 1
+    example: João Silva Atualizado
+  businessName:
+    type: string
+    minLength: 1
+    example: Barbearia do João Premium
+  email:
+    type: string
+    format: email
+    example: joao@barbearia.com
+  phone:
+    type: string
+    minLength: 1
+    example: "(11) 99999-0001"
+  address:
+    type: string
+    minLength: 1
+    example: Rua das Flores, 200 - São Paulo, SP
+required:
+  - name
+  - businessName
+  - email
+  - phone
+  - address

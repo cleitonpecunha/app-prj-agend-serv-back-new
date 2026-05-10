@@ -1,0 +1,109 @@
+@baseUrl = http://localhost:3333
+@appointmentId = 1
+@accessToken = COLE_SEU_TOKEN_AQUI
+
+### [SUCESSO] Atualizar status para completed
+# Esperado: 200 com status completed
+PATCH {{baseUrl}}/api/appointments/{{appointmentId}}/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+
+### [SUCESSO] Atualizar status para canceled
+# Esperado: 200 com status canceled
+PATCH {{baseUrl}}/api/appointments/{{appointmentId}}/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "canceled"
+}
+
+###
+
+### [SUCESSO] Atualizar status para no_show
+# Esperado: 200 com status no_show
+PATCH {{baseUrl}}/api/appointments/{{appointmentId}}/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "no_show"
+}
+
+###
+
+### [FALHA] Agendamento inexistente
+# Esperado: 404 NotFoundError
+PATCH {{baseUrl}}/api/appointments/999999/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+
+### [FALHA] Tentativa de alterar agendamento já finalizado
+# Esperado: 409 ConflictError
+PATCH {{baseUrl}}/api/appointments/{{appointmentId}}/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+
+### [FALHA] Status inválido
+# Esperado: 422 Validation Error com campo status nos issues
+PATCH {{baseUrl}}/api/appointments/{{appointmentId}}/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "scheduled"
+}
+
+###
+
+### [FALHA] ID inválido no path
+# Esperado: 422 Validation Error
+PATCH {{baseUrl}}/api/appointments/abc/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+PATCH {{baseUrl}}/api/appointments/{{appointmentId}}/status
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para atualizar este agendamento)
+# Pré-requisito: @accessToken pertence ao prestador id=2; agendamento id=1 pertence ao id=1
+# Esperado: 403 ForbiddenError
+PATCH {{baseUrl}}/api/appointments/{{appointmentId}}/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "completed"
+}

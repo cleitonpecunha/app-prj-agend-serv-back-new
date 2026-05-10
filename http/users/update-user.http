@@ -1,0 +1,144 @@
+@baseUrl = http://localhost:3333
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYTZmN2EzZS1kNWMwLTQ5ZTAtOWQzYS0xNDA3YzI4NWY4NzQiLCJpZCI6ImJhNmY3YTNlLWQ1YzAtNDllMC05ZDNhLTE0MDdjMjg1Zjg3NCIsIm5hbWUiOiJKb8OjbyBTaWx2YSBBdHVhbGl6YWRvIiwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg0MTcyNDAsImV4cCI6MTc3ODQzMTY0MH0._giA137rTic5HCyRR-kQejFgWOJ0fdV-W0rcSKsCsp0
+
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYTZmN2EzZS1kNWMwLTQ5ZTAtOWQzYS0xNDA3YzI4NWY4NzQiLCJpZCI6ImJhNmY3YTNlLWQ1YzAtNDllMC05ZDNhLTE0MDdjMjg1Zjg3NCIsIm5hbWUiOiJKb8OjbyBTaWx2YSBBdHVhbGl6YWRvIiwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc4NDE3MjQwLCJleHAiOjE3Nzg0MTgxNDB9.C6LQBcQl4lEZpBnACo2JEfzzTAnOeAkYqeEJgOR2W2I
+
+@idjoao = ba6f7a3e-d5c0-49e0-9d3a-1407c285f874
+@idmaria = 9e407a55-12a0-4c23-97c2-795cee162303
+@idcarlos = 8b89e3fc-16e6-45cd-ba9d-2e1dd076a170
+
+### [SUCESSO] Atualizar prestador com payload válido
+# Pré-requisito: ter prestador com id = 1 criado
+# Esperado: 200 com objeto atualizado; slug recalculado a partir do novo businessName
+PUT {{baseUrl}}/api/users/{{idjoao}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "João Silva Atualizado",
+  "businessName": "Barbearia do João Premium",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua das Flores, 200 - São Paulo, SP"
+}
+
+###
+
+### [SUCESSO] Atualizar prestador sem enviar slug
+# Esperado: 200 — slug omitido é correto; a aplicação recalcula internamente
+PUT {{baseUrl}}/api/users/{{idjoao}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "businessName": "Barbearia do João",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua das Flores, 123 - São Paulo, SP"
+}
+
+###
+
+### [IGNORADO] Slug enviado no payload deve ser descartado
+# Esperado: 200 — slug do body é ignorado; a aplicação recalcula a partir de businessName
+PUT {{baseUrl}}/api/users/{{idjoao}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "businessName": "Barbearia do João Boiola",
+  "slug": "slug-enviado-pelo-cliente",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua das Flores, 123 - São Paulo, SP"
+}
+
+###
+
+### [FALHA] Atualizar prestador inexistente
+# Esperado: 404 NotFoundError com mensagem "Prestador não encontrado."
+PUT {{baseUrl}}/api/users/999999
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Fantasma",
+  "businessName": "Empresa Fantasma",
+  "phone": "+55 (11) 90000-9999",
+  "address": "Rua Inexistente, 0"
+}
+
+###
+
+### [FALHA] Conflito de e-mail com outro prestador
+# Pré-requisito: ter prestadores com id=1 (joao@barbearia.com) e id=2 (maria@studio.com)
+# Esperado: 409 ConflictError — e-mail já pertence a outro prestador
+PUT {{baseUrl}}/api/users/{{idmaria}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Maria Souza",
+  "businessName": "Studio Beleza Maria",
+  "phone": "+55 (11) 98888-0002",
+  "address": "Av. Paulista, 456 - São Paulo, SP"
+}
+
+###
+
+### [FALHA] Conflito de slug com outro prestador (businessName duplicado)
+# Pré-requisito: ter prestadores com id=1 (Barbearia do João) e id=2 (Studio Beleza Maria)
+# Esperado: 409 ConflictError — nome de negócio gera slug já utilizado por outro prestador
+PUT {{baseUrl}}/api/users/{{idmaria}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Maria Souza",
+  "businessName": "Barbearia do João Boiola",
+  "phone": "+55 (11) 98888-0002",
+  "address": "Av. Paulista, 456 - São Paulo, SP"
+}
+
+###
+
+### [FALHA] Campo obrigatório ausente (businessName)
+# Esperado: 422 Validation Error com campo businessName nos issues
+PUT {{baseUrl}}/api/users/{{idjoao}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua das Flores, 123 - São Paulo, SP"
+}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+PUT {{baseUrl}}/api/users/{{idjoao}}
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "businessName": "Barbearia do João",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua das Flores, 123 - São Paulo, SP"
+}
+
+###
+
+### [FALHA] Token de outro prestador (sem permissão para alterar este recurso)
+# Pré-requisito: @accessToken pertence ao prestador id=2; tentando atualizar id=1
+# Esperado: 403 ForbiddenError
+PUT {{baseUrl}}/api/users/{{idjoao}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "businessName": "Barbearia do João",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua das Flores, 123 - São Paulo, SP"
+}

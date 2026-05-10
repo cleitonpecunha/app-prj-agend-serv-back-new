@@ -1,0 +1,43 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+  name:
+    type: string
+    example: João Silva
+  businessName:
+    type: string
+    example: Barbearia do João
+  slug:
+    type: string
+    description: Gerado automaticamente pela aplicação a partir do businessName. Não deve ser enviado pelo cliente.
+    example: barbearia-do-joao
+  email:
+    type: string
+    format: email
+    example: joao@barbearia.com
+  phone:
+    type: string
+    example: "(11) 99999-0001"
+  address:
+    type: string
+    example: Rua das Flores, 123 - São Paulo, SP
+  createdAt:
+    type: string
+    format: date-time
+    example: "2026-04-25T12:00:00.000Z"
+  updatedAt:
+    type: string
+    format: date-time
+    example: "2026-04-25T12:00:00.000Z"
+required:
+  - id
+  - name
+  - businessName
+  - slug
+  - email
+  - phone
+  - address
+  - createdAt
+  - updatedAt
