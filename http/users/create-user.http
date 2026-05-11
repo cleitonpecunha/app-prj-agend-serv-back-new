@@ -16,6 +16,22 @@ Content-Type: application/json
 
 ###
 
+### [SUCESSO] Criar prestador com payload válido
+# Esperado: 201 com objeto do prestador, incluindo slug gerado pela aplicação
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Abmael Mito Tronco",
+  "businessName": "Eletricista Abmael",
+  "email": "abmael@eletricista.com",
+  "passwordHash": "#Senha123",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua dos bestas, 666 - São Paulo, SP"
+}
+
+###
+
 ### [SUCESSO] Criar prestador confirmando que slug omitido é aceito
 # Esperado: 201 — slug NÃO deve ser enviado pelo cliente; a aplicação o gera internamente
 POST {{baseUrl}}/api/users
