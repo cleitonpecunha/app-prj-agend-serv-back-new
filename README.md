@@ -170,32 +170,47 @@ npm run test:coverage
 
 ```
 src/
-├── app.ts                  # Configuração do Fastify (plugins, rotas)
-├── server.ts               # Ponto de entrada
+├── app.ts                   # Configuração do Fastify (plugins, rotas)
+├── server.ts                # Ponto de entrada
 ├── api/
-│   ├── routes.ts           # Registro de todas as rotas
-│   └── controllers/        # Controllers por domínio
+│   ├── routes.ts            # Registro de todas as rotas
+│   └── controllers/         # Controllers por domínio
 │       ├── auth/
 │       ├── appointments/
 │       ├── providers/
 │       ├── services/
 │       └── schedules/
 ├── config/
-│   └── env.ts              # Variáveis de ambiente validadas com Zod
-|── core
-│   └── src                 # definir
-│       ├── auth            # autenticação de usuário
-|       ├── error           # definor
-|       ├── shared          # componentes compartilhados
-|       ├── user            # usuários
-│   └── test                # testes unitários
+│   └── env.ts               # Variáveis de ambiente validadas com Zod
+|── core/
+│   └── src/                 # definir
+│       ├── auth/            # autenticação de usuário
+|       |   ├── controller   # definir
+|       |   ├── dto          # definir
+|       |   ├── model        # definir
+|       |   ├── provider     # definir
+|       |   ├── useCase      # definir
+|       |   ├── routes.ts    # definir
+|       |   ├── schema.ts    # definir
+|       ├── error            # definir
+|       ├── shared           # componentes compartilhados
+|       ├── user/            # usuários
+|       |   ├── controller   # definir
+|       |   ├── dto          # definir
+|       |   ├── model        # definir
+|       |   ├── provider     # definir
+|       |   ├── repositories # definir
+|       |   ├── useCase      # definir
+|       |   ├── routes.ts    # definir
+|       |   ├── schema.ts    # definir
+│   └── test/                # testes unitários
 └── lib/
-    ├── auth.ts             # Helpers JWT
-    ├── mail.ts             # Cliente de e-mail
-    ├── prisma.ts           # Cliente Prisma singleton
-    ├── errors.ts           # Erros de domínio
-    └── error-handler.ts    # Handler global de erros
+    ├── auth.ts              # Helpers JWT
+    ├── mail.ts              # Cliente de e-mail
+    ├── prisma.ts            # Cliente Prisma singleton
+    ├── errors.ts            # Erros de domínio
+    └── error-handler.ts     # Handler global de erros
 prisma/
-├── schema.prisma           # Schema do banco de dados
-└── migrations/             # Histórico de migrations
+├── schema.prisma            # Schema do banco de dados
+└── migrations/              # Histórico de migrations
 ```
