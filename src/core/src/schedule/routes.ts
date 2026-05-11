@@ -1,19 +1,8 @@
 import { FastifyInstance } from "fastify";
-
-interface addSchedule {
-  userId: string;
-  dayOfWeek: string;
-  startTime?: string;
-  endTime?: string;
-  isActive?: boolean;
-}
-
-interface updateSchedule {
-  dayOfWeek?: string;
-  startTime?: string;
-  endTime?: string;
-  isActive?: boolean;
-}
+import {
+  IScheduleAddRequestDTO,
+  IScheduleUpdateRequestDTO,
+} from "./dto/scheduleDTO";
 
 export async function scheduleRoutes(app: FastifyInstance) {
   // Instanciar as dependências
@@ -23,7 +12,7 @@ export async function scheduleRoutes(app: FastifyInstance) {
   // Instanciar os Controllers com os UseCases
 
   // add
-  app.post<{ Body: addSchedule }>("/", async (request, reply) => {
+  app.post<{ Body: IScheduleAddRequestDTO }>("/", async (request, reply) => {
     return;
   });
 
@@ -38,9 +27,12 @@ export async function scheduleRoutes(app: FastifyInstance) {
   });
 
   // atualizar
-  app.put<{ Body: updateSchedule }>("/:id", async (request, reply) => {
-    return;
-  });
+  app.put<{ Body: IScheduleUpdateRequestDTO }>(
+    "/:id",
+    async (request, reply) => {
+      return;
+    },
+  );
 
   // excluir
   app.delete("/:id", async (request, reply) => {

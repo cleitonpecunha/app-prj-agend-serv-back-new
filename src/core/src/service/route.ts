@@ -1,21 +1,8 @@
 import { FastifyInstance } from "fastify";
-
-interface addService {
-  userId: string;
-  name: string;
-  description?: string;
-  durationMinutes?: number;
-  priceInCents?: number;
-  isActive?: boolean;
-}
-
-interface updateService {
-  name?: string;
-  description?: string;
-  durationMinutes?: number;
-  priceInCents?: number;
-  isActive?: boolean;
-}
+import {
+  IServiceAddRequestDTO,
+  IServiceUpdateRequestDTO,
+} from "./dto/serviceDTO";
 
 export async function serviceRoutes(app: FastifyInstance) {
   // Instanciar as dependências
@@ -25,7 +12,7 @@ export async function serviceRoutes(app: FastifyInstance) {
   // Instanciar os Controllers com os UseCases
 
   // add
-  app.post<{ Body: addService }>("/", async (request, reply) => {
+  app.post<{ Body: IServiceAddRequestDTO }>("/", async (request, reply) => {
     return;
   });
 
@@ -40,9 +27,12 @@ export async function serviceRoutes(app: FastifyInstance) {
   });
 
   // atualizar
-  app.put<{ Body: updateService }>("/:id", async (request, reply) => {
-    return;
-  });
+  app.put<{ Body: IServiceUpdateRequestDTO }>(
+    "/:id",
+    async (request, reply) => {
+      return;
+    },
+  );
 
   // excluir
   app.delete("/:id", async (request, reply) => {
