@@ -1,6 +1,9 @@
 @baseUrl = http://localhost:3333
-@providerId = 1
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicHJvdmlkZXJJZCI6MSwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzcyOTg5NzEsImV4cCI6MTc3NzI5OTg3MX0.oftZAiaohEfIqmMFcKLbnH7A9I3hlfjUoy9jix5vevg
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg1MzE1MTgsImV4cCI6MTc3ODU0NTkxOH0.ew-uKx1jPMYR6mp_2-cJYfMa-p6DOVCb_Ut5myfL9qA
+
+@userIdAbmael = "9d1dc639-8cb6-432e-82e4-f20ec459aca0"
+@userIdCarlos = "8b89e3fc-16e6-45cd-ba9d-2e1dd076a170"
+@userIdJoao = "c8b9e3fc-16e6-45cd-ba9d-2e1dd076a170"
 
 ### [SUCESSO] Criar serviço com payload válido e isActive explícito
 # Esperado: 201 com objeto do serviço criado
@@ -9,11 +12,28 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
-  "name": "Corte de cabelo",
-  "description": "Corte masculino completo com navalha",
-  "durationMinutes": 30,
-  "price": 50.00,
+  "userId": {{userIdAbmael}},
+  "name": "Cabeamento de telefone/internet",
+  "description": "Serviço de cabeamento de telefone e internet",
+  "durationMinutes": 60,
+  "priceInCents": 5000,
+  "isActive": true
+}
+
+###
+
+### [SUCESSO] Criar serviço com payload válido e isActive explícito
+# Esperado: 201 com objeto do serviço criado
+POST {{baseUrl}}/api/services
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "userId": {{userIdAbmael}},
+  "name": "Instalação elétrica",
+  "description": "Serviço de instalação elétrica em geral",
+  "durationMinutes": 60,
+  "priceInCents": 7000,
   "isActive": true
 }
 
@@ -26,11 +46,11 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
-  "name": "Barba completa",
-  "description": "Serviço de barba com toalha quente",
-  "durationMinutes": 20,
-  "price": 35.00
+  "userId": {{userIdAbmael}},
+  "name": "Configuração de TV",
+  "description": "Serviço de configuração de TV",
+  "durationMinutes": 30,
+  "priceInCents": 4000
 }
 
 ###
@@ -42,11 +62,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "providerId": 999999,
+  "userId": {{userIdJoao}},
   "name": "Serviço teste",
   "description": "Descrição",
   "durationMinutes": 30,
-  "price": 50.00
+  "priceInCents": 5000,
+  "isActive": true
 }
 
 ###
@@ -58,10 +79,11 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
+  "userId": {{userIdAbmael}},
   "description": "Sem nome",
   "durationMinutes": 30,
-  "price": 50.00
+  "priceInCents": 5000,
+  "isActive": true
 }
 
 ###
@@ -73,11 +95,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
+  "userId": {{userIdAbmael}},
   "name": "Serviço inválido",
   "description": "Duração zero",
   "durationMinutes": 0,
-  "price": 50.00
+  "priceInCents": 5000,
+  "isActive": true
 }
 
 ###
@@ -89,11 +112,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
+  "userId": {{userIdAbmael}},
   "name": "Serviço inválido",
   "description": "Preço negativo",
   "durationMinutes": 30,
-  "price": -10.00
+  "priceInCents": -1000,
+  "isActive": true
 }
 
 ###
@@ -104,11 +128,12 @@ POST {{baseUrl}}/api/services
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
+  "userId": {{userIdAbmael}},
   "name": "Serviço inválido",
   "description": "Preço zero",
   "durationMinutes": 30,
-  "price": 0
+  "priceInCents": 0,
+  "isActive": true
 }
 
 ###
@@ -119,11 +144,12 @@ POST {{baseUrl}}/api/services
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
+  "userId": {{userIdAbmael}},
   "name": "Corte de cabelo",
   "description": "Corte masculino completo",
   "durationMinutes": 30,
-  "price": 50.00
+  "priceInCents": 5000,
+  "isActive": true
 }
 
 ###
@@ -136,9 +162,10 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "providerId": {{providerId}},
+  "userId": {{userIdCarlos}},
   "name": "Corte de cabelo",
   "description": "Corte masculino completo",
   "durationMinutes": 30,
-  "price": 50.00
+  "priceInCents": 5000,
+  "isActive": true
 }
