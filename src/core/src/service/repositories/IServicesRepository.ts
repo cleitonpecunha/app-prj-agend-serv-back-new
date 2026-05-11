@@ -1,7 +1,7 @@
 import Service from "@/core/src/service/model/service";
 import { IServiceUpdateRequestDTO } from "../dto/serviceDTO";
 
-export interface IServiceRepository {
+export interface IServicesRepository {
   save(data: Service): Promise<void>;
 
   findByManyUserId(userId: string): Promise<Service[]>;

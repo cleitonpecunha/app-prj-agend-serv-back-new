@@ -1,9 +1,9 @@
 import Service from "@/core/src/service/model/service";
-import { IServiceRepository } from "./IServiceRepository";
+import { IServicesRepository } from "./IServicesRepository";
 import { prisma } from "@/lib/prisma";
 import { IServiceUpdateRequestDTO } from "../dto/serviceDTO";
 
-export class PostgresServiceRepository implements IServiceRepository {
+export class PostgresServicesRepository implements IServicesRepository {
   async save(data: Service): Promise<void> {
     await prisma.service.create({
       data: data as Parameters<typeof prisma.service.create>[0]["data"],
