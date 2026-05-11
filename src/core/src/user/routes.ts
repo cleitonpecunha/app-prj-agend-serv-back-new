@@ -2,18 +2,18 @@ import { FastifyInstance } from "fastify";
 import { parseWith } from "@/lib/validate";
 import { createUserSchema } from "./schemas";
 import { MailtrapMailProvider } from "./providers/mail/MailProvider";
+import { PostgresUsersRepository } from "./repositories/PostgresUserRepository";
 import CryptoProviderBcrypt from "./providers/crypto/CryptoProviderBcrypt";
-import { UserRegisterController } from "./controller/UserRegisterController";
-import { UserListController } from "./controller/UserListController";
-import { UserGetByIdController } from "./controller/UserGetByIdController";
-import { UserDeleteController } from "./controller/UserDeleteControler";
+import { UserRegisterController } from "./controllers/UserRegisterController";
+import { UserListController } from "./controllers/UserListController";
+import { UserGetByIdController } from "./controllers/UserGetByIdController";
+import { UserDeleteController } from "./controllers/UserDeleteControler";
+import { UserUpdateController } from "./controllers/UserUpdateController";
 import { UserRegisterUseCase } from "./useCases/UserRegisterUseCase";
 import { UserListUseCase } from "./useCases/UserListUseCase";
 import { UserGetByIdUseCase } from "./useCases/UserGetByIdUseCase";
 import { UserDeleteUseCase } from "./useCases/UserDeleteUseCase";
 import { UserUpdateUseCase } from "./useCases/UserUpdateUseCase";
-import { UserUpdateController } from "./controller/UserUpdateController";
-import { PostgresUsersRepository } from "./repositories/PostgresUserRepository";
 
 interface RegisterBody {
   name: string;

@@ -1,7 +1,7 @@
-import { IUserUpdateRequestDTO } from "@/core/src/user/dto/UserDTO";
+import { IUserUpdateRequestDTO } from "@/core/src/user/dto/userDTO";
 import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
 import { generateSlug } from "@/lib/slug";
-import User from "../model/User";
+import User from "@/core/src/user/model/user";
 import { ConflictError, NotFoundError } from "@/lib/errors";
 import { parseWith } from "@/lib/validate";
 import { updateUserSchema } from "../schemas";

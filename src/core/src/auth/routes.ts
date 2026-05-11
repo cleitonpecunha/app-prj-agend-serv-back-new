@@ -1,12 +1,12 @@
 import { FastifyInstance } from "fastify";
 import { PostgresUsersRepository } from "../user/repositories/PostgresUserRepository";
 import CryptoProviderBcrypt from "../user/providers/crypto/CryptoProviderBcrypt";
-import { AuthLoginUseCase } from "./useCase/AuthLoginUseCase";
-import { AuthLoginController } from "./controller/AuthLoginController";
+import JwtProvider from "./providers/jwt/jwtProvider";
+import { env } from "@/config/env";
 import { parseWith } from "@/lib/validate";
 import { loginSchema } from "./schemas";
-import JwtProvider from "./provider/jwt/JwtProvider";
-import { env } from "@/config/env";
+import { AuthLoginController } from "./controllers/authLoginController";
+import { AuthLoginUseCase } from "./useCases/authLoginUseCase";
 
 interface AuthLoginBody {
   email: string;
