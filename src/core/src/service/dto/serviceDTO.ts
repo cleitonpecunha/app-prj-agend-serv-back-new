@@ -1,10 +1,11 @@
 export interface IServiceAddRequestDTO {
+  id: string;
   userId: string;
   name: string;
-  description?: string;
-  durationMinutes?: number;
-  priceInCents?: number;
-  isActive?: boolean;
+  description: string;
+  durationMinutes: number;
+  priceInCents: number;
+  isActive: boolean;
 }
 
 export interface IServiceUpdateRequestDTO {
