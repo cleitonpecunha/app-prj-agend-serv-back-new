@@ -1,4 +1,4 @@
-import { IUserRegisterRequestDTO } from "@/core/src/user/dto/userDTO";
+import { IUserAddRequestDTO } from "@/core/src/user/dto/userDTO";
 import ICryptoProvider from "@/core/src/user/providers/crypto/ICryptoProvider";
 import { IMailProvider } from "@/core/src/user/providers/mail/IMailProvider";
 import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
@@ -14,7 +14,7 @@ export class UserRegisterUseCase {
     private cryptoProvider: ICryptoProvider,
   ) {}
 
-  async execute(data: IUserRegisterRequestDTO) {
+  async execute(data: IUserAddRequestDTO) {
     const slug = generateSlug(data.businessName);
 
     const [existingEmail, existingSlug] = await Promise.all([

@@ -1,7 +1,7 @@
 import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
 import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 import ICryptoProvider from "../../user/providers/crypto/ICryptoProvider";
-import { IAuthLoginRequestDTO } from "../dto/AuthDTO";
+import { IAuthLoginRequestDTO } from "../dto/authDTO";
 
 export class AuthLoginUseCase {
   constructor(

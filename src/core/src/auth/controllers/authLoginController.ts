@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply, FastifyInstance } from "fastify";
-import { AuthLoginUseCase } from "../useCase/AuthLoginUseCase";
-import JwtProvider from "../provider/jwt/JwtProvider";
+import { AuthLoginUseCase } from "../useCases/authLoginUseCase";
+import JwtProvider from "../providers/jwt/jwtProvider";
 
 export class AuthLoginController {
   constructor(

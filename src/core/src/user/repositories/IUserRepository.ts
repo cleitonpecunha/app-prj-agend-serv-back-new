@@ -1,4 +1,4 @@
-import User from "@/core/src/user/model/User";
+import User from "@/core/src/user/model/user";
 
 export interface IUsersRepository {
   save(user: User): Promise<void>;

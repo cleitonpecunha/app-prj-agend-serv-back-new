@@ -1,4 +1,4 @@
-export interface IUserRegisterRequestDTO {
+export interface IUserAddRequestDTO {
   name: string;
   businessName: string;
   slug: string;

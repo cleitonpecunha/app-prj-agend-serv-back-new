@@ -1,6 +1,5 @@
-import { IUserRegisterRequestDTO } from "@/core/src/user/dto/UserDTO";
-import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
 import { NotFoundError } from "@/lib/errors";
+import { IUsersRepository } from "../repositories/IUserRepository";
 
 export class UserListUseCase {
   constructor(private usersRepository: IUsersRepository) {}

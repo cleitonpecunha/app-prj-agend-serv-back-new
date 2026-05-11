@@ -1,4 +1,4 @@
-import User from "@/core/src/user/model/User";
+import User from "@/core/src/user/model/user";
 import { IUsersRepository } from "./IUserRepository";
 import { prisma } from "@/lib/prisma";
 
