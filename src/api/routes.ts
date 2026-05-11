@@ -17,6 +17,8 @@ import {
 } from "./controllers/schedules/routes"; */
 import { userRoutes } from "@/core/src/user/routes";
 import { authRoutes } from "@/core/src/auth/routes";
+import { serviceRoutes } from "@/core/src/service/route";
+import { scheduleRoutes } from "@/core/src/schedule/routes";
 
 export async function apiRoutes(app: FastifyInstance) {
   /* app.register(authRoutes, { prefix: "/auth" });
@@ -31,4 +33,6 @@ export async function apiRoutes(app: FastifyInstance) {
   app.register(pingRoutes, { prefix: "/ping" });
   app.register(userRoutes, { prefix: "/users" });
   app.register(authRoutes, { prefix: "/auth" });
+  app.register(serviceRoutes, { prefix: "/services" });
+  app.register(scheduleRoutes, { prefix: "/schedules" });
 }
