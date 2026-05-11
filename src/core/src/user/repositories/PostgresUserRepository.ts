@@ -10,7 +10,9 @@ export class PostgresUsersRepository implements IUsersRepository {
   }
 
   async findMany(): Promise<User[]> {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      orderBy: { name: "desc" },
+    });
     return users;
   }
 
