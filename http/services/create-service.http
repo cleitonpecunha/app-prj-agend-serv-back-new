@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3333
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Yjg5ZTNmYy0xNmU2LTQ1Y2QtYmE5ZC0yZTFkZDA3NmExNzAiLCJpZCI6IjhiODllM2ZjLTE2ZTYtNDVjZC1iYTlkLTJlMWRkMDc2YTE3MCIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4NTkxODM1LCJleHAiOjE3Nzg2MDYyMzV9.cjcMHKk0sTKmDDBP0MHtx9GYUKnShdBDH6Map2iA4Dw
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg2MDU3MzYsImV4cCI6MTc3ODYyMDEzNn0.3nohx6Fk358PC-6hdC4r2W0pFz6_oX5vK0-WEQ2BnfY
 
 @userIdAbmael = "9d1dc639-8cb6-432e-82e4-f20ec459aca0"
 @userIdCarlos = "8b89e3fc-16e6-45cd-ba9d-2e1dd076a170"
@@ -51,6 +51,22 @@ Content-Type: application/json
   "description": "Serviço de configuração de TV",
   "durationMinutes": 30,
   "priceInCents": 4000
+}
+
+###
+
+### [SUCESSO] Criar serviço sem enviar isActive (deve usar true por padrão)
+# Esperado: 201 com isActive = true na resposta
+POST {{baseUrl}}/api/services
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "userId": {{userIdAbmael}},
+  "name": "Troca de lâmpada",
+  "description": "Serviço de troca de lâmpada",
+  "durationMinutes": 30,
+  "priceInCents": 5000
 }
 
 ###

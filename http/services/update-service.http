@@ -1,19 +1,21 @@
 @baseUrl = http://localhost:3333
-@serviceId = 1
-@accessToken = COLE_SEU_TOKEN_AQUI
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg2MDU3MzYsImV4cCI6MTc3ODYyMDEzNn0.3nohx6Fk358PC-6hdC4r2W0pFz6_oX5vK0-WEQ2BnfY
+
+@serviceIdAbmael = 39d8949c-6ca6-48bc-8b49-cc944b7ec05b
+@serviceIdAbmaelInexistente = 39d8949c-6ca6-48bc-8b49-cc944b7ec05c
 
 ### [SUCESSO] Atualizar serviço com payload válido
 # Pré-requisito: serviço com id = 1 deve existir
 # Esperado: 200 com objeto do serviço atualizado
-PUT {{baseUrl}}/api/services/{{serviceId}}
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "Corte de cabelo premium",
-  "description": "Corte masculino com acabamento e penteado",
-  "durationMinutes": 45,
-  "price": 75.00,
+  "name": "Instalação eletrica diversa",
+  "description": "Serviço de instalação eletrica diversa",
+  "durationMinutes": 60,
+  "priceInCents": 9000,
   "isActive": true
 }
 
@@ -21,15 +23,15 @@ Content-Type: application/json
 
 ### [SUCESSO] Desativar serviço via atualização
 # Esperado: 200 com isActive = false na resposta
-PUT {{baseUrl}}/api/services/{{serviceId}}
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "Corte de cabelo",
-  "description": "Corte masculino completo",
-  "durationMinutes": 30,
-  "price": 50.00,
+  "name": "Instalação eletrica diversa",
+  "description": "Serviço de instalação eletrica diversa",
+  "durationMinutes": 60,
+  "priceInCents": 10000,
   "isActive": false
 }
 
@@ -37,15 +39,15 @@ Content-Type: application/json
 
 ### [FALHA] Atualizar serviço inexistente
 # Esperado: 404 NotFoundError
-PUT {{baseUrl}}/api/services/999999
+PUT {{baseUrl}}/api/services/{{serviceIdAbmaelInexistente}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "Serviço inexistente",
-  "description": "Descrição",
-  "durationMinutes": 30,
-  "price": 50.00,
+  "name": "Instalação eletrica diversa",
+  "description": "Serviço de instalação eletrica diversa",
+  "durationMinutes": 60,
+  "priceInCents": 10000,
   "isActive": true
 }
 
@@ -53,14 +55,14 @@ Content-Type: application/json
 
 ### [FALHA] Campo obrigatório ausente (description)
 # Esperado: 422 Validation Error com campo description nos issues
-PUT {{baseUrl}}/api/services/{{serviceId}}
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "Sem descrição",
-  "durationMinutes": 30,
-  "price": 50.00,
+  "name": "Instalação eletrica diversa",
+  "description": "Serviço de instalação eletrica diversa",
+  "durationMinutes": 60,
   "isActive": true
 }
 
@@ -68,31 +70,15 @@ Content-Type: application/json
 
 ### [FALHA] durationMinutes inválido (negativo)
 # Esperado: 422 Validation Error com campo durationMinutes nos issues
-PUT {{baseUrl}}/api/services/{{serviceId}}
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "Serviço inválido",
-  "description": "Duração negativa",
+  "name": "Instalação eletrica diversa",
+  "description": "Serviço de instalação eletrica diversa",
   "durationMinutes": -5,
-  "price": 50.00,
-  "isActive": true
-}
-
-###
-
-### [FALHA] ID do path inválido (texto)
-# Esperado: 422 Validation Error com campo id nos issues
-PUT {{baseUrl}}/api/services/abc
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "name": "Serviço",
-  "description": "Descrição",
-  "durationMinutes": 30,
-  "price": 50.00,
+  "priceInCents": 10000,
   "isActive": true
 }
 
@@ -100,30 +86,13 @@ Content-Type: application/json
 
 ### [FALHA] Sem token de autenticação
 # Esperado: 401 UnauthorizedError
-PUT {{baseUrl}}/api/services/{{serviceId}}
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
 Content-Type: application/json
 
 {
-  "name": "Corte de cabelo premium",
-  "description": "Corte com acabamento",
-  "durationMinutes": 45,
-  "price": 75.00,
-  "isActive": true
-}
-
-###
-
-### [FALHA] Token de outro prestador (sem permissão para atualizar este serviço)
-# Pré-requisito: @accessToken pertence ao prestador id=2; serviço id=1 pertence ao id=1
-# Esperado: 403 ForbiddenError
-PUT {{baseUrl}}/api/services/{{serviceId}}
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "name": "Corte de cabelo premium",
-  "description": "Corte com acabamento",
-  "durationMinutes": 45,
-  "price": 75.00,
+  "name": "Instalação eletrica diversa",
+  "description": "Serviço de instalação eletrica diversa",
+  "durationMinutes": 60,
+  "priceInCents": 10000,
   "isActive": true
 }
