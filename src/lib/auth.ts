@@ -5,6 +5,7 @@ import {
   UnauthorizedError,
 } from "@/lib/errors";
 import { IAuthenticatedUserPayload } from "@/core/src/auth/dto/authDTO";
+import { MensagensPadronizadas } from "@/core/src/shared/mensagensPadronizadas";
 
 export async function requireAuth(request: FastifyRequest) {
   try {
@@ -14,7 +15,7 @@ export async function requireAuth(request: FastifyRequest) {
 
     // Verificar se o token é do tipo "access"
     if (payload.tokenType && payload.tokenType !== "access") {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError(MensagensPadronizadas.UNAUTHORIZED_ERROR);
     }
 
     // Validar se o token não expirou
@@ -32,7 +33,7 @@ export async function requireAuth(request: FastifyRequest) {
     //}
 
     if (!userId) {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError(MensagensPadronizadas.UNAUTHORIZED_ERROR);
     }
 
     //console.log("Payload do token:", payload);
@@ -42,7 +43,7 @@ export async function requireAuth(request: FastifyRequest) {
       userId,
     };
   } catch {
-    throw new UnauthorizedError();
+    throw new UnauthorizedError(MensagensPadronizadas.UNAUTHORIZED_ERROR);
   }
 }
 
@@ -51,6 +52,6 @@ export function assertProviderOwnership(
   resourceUserId: string,
 ) {
   if (authenticatedUserId !== resourceUserId) {
-    throw new ForbiddenError();
+    throw new ForbiddenError(MensagensPadronizadas.FORBIDDEN_ERROR);
   }
 }
