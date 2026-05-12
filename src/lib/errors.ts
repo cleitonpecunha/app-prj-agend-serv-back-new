@@ -1,3 +1,5 @@
+import { MensagensPadronizadas } from "@/core/src/shared/mensagensPadronizadas";
+
 export class AppError extends Error {
   constructor(
     public readonly message: string,
@@ -11,7 +13,7 @@ export class AppError extends Error {
 export class NotFoundError extends AppError {
   constructor(resource: string) {
     if (!resource) {
-      super(`Registro não encontrado.`, 404);
+      super(MensagensPadronizadas.NOT_FOUND_ERROR, 404);
     }
     //super(`${resource} não encontrado.`, 404);
     super(resource, 404);
@@ -20,14 +22,20 @@ export class NotFoundError extends AppError {
 }
 
 export class UnauthorizedError extends AppError {
-  constructor(message = "Não autorizado.") {
+  constructor(message: string) {
+    if (!message) {
+      super(MensagensPadronizadas.UNAUTHORIZED_ERROR, 401);
+    }
     super(message, 401);
     this.name = "UnauthorizedError";
   }
 }
 
 export class ForbiddenError extends AppError {
-  constructor(message = "Você não tem permissão para acessar este recurso.") {
+  constructor(message: string) {
+    if (!message) {
+      super(MensagensPadronizadas.FORBIDDEN_ERROR, 403);
+    }
     super(message, 403);
     this.name = "ForbiddenError";
   }
@@ -41,7 +49,7 @@ export class ConflictError extends AppError {
 }
 
 export class TokenExpiredError extends AppError {
-  constructor(message = "O token expirou. Faça login novamente.") {
+  constructor(message = MensagensPadronizadas.TOKEN_EXPIRED_ERROR) {
     super(message, 401);
     this.name = "TokenExpiredError";
   }

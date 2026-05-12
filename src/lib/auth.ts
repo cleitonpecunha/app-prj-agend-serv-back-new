@@ -4,19 +4,11 @@ import {
   TokenExpiredError,
   UnauthorizedError,
 } from "@/lib/errors";
-
-export interface AuthenticatedUserPayload {
-  sub: string;
-  id: string;
-  email: string;
-  iat: number;
-  exp: number;
-  tokenType?: "access" | "refresh";
-}
+import { IAuthenticatedUserPayload } from "@/core/src/auth/dto/authDTO";
 
 export async function requireAuth(request: FastifyRequest) {
   try {
-    const payload = await request.jwtVerify<AuthenticatedUserPayload>();
+    const payload = await request.jwtVerify<IAuthenticatedUserPayload>();
 
     console.log("Payload do token:", payload);
 
