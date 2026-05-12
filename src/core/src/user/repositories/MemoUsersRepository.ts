@@ -1,4 +1,4 @@
-import User from "@/core/src/user/model/User";
+import User from "@/core/src/user/model/user";
 
 export class MemoUsersRepository {
   private users: User[] = [];

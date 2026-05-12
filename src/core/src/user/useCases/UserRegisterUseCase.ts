@@ -1,7 +1,7 @@
 import { IUserAddRequestDTO } from "@/core/src/user/dto/userDTO";
 import ICryptoProvider from "@/core/src/user/providers/crypto/ICryptoProvider";
 import { IMailProvider } from "@/core/src/user/providers/mail/IMailProvider";
-import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
+import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
 import { generateSlug } from "@/lib/slug";
 import User from "@/core/src/user/model/user";
 import { ConflictError } from "@/lib/errors";

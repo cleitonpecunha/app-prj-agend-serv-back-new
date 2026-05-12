@@ -1,5 +1,5 @@
 import User from "@/core/src/user/model/user";
-import { IUsersRepository } from "./IUserRepository";
+import { IUsersRepository } from "./IUsersRepository";
 import { prisma } from "@/lib/prisma";
 
 export class PostgresUsersRepository implements IUsersRepository {

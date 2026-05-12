@@ -1,5 +1,5 @@
 import { NotFoundError } from "@/lib/errors";
-import { IUsersRepository } from "../repositories/IUserRepository";
+import { IUsersRepository } from "../repositories/IUsersRepository";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class UserListUseCase {

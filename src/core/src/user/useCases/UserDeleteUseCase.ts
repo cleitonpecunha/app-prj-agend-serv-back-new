@@ -1,4 +1,4 @@
-import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
+import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
 import { assertProviderOwnership } from "@/lib/auth";
 import { NotFoundError } from "@/lib/errors";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";

@@ -1,7 +1,7 @@
 import { NotFoundError } from "@/lib/errors";
 import { IServiceAddRequestDTO } from "../dto/serviceDTO";
 import { IServicesRepository } from "../repositories/IServicesRepository";
-import { IUsersRepository } from "../../user/repositories/IUserRepository";
+import { IUsersRepository } from "../../user/repositories/IUsersRepository";
 import Service from "../model/service";
 import { assertProviderOwnership } from "@/lib/auth";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";

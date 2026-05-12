@@ -4,7 +4,7 @@ import {
   IServiceUpdateRequestDTO,
 } from "./dto/serviceDTO";
 import { PostgresServicesRepository } from "./repositories/PostgresServicesRepository";
-import { PostgresUsersRepository } from "../user/repositories/PostgresUserRepository";
+import { PostgresUsersRepository } from "../user/repositories/PostgresUsersRepository";
 import { ServiceAddUseCase } from "./useCases/serviceAddUseCase";
 import { ServiceAddController } from "./controller/serviceAddController";
 import { ServiceDeleteUseCase } from "./useCases/serviceDeleteUseCase";

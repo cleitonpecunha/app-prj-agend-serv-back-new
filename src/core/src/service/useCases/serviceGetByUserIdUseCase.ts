@@ -1,6 +1,6 @@
 import { NotFoundError } from "@/lib/errors";
 import { IServicesRepository } from "../repositories/IServicesRepository";
-import { IUsersRepository } from "../../user/repositories/IUserRepository";
+import { IUsersRepository } from "../../user/repositories/IUsersRepository";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class ServiceGetByUserIdUseCase {

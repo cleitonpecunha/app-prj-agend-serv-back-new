@@ -1,4 +1,4 @@
-import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
+import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
 import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 import ICryptoProvider from "../../user/providers/crypto/ICryptoProvider";
 import { IAuthLoginRequestDTO } from "../dto/authDTO";

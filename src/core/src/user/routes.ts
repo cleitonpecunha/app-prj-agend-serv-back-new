@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { MailtrapMailProvider } from "./providers/mail/MailProvider";
-import { PostgresUsersRepository } from "./repositories/PostgresUserRepository";
+import { PostgresUsersRepository } from "./repositories/PostgresUsersRepository";
 import CryptoProviderBcrypt from "./providers/crypto/CryptoProviderBcrypt";
 import { UserRegisterController } from "./controllers/userRegisterController";
 import { UserListController } from "./controllers/userListController";

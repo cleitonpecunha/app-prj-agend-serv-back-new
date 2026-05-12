@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { PostgresUsersRepository } from "../user/repositories/PostgresUserRepository";
+import { PostgresUsersRepository } from "../user/repositories/PostgresUsersRepository";
 import CryptoProviderBcrypt from "../user/providers/crypto/CryptoProviderBcrypt";
 import JwtProvider from "./providers/jwt/jwtProvider";
 import { env } from "@/config/env";
