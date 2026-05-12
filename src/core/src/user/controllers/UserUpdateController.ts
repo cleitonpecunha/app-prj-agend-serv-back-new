@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { UserUpdateUseCase } from "@/core/src/user/useCases/UserUpdateUseCase";
+import { UserUpdateUseCase } from "@/core/src/user/useCases/userUpdateUseCase";
 import { requireAuth } from "@/lib/auth";
 import { parseWith } from "@/lib/validate";
 import { updateUserSchema } from "../schemas";

@@ -2,16 +2,16 @@ import { FastifyInstance } from "fastify";
 import { MailtrapMailProvider } from "./providers/mail/MailProvider";
 import { PostgresUsersRepository } from "./repositories/PostgresUserRepository";
 import CryptoProviderBcrypt from "./providers/crypto/CryptoProviderBcrypt";
-import { UserRegisterController } from "./controllers/UserRegisterController";
-import { UserListController } from "./controllers/UserListController";
-import { UserGetByIdController } from "./controllers/UserGetByIdController";
-import { UserDeleteController } from "./controllers/UserDeleteControler";
-import { UserUpdateController } from "./controllers/UserUpdateController";
-import { UserRegisterUseCase } from "./useCases/UserRegisterUseCase";
-import { UserListUseCase } from "./useCases/UserListUseCase";
-import { UserGetByIdUseCase } from "./useCases/UserGetByIdUseCase";
-import { UserDeleteUseCase } from "./useCases/UserDeleteUseCase";
-import { UserUpdateUseCase } from "./useCases/UserUpdateUseCase";
+import { UserRegisterController } from "./controllers/userRegisterController";
+import { UserListController } from "./controllers/userListController";
+import { UserGetByIdController } from "./controllers/userGetByIdController";
+import { UserDeleteController } from "./controllers/userDeleteControler";
+import { UserUpdateController } from "./controllers/userUpdateController";
+import { UserRegisterUseCase } from "./useCases/userRegisterUseCase";
+import { UserListUseCase } from "./useCases/userListUseCase";
+import { UserGetByIdUseCase } from "./useCases/userGetByIdUseCase";
+import { UserDeleteUseCase } from "./useCases/userDeleteUseCase";
+import { UserUpdateUseCase } from "./useCases/userUpdateUseCase";
 import { IUserAddRequestDTO, IUserUpdateRequestDTO } from "./dto/userDTO";
 
 export async function userRoutes(app: FastifyInstance) {

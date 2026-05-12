@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { UserListUseCase } from "../useCases/UserListUseCase";
+import { UserListUseCase } from "@/core/src/user/useCases/userListUseCase";
 
 export class UserListController {
   constructor(private userListUseCase: UserListUseCase) {}

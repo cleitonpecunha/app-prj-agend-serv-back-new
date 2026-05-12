@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { UserRegisterUseCase } from "@/core/src/user/useCases/UserRegisterUseCase";
+import { UserRegisterUseCase } from "@/core/src/user/useCases/userRegisterUseCase";
 import { createUserSchema } from "../schemas";
 import { parseWith } from "@/lib/validate";
 import { IUserAddRequestDTO } from "../dto/userDTO";

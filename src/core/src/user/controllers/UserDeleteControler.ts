@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { UserDeleteUseCase } from "../useCases/UserDeleteUseCase";
+import { UserDeleteUseCase } from "@/core/src/user/useCases/userDeleteUseCase";
 import { requireAuth } from "@/lib/auth";
 
 export class UserDeleteController {

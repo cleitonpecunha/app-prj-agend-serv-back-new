@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { UserGetByIdUseCase } from "../useCases/UserGetByIdUseCase";
+import { UserGetByIdUseCase } from "@/core/src/user/useCases/userGetByIdUseCase";
 import { requireAuth } from "@/lib/auth";
 
 export class UserGetByIdController {
