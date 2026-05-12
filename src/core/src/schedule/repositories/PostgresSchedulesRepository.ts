@@ -1,7 +1,7 @@
 import Schedule from "@/core/src/schedule/model/schedule";
 import { prisma } from "@/lib/prisma";
 import { IScheduleUpdateRequestDTO } from "../dto/scheduleDTO";
-import { IScheduleRepository } from "./IScheduleRepository";
+import { IScheduleRepository } from "./ISchedulesRepository";
 
 export class PostgresScheduleRepository implements IScheduleRepository {
   async save(data: Schedule): Promise<void> {
