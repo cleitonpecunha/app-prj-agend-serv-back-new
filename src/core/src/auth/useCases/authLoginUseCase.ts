@@ -2,6 +2,7 @@ import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
 import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 import ICryptoProvider from "../../user/providers/crypto/ICryptoProvider";
 import { IAuthLoginRequestDTO } from "../dto/authDTO";
+import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class AuthLoginUseCase {
   constructor(
@@ -13,7 +14,7 @@ export class AuthLoginUseCase {
     const user = await this.usersRepository.findByEmail(login.email);
 
     if (!user) {
-      throw new NotFoundError("Usuário não encontrado.");
+      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
     }
 
     const isPasswordValid = await this.cryptoProvider.comparar(
@@ -22,7 +23,7 @@ export class AuthLoginUseCase {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedError("Credenciais inválidas.");
+      throw new UnauthorizedError(MensagensPadronizadas.CREDENCIAIS_INVALIDAS);
     }
 
     return user;
