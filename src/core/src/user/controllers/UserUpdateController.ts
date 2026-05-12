@@ -1,6 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { UserUpdateUseCase } from "@/core/src/user/useCases/UserUpdateUseCase";
 import { requireAuth } from "@/lib/auth";
+import { parseWith } from "@/lib/validate";
+import { updateUserSchema } from "../schemas";
 
 interface UpdateBody {
   name: string;
@@ -17,6 +19,9 @@ export class UserUpdateController {
     response: FastifyReply,
   ): Promise<FastifyReply> {
     const auth = await requireAuth(request);
+
+    const bodyParsed = parseWith(updateUserSchema, request.body);
+    if (!bodyParsed.success) throw bodyParsed.error;
 
     const { name, businessName, phone, address } = request.body;
 

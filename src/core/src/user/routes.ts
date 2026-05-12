@@ -1,6 +1,4 @@
 import { FastifyInstance } from "fastify";
-import { parseWith } from "@/lib/validate";
-import { createUserSchema } from "./schemas";
 import { MailtrapMailProvider } from "./providers/mail/MailProvider";
 import { PostgresUsersRepository } from "./repositories/PostgresUserRepository";
 import CryptoProviderBcrypt from "./providers/crypto/CryptoProviderBcrypt";
@@ -58,9 +56,6 @@ export async function userRoutes(app: FastifyInstance) {
 
   // registrar usuario/prestador
   app.post<{ Body: RegisterBody }>("/", async (request, reply) => {
-    const parsed = parseWith(createUserSchema, request.body);
-    if (!parsed.success) throw parsed.error;
-
     return registerUser.handle(request, reply);
   });
 

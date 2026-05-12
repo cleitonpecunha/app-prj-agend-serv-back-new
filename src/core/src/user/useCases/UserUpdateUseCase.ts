@@ -3,8 +3,6 @@ import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
 import { generateSlug } from "@/lib/slug";
 import User from "@/core/src/user/model/user";
 import { ConflictError, NotFoundError } from "@/lib/errors";
-import { parseWith } from "@/lib/validate";
-import { updateUserSchema } from "../schemas";
 import { assertProviderOwnership } from "@/lib/auth";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
@@ -32,9 +30,6 @@ export class UserUpdateUseCase {
     //console.log("Existing user ID:", existingUser.id);
 
     assertProviderOwnership(auth.userId, existingUser.id!);
-
-    const bodyParsed = parseWith(updateUserSchema, data);
-    if (!bodyParsed.success) throw bodyParsed.error;
 
     if (existingSlug && existingSlug.id !== id) {
       throw new ConflictError(

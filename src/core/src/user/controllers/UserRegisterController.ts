@@ -1,5 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { UserRegisterUseCase } from "@/core/src/user/useCases/UserRegisterUseCase";
+import { createUserSchema } from "../schemas";
+import { parseWith } from "@/lib/validate";
 
 interface RegisterBody {
   name: string;
@@ -18,6 +20,9 @@ export class UserRegisterController {
     request: FastifyRequest<{ Body: RegisterBody }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    const parsed = parseWith(createUserSchema, request.body);
+    if (!parsed.success) throw parsed.error;
+
     const { name, businessName, slug, email, passwordHash, phone, address } =
       request.body;
 
