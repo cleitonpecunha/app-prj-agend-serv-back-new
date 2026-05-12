@@ -3,6 +3,7 @@ import { AuthLoginUseCase } from "../useCases/authLoginUseCase";
 import JwtProvider from "../providers/jwt/jwtProvider";
 import { parseWith } from "@/lib/validate";
 import { loginSchema } from "../schemas";
+import { IAuthLoginRequestDTO } from "../dto/authDTO";
 
 export class AuthLoginController {
   constructor(
@@ -11,7 +12,7 @@ export class AuthLoginController {
   ) {}
 
   async handle(
-    request: FastifyRequest<{ Body: { email: string; passwordHash: string } }>,
+    request: FastifyRequest<{ Body: IAuthLoginRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
     const parsed = parseWith(loginSchema, request.body);

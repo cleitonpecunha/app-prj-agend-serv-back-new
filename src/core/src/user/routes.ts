@@ -12,23 +12,7 @@ import { UserListUseCase } from "./useCases/UserListUseCase";
 import { UserGetByIdUseCase } from "./useCases/UserGetByIdUseCase";
 import { UserDeleteUseCase } from "./useCases/UserDeleteUseCase";
 import { UserUpdateUseCase } from "./useCases/UserUpdateUseCase";
-
-interface RegisterBody {
-  name: string;
-  businessName: string;
-  slug: string;
-  email: string;
-  passwordHash: string;
-  phone: string;
-  address: string;
-}
-
-interface UpdateBody {
-  name: string;
-  businessName: string;
-  phone: string;
-  address: string;
-}
+import { IUserAddRequestDTO, IUserUpdateRequestDTO } from "./dto/userDTO";
 
 export async function userRoutes(app: FastifyInstance) {
   // Instanciar as dependências
@@ -55,7 +39,7 @@ export async function userRoutes(app: FastifyInstance) {
   const updateUser = new UserUpdateController(userUpdateUseCase);
 
   // registrar usuario/prestador
-  app.post<{ Body: RegisterBody }>("/", async (request, reply) => {
+  app.post<{ Body: IUserAddRequestDTO }>("/", async (request, reply) => {
     return registerUser.handle(request, reply);
   });
 
@@ -70,7 +54,7 @@ export async function userRoutes(app: FastifyInstance) {
   });
 
   // atualizar usuario/prestador logado
-  app.put<{ Body: UpdateBody }>("/:id", async (request, reply) => {
+  app.put<{ Body: IUserUpdateRequestDTO }>("/:id", async (request, reply) => {
     return updateUser.handle(request, reply);
   });
 

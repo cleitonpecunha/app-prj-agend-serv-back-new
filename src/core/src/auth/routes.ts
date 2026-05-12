@@ -5,11 +5,7 @@ import JwtProvider from "./providers/jwt/jwtProvider";
 import { env } from "@/config/env";
 import { AuthLoginController } from "./controllers/authLoginController";
 import { AuthLoginUseCase } from "./useCases/authLoginUseCase";
-
-interface AuthLoginBody {
-  email: string;
-  passwordHash: string;
-}
+import { IAuthLoginRequestDTO } from "./dto/authDTO";
 
 export async function authRoutes(app: FastifyInstance) {
   const usersRepository = new PostgresUsersRepository();
@@ -25,7 +21,7 @@ export async function authRoutes(app: FastifyInstance) {
   // Instanciar o Controller com o UseCase
   const authUser = new AuthLoginController(authLoginUseCase, jwtProvider);
 
-  app.post<{ Body: AuthLoginBody }>("/login", async (request, reply) => {
+  app.post<{ Body: IAuthLoginRequestDTO }>("/login", async (request, reply) => {
     return authUser.handle(request, reply);
   });
 }

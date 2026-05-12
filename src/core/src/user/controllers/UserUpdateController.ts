@@ -3,19 +3,13 @@ import { UserUpdateUseCase } from "@/core/src/user/useCases/UserUpdateUseCase";
 import { requireAuth } from "@/lib/auth";
 import { parseWith } from "@/lib/validate";
 import { updateUserSchema } from "../schemas";
-
-interface UpdateBody {
-  name: string;
-  businessName: string;
-  phone: string;
-  address: string;
-}
+import { IUserUpdateRequestDTO } from "../dto/userDTO";
 
 export class UserUpdateController {
   constructor(private userUpdateUseCase: UserUpdateUseCase) {}
 
   async handle(
-    request: FastifyRequest<{ Body: UpdateBody }>,
+    request: FastifyRequest<{ Body: IUserUpdateRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
     const auth = await requireAuth(request);
