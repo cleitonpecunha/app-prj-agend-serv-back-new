@@ -1,11 +1,10 @@
 @baseUrl = http://localhost:3333
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYTZmN2EzZS1kNWMwLTQ5ZTAtOWQzYS0xNDA3YzI4NWY4NzQiLCJpZCI6ImJhNmY3YTNlLWQ1YzAtNDllMC05ZDNhLTE0MDdjMjg1Zjg3NCIsIm5hbWUiOiJKb8OjbyBTaWx2YSBBdHVhbGl6YWRvIiwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg0MTcyNDAsImV4cCI6MTc3ODQzMTY0MH0._giA137rTic5HCyRR-kQejFgWOJ0fdV-W0rcSKsCsp0
-
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYTZmN2EzZS1kNWMwLTQ5ZTAtOWQzYS0xNDA3YzI4NWY4NzQiLCJpZCI6ImJhNmY3YTNlLWQ1YzAtNDllMC05ZDNhLTE0MDdjMjg1Zjg3NCIsIm5hbWUiOiJKb8OjbyBTaWx2YSBBdHVhbGl6YWRvIiwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc4NDE3MjQwLCJleHAiOjE3Nzg0MTgxNDB9.C6LQBcQl4lEZpBnACo2JEfzzTAnOeAkYqeEJgOR2W2I
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg2MDU3MzYsImV4cCI6MTc3ODYyMDEzNn0.3nohx6Fk358PC-6hdC4r2W0pFz6_oX5vK0-WEQ2BnfY
 
 @idjoao = ba6f7a3e-d5c0-49e0-9d3a-1407c285f874
 @idmaria = 9e407a55-12a0-4c23-97c2-795cee162303
 @idcarlos = 8b89e3fc-16e6-45cd-ba9d-2e1dd076a170
+@idAbmael = 9d1dc639-8cb6-432e-82e4-f20ec459aca0
 
 ### [SUCESSO] Atualizar prestador com payload válido
 # Pré-requisito: ter prestador com id = 1 criado
@@ -38,33 +37,32 @@ Content-Type: application/json
 
 ###
 
-### [IGNORADO] Slug enviado no payload deve ser descartado
-# Esperado: 200 — slug do body é ignorado; a aplicação recalcula a partir de businessName
+### [SUCESSO] Atualizar prestador sem enviar slug
+# Esperado: 200 — slug omitido é correto; a aplicação recalcula internamente
 PUT {{baseUrl}}/api/users/{{idjoao}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
   "name": "João Silva",
-  "businessName": "Barbearia do João Boiola",
-  "slug": "slug-enviado-pelo-cliente",
+  "businessName": "Barbearia do João",
   "phone": "+55 (11) 99999-0001",
   "address": "Rua das Flores, 123 - São Paulo, SP"
 }
 
 ###
 
-### [FALHA] Atualizar prestador inexistente
-# Esperado: 404 NotFoundError com mensagem "Prestador não encontrado."
-PUT {{baseUrl}}/api/users/999999
+### [IGNORADO] Slug enviado no payload deve ser descartado
+# Esperado: 200 — slug do body é ignorado; a aplicação recalcula a partir de businessName
+PUT {{baseUrl}}/api/users/{{idAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "Fantasma",
-  "businessName": "Empresa Fantasma",
-  "phone": "+55 (11) 90000-9999",
-  "address": "Rua Inexistente, 0"
+  "name": "Abmael Chupetinha",
+  "businessName": "Eletricista Gera Volts ME",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua dos bestas, 666 - São Paulo, SP"
 }
 
 ###
