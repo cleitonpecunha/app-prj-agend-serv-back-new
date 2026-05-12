@@ -15,4 +15,6 @@ export interface IServicesRepository {
   ): Promise<void>;
 
   delete(id: string, userId: string): Promise<void>;
+
+  hasAppointments(idService: string): Promise<boolean>;
 }

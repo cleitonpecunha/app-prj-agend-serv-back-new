@@ -13,7 +13,7 @@ export class PostgresServicesRepository implements IServicesRepository {
   async findByManyUserId(userId: string): Promise<Service[]> {
     const services = await prisma.service.findMany({
       where: { userId: userId },
-      orderBy: { createdAt: "desc" },
+      orderBy: { name: "asc" },
     });
     return services;
   }
@@ -40,5 +40,12 @@ export class PostgresServicesRepository implements IServicesRepository {
 
   async delete(id: string, userId: string): Promise<void> {
     await prisma.service.delete({ where: { id: id, userId: userId } });
+  }
+
+  async hasAppointments(idService: string) {
+    const count = await prisma.appointment.count({
+      where: { serviceId: idService },
+    });
+    return count > 0;
   }
 }

@@ -4,6 +4,7 @@ import { IServicesRepository } from "../repositories/IServicesRepository";
 import { IUsersRepository } from "../../user/repositories/IUserRepository";
 import Service from "../model/service";
 import { assertProviderOwnership } from "@/lib/auth";
+import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class ServiceAddUseCase {
   constructor(
@@ -22,13 +23,13 @@ export class ServiceAddUseCase {
 
     // Se o usuário/prestador não existir, lançar um erro
     if (!existingUser) {
-      throw new NotFoundError("Usuário/prestador não encontrado.");
+      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
     }
 
     // Verificar se o usuário autenticado é o proprietário do serviço
     assertProviderOwnership(auth.userId, existingUser.id!);
 
-    console.log("Dados recebidos para criação do serviço:", data);
+    //console.log("Dados recebidos para criação do serviço:", data);
 
     // Criar a instância do serviço e salvar no repositório
     const service = new Service(data);
