@@ -3,8 +3,6 @@ import {
   IServiceAddRequestDTO,
   IServiceUpdateRequestDTO,
 } from "./dto/serviceDTO";
-import { addServiceSchema } from "./schemas";
-import { parseWith } from "@/lib/validate";
 import { PostgresServicesRepository } from "./repositories/PostgresServicesRepository";
 import { PostgresUsersRepository } from "../user/repositories/PostgresUserRepository";
 import { ServiceAddUseCase } from "./useCases/serviceAddUseCase";
@@ -17,6 +15,8 @@ import { ServiceGetByIdUseCase } from "./useCases/serviceGetByIdUseCase";
 import { ServiceGetByIdController } from "./controller/serviceGetByIdController";
 import { ServiceGetByUserIdUseCase } from "./useCases/serviceGetByUserIdUseCase";
 import { ServiceGetByUserIdController } from "./controller/serviceGetByUserIdController";
+import { ServiceUpdateUseCase } from "./useCases/serviceUpdateUseCase";
+import { ServiceUpdateController } from "./controller/serviceUpdateController";
 
 export async function serviceRoutes(app: FastifyInstance) {
   // Instanciar as dependências
@@ -35,7 +35,7 @@ export async function serviceRoutes(app: FastifyInstance) {
     servicesRepository,
     usersRepository,
   );
-  //const serviceUpdateUseCase = new ServiceUpdateUseCase(servicesRepository);
+  const serviceUpdateUseCase = new ServiceUpdateUseCase(servicesRepository);
 
   // Instanciar os Controllers com os UseCases
   const registerService = new ServiceAddController(serviceAddUseCase);
@@ -45,13 +45,10 @@ export async function serviceRoutes(app: FastifyInstance) {
   const getByUserIdServices = new ServiceGetByUserIdController(
     serviceGetByUserIdUseCase,
   );
-  //const updateService = new ServiceUpdateController(serviceUpdateUseCase);
+  const updateService = new ServiceUpdateController(serviceUpdateUseCase);
 
   // add serviço do prestador logado
   app.post<{ Body: IServiceAddRequestDTO }>("/", async (request, reply) => {
-    const parsed = parseWith(addServiceSchema, request.body);
-    if (!parsed.success) throw parsed.error;
-
     return registerService.handle(request, reply);
   });
 
@@ -69,7 +66,7 @@ export async function serviceRoutes(app: FastifyInstance) {
   app.put<{ Body: IServiceUpdateRequestDTO }>(
     "/:id",
     async (request, reply) => {
-      return;
+      return await updateService.handle(request, reply);
     },
   );
 

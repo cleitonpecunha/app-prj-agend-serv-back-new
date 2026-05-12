@@ -2,6 +2,8 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { ServiceAddUseCase } from "../useCases/serviceAddUseCase";
 import { IServiceAddRequestDTO } from "../dto/serviceDTO";
 import { requireAuth } from "@/lib/auth";
+import { parseWith } from "@/lib/validate";
+import { addServiceSchema } from "../schemas";
 
 export class ServiceAddController {
   constructor(private serviceAddUseCase: ServiceAddUseCase) {}
@@ -11,6 +13,9 @@ export class ServiceAddController {
     response: FastifyReply,
   ): Promise<FastifyReply> {
     const auth = await requireAuth(request);
+
+    const parsed = parseWith(addServiceSchema, request.body);
+    if (!parsed.success) throw parsed.error;
 
     const {
       id,

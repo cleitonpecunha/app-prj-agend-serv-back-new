@@ -9,7 +9,7 @@ export const addServiceSchema = z.object({
   durationMinutes: z
     .number()
     .int("Duração deve ser um número inteiro.")
-    .positive("Duração deve ser um número inteiro positivo."),
+    .positive("Duração do serviço deve ser maior que zero."),
   priceInCents: z.number().min(1, {
     message: "Valor do serviço deve ser maior que zero.",
   }),
@@ -22,7 +22,7 @@ export const updateServiceSchema = z.object({
   durationMinutes: z
     .number()
     .int("Duração deve ser um número inteiro.")
-    .positive("Duração deve ser um número inteiro positivo."),
+    .positive("Duração do serviço deve ser maior que zero."),
   priceInCents: z.number().min(1, {
     message: "Valor do serviço deve ser maior que zero.",
   }),
