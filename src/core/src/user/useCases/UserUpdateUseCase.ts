@@ -6,6 +6,7 @@ import { ConflictError, NotFoundError } from "@/lib/errors";
 import { parseWith } from "@/lib/validate";
 import { updateUserSchema } from "../schemas";
 import { assertProviderOwnership } from "@/lib/auth";
+import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class UserUpdateUseCase {
   constructor(private usersRepository: IUsersRepository) {}
@@ -25,7 +26,7 @@ export class UserUpdateUseCase {
     ]);
 
     if (!existingUser) {
-      throw new NotFoundError("Usuário não encontrado.");
+      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
     }
 
     //console.log("Existing user ID:", existingUser.id);
@@ -37,7 +38,7 @@ export class UserUpdateUseCase {
 
     if (existingSlug && existingSlug.id !== id) {
       throw new ConflictError(
-        "Já existe um prestador com este nome de negócio.",
+        MensagensPadronizadas.USUARIO_NOME_NEGOCIO_JA_CADASTRADO,
       );
     }
 

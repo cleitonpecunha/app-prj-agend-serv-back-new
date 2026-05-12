@@ -1,6 +1,7 @@
 import { IUsersRepository } from "@/core/src/user/repositories/IUserRepository";
 import { assertProviderOwnership } from "@/lib/auth";
 import { NotFoundError } from "@/lib/errors";
+import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class UserDeleteUseCase {
   constructor(private usersRepository: IUsersRepository) {}
@@ -9,7 +10,7 @@ export class UserDeleteUseCase {
     const existingUser = await this.usersRepository.findById(id);
 
     if (!existingUser) {
-      throw new NotFoundError("Usuário não encontrado.");
+      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
     }
 
     assertProviderOwnership(auth.userId, existingUser.id!);

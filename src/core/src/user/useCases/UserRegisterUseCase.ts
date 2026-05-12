@@ -6,6 +6,7 @@ import { generateSlug } from "@/lib/slug";
 import User from "@/core/src/user/model/user";
 import { ConflictError } from "@/lib/errors";
 import { buildMailUserRegisterInfo } from "../providers/mail/MailUserRegisterInfo";
+import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class UserRegisterUseCase {
   constructor(
@@ -23,12 +24,14 @@ export class UserRegisterUseCase {
     ]);
 
     if (existingEmail) {
-      throw new ConflictError("Já existe um prestador com este e-mail.");
+      throw new ConflictError(
+        MensagensPadronizadas.USUARIO_EMAIL_JA_CADASTRADO,
+      );
     }
 
     if (existingSlug) {
       throw new ConflictError(
-        "Já existe um prestador com este nome de negócio.",
+        MensagensPadronizadas.USUARIO_NOME_NEGOCIO_JA_CADASTRADO,
       );
     }
 
@@ -42,7 +45,7 @@ export class UserRegisterUseCase {
 
     await this.usersRepository.save(user);
 
-    /* const mailUserRegisterInfo = buildMailUserRegisterInfo({
+    const mailUserRegisterInfo = buildMailUserRegisterInfo({
       userName: data.name,
       descriptionBusinessName: data.businessName,
     });
@@ -53,11 +56,11 @@ export class UserRegisterUseCase {
         email: data.email,
       },
       from: {
-        name: "Equipe do Meu App",
-        email: "equipe@meuapp.com",
+        name: "Suporte MeuApp",
+        email: "suporte@meuapp.com.br",
       },
       subject: mailUserRegisterInfo.subject,
       body: mailUserRegisterInfo.html,
-    }); */
+    });
   }
 }

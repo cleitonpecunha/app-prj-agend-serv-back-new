@@ -18,7 +18,7 @@ export class UserDeleteController {
 
       return response
         .status(204)
-        .send({ message: "Usuário deletado com sucesso." });
+        .send({ message: "Usuário excluído com sucesso." });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unexpected error.";
       return response.status(400).send({

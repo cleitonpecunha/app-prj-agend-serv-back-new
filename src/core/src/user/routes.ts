@@ -56,7 +56,7 @@ export async function userRoutes(app: FastifyInstance) {
   const deleteUser = new UserDeleteController(userDeleteUseCase);
   const updateUser = new UserUpdateController(userUpdateUseCase);
 
-  // registrar usuarios
+  // registrar usuario/prestador
   app.post<{ Body: RegisterBody }>("/", async (request, reply) => {
     const parsed = parseWith(createUserSchema, request.body);
     if (!parsed.success) throw parsed.error;
@@ -64,22 +64,22 @@ export async function userRoutes(app: FastifyInstance) {
     return registerUser.handle(request, reply);
   });
 
-  // listaar todos os usuarios
+  // listar todos os usuarios/prestadores
   app.get("/", async (_request, reply) => {
     return await listUsers.handle(_request, reply);
   });
 
-  // buscar usuario por ID
+  // buscar usuario/prestador por ID
   app.get("/:id", async (request, reply) => {
     return await getUserById.handle(request, reply);
   });
 
-  // atualizar usuarios
+  // atualizar usuario/prestador logado
   app.put<{ Body: UpdateBody }>("/:id", async (request, reply) => {
     return updateUser.handle(request, reply);
   });
 
-  // deletar usuarios
+  // deletar usuario/prestador logado
   app.delete("/:id", async (request, reply) => {
     return await deleteUser.handle(request, reply);
   });
