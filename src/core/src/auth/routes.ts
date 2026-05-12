@@ -3,8 +3,6 @@ import { PostgresUsersRepository } from "../user/repositories/PostgresUserReposi
 import CryptoProviderBcrypt from "../user/providers/crypto/CryptoProviderBcrypt";
 import JwtProvider from "./providers/jwt/jwtProvider";
 import { env } from "@/config/env";
-import { parseWith } from "@/lib/validate";
-import { loginSchema } from "./schemas";
 import { AuthLoginController } from "./controllers/authLoginController";
 import { AuthLoginUseCase } from "./useCases/authLoginUseCase";
 
@@ -28,15 +26,6 @@ export async function authRoutes(app: FastifyInstance) {
   const authUser = new AuthLoginController(authLoginUseCase, jwtProvider);
 
   app.post<{ Body: AuthLoginBody }>("/login", async (request, reply) => {
-    const parsed = parseWith(loginSchema, request.body);
-    if (!parsed.success) throw parsed.error;
-
-    //const provider = await authenticateProvider(parsed.data);
-    //const tokens = await issueTokenPair(app, provider);
-
-    //return reply.send(
-    //toAuthResponse(tokens.accessToken, tokens.refreshToken, provider),
-    //);
     return authUser.handle(request, reply);
   });
 }

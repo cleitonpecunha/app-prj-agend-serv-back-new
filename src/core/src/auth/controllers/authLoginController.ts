@@ -1,6 +1,8 @@
 import { FastifyRequest, FastifyReply, FastifyInstance } from "fastify";
 import { AuthLoginUseCase } from "../useCases/authLoginUseCase";
 import JwtProvider from "../providers/jwt/jwtProvider";
+import { parseWith } from "@/lib/validate";
+import { loginSchema } from "../schemas";
 
 export class AuthLoginController {
   constructor(
@@ -12,6 +14,9 @@ export class AuthLoginController {
     request: FastifyRequest<{ Body: { email: string; passwordHash: string } }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    const parsed = parseWith(loginSchema, request.body);
+    if (!parsed.success) throw parsed.error;
+
     const { email, passwordHash } = request.body;
 
     try {
