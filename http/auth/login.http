@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:3333
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg1MzE1MTgsImV4cCI6MTc3ODU0NTkxOH0.ew-uKx1jPMYR6mp_2-cJYfMa-p6DOVCb_Ut5myfL9qA
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg1ODkwNDgsImV4cCI6MTc3ODYwMzQ0OH0._7mjfusoWuu7D-34yQpHyKLgl_cIZl9ES0I0-RuEatM
 
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc4NTMxNTE4LCJleHAiOjE3Nzg1MzI0MTh9.FqlF8VETmuzwRSVUuDvGgMJI5WuZKOa1yYWFJf6_If0
+@refreshToken = 
 
 ### [SUCESSO] Login com credenciais válidas
 # Esperado: 200 com accessToken, refreshToken e dados públicos do prestador
@@ -24,6 +24,18 @@ Content-Type: application/json
 {
   "email": "abmael@eletricista.com",
   "passwordHash": "#Senha123"
+}
+
+###
+
+### [SUCESSO] Login com credenciais válidas
+# Esperado: 200 com accessToken, refreshToken e dados públicos do prestador
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos@lima.com",
+  "passwordHash": "#Senha@123"
 }
 
 ###
