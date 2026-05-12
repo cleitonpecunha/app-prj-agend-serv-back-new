@@ -134,7 +134,7 @@ Todas as rotas estão prefixadas em `/api`.
 | `GET`    | `/api/services/:id`               | PR  | Buscar serviço                   | DONE     |
 | `GET`    | `/api/services`                   | PR  | Listar todos os serviços         | DONE     |
 | `GET`    | `/api/services/:userId/services`  | PU  | Listar serviços de um prestador  | DONE     |
-| `PUT`    | `/api/services/:id`               | PR  | Atualizar serviço                | TO DO    |
+| `PUT`    | `/api/services/:id`               | PR  | Atualizar serviço                | DONE     |
 | `DELETE` | `/api/services/:id`               | PR  | Remover serviço                  | DONE     |
 | `GET`    | `/api/services/:id/appointments`  | XX  | Agendamentos de um serviço       | TO DO    |
 | -------- | --------------------------------- | --  | -------------------------------- | -------- |
