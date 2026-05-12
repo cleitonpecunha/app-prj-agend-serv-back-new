@@ -113,39 +113,39 @@ A API estará disponível em `http://localhost:3333`.
 
 Todas as rotas estão prefixadas em `/api`.
 
-| Método   | Rota de API                       | Descrição do que faz a rota      | Status   |
-| -------- | --------------------------------- | -------------------------------- | -------- |
-| `GET`    | `/api/ping`                       | Health check                     | DONE     |
-| -------- | --------------------------------- | -------------------------------- | -------- |
-| `POST`   | `/api/user`                       | Cadastrar o usuário prestador    | DONE     |
-| `GET`    | `/api/user/:id`                   | Buscar usuário por ID            | DONE     |
-| `PUT`    | `/api/user/:id`                   | Atualizar usuário por ID         | DONE     |
-| `DELETE` | `/api/user/:id`                   | Remover usuário                  | DONE     |
-| -------- | --------------------------------- | -------------------------------- | -------- |
-| `POST`   | `/api/auth/login`                 | Login do prestador               | DONE     |
-| `POST`   | `/api/auth/refresh`               | Renovação do access token        | TO DO    |
-| -------- | --------------------------------- | -------------------------------- | -------- |
-| `GET`    | `/api/providers/:id/dashboard`    | Dashboard com métricas           | TO DO    |
-| `GET`    | `/api/providers/:id/revenue`      | Relatório de receita             | TO DO    |
-| `GET`    | `/api/providers/:id/services`     | Listar serviços do prestador     | TO DO    |
-| `GET`    | `/api/providers/:id/schedules`    | Listar horários do prestador     | TO DO    |
-| `GET`    | `/api/providers/:id/appointments` | Listar agendamentos do prestador | TO DO    |
-| -------- | --------------------------------- | -------------------------------- | -------- |
-| `GET`    | `/api/services`                   | Listar todos os serviços         | TO DO    |
-| `POST`   | `/api/services`                   | Criar serviço                    | TO DO    |
-| `GET`    | `/api/services/:id`               | Buscar serviço                   | TO DO    |
-| `PUT`    | `/api/services/:id`               | Atualizar serviço                | TO DO    |
-| `DELETE` | `/api/services/:id`               | Remover serviço                  | TO DO    |
-| `GET`    | `/api/services/:id/appointments`  | Agendamentos de um serviço       | TO DO    |
-| -------- | --------------------------------- | -------------------------------- | -------- |
-| `POST`   | `/api/schedules`                  | Criar horário de atendimento     | TO DO    |
-| `GET`    | `/api/schedules/:id`              | Buscar horário                   | TO DO    |
-| `PUT`    | `/api/schedules/:id`              | Atualizar horário                | TO DO    |
-| `DELETE` | `/api/schedules/:id`              | Remover horário                  | TO DO    |
-| -------- | --------------------------------- | -------------------------------- | -------- |
-| `POST`   | `/api/appointments`               | Criar agendamento                | TO DO    |
-| `GET`    | `/api/appointments/:id`           | Buscar agendamento               | TO DO    |
-| `PATCH`  | `/api/appointments/:id/status`    | Atualizar status do agendamento  | TO DO    |
+| Método   | Rota de API                       | TP  | Descrição do que faz a rota      | Status   |
+| -------- | --------------------------------- | --- | -------------------------------- | -------- |
+| `GET`    | `/api/ping`                       | PU  | Health check                     | DONE     |
+| -------- | --------------------------------- | --  | -------------------------------- | -------- |
+| `POST`   | `/api/user`                       | PU  | Cadastrar o usuário prestador    | DONE     |
+| `GET`    | `/api/user/:id`                   | PR  | Buscar usuário                   | DONE     |
+| `PUT`    | `/api/user/:id`                   | PR  | Atualizar usuário                | DONE     |
+| `DELETE` | `/api/user/:id`                   | PR  | Remover usuário                  | DONE     |
+| -------- | --------------------------------- | --  | -------------------------------- | -------- |
+| `POST`   | `/api/auth/login`                 | PU  | Login do usuário prestador       | DONE     |
+| `POST`   | `/api/auth/refresh`               | XX  | Renovação do access token        | TO DO    |
+| -------- | --------------------------------- | --  | -------------------------------- | -------- |
+| `GET`    | `/api/providers/:id/dashboard`    | XX  | Dashboard com métricas           | TO DO    |
+| `GET`    | `/api/providers/:id/revenue`      | XX  | Relatório de receita             | TO DO    |
+| `GET`    | `/api/providers/:id/schedules`    | XX  | Listar horários do prestador     | TO DO    |
+| `GET`    | `/api/providers/:id/appointments` | XX  | Listar agendamentos do prestador | TO DO    |
+| -------- | --------------------------------- | --  | -------------------------------- | -------- |
+| `POST`   | `/api/services`                   | PR  | Criar serviço                    | DONE     |
+| `GET`    | `/api/services/:id`               | PR  | Buscar serviço                   | DONE     |
+| `GET`    | `/api/services`                   | PR  | Listar todos os serviços         | DONE     |
+| `GET`    | `/api/services/:userId/services`  | PU  | Listar serviços de um prestador  | DONE     |
+| `PUT`    | `/api/services/:id`               | PR  | Atualizar serviço                | TO DO    |
+| `DELETE` | `/api/services/:id`               | PR  | Remover serviço                  | DONE     |
+| `GET`    | `/api/services/:id/appointments`  | XX  | Agendamentos de um serviço       | TO DO    |
+| -------- | --------------------------------- | --  | -------------------------------- | -------- |
+| `POST`   | `/api/schedules`                  | XX  | Criar horário de atendimento     | TO DO    |
+| `GET`    | `/api/schedules/:id`              | XX  | Buscar horário                   | TO DO    |
+| `PUT`    | `/api/schedules/:id`              | XX  | Atualizar horário                | TO DO    |
+| `DELETE` | `/api/schedules/:id`              | XX  | Remover horário                  | TO DO    |
+| -------- | --------------------------------- | --  | -------------------------------- | -------- |
+| `POST`   | `/api/appointments`               | XX  | Criar agendamento                | TO DO    |
+| `GET`    | `/api/appointments/:id`           | XX  | Buscar agendamento               | TO DO    |
+| `PATCH`  | `/api/appointments/:id/status`    | XX  | Atualizar status do agendamento  | TO DO    |
 
 Consulte a documentação completa em [`docs/openapi/openapi.yaml`](docs/openapi/openapi.yaml) ou utilize os arquivos `.http` na pasta [`http/`](http/).
 
