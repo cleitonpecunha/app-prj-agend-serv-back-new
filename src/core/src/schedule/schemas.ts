@@ -18,12 +18,12 @@ const dayOfWeekEnum = z.enum(
 const timeString = (fieldLabel: string) =>
   z.string().regex(TIME_REGEX, `${fieldLabel} inválido. Use o formato HH:MM.`);
 
-export const createScheduleSchema = z
+export const addScheduleSchema = z
   .object({
-    userId: z.coerce
+    /*  userId: z.coerce
       .number()
       .int("userId deve ser um número inteiro.")
-      .positive("userId deve ser um número inteiro positivo."),
+      .positive("userId deve ser um número inteiro positivo."), */
     dayOfWeek: dayOfWeekEnum,
     startTime: timeString("Horário inicial"),
     endTime: timeString("Horário final"),
@@ -35,10 +35,10 @@ export const createScheduleSchema = z
 
 export const updateScheduleSchema = z
   .object({
-    userId: z.coerce
+    /* userId: z.coerce
       .number()
       .int("userId deve ser um número inteiro.")
-      .positive("userId deve ser um número inteiro positivo."),
+      .positive("userId deve ser um número inteiro positivo."), */
     dayOfWeek: dayOfWeekEnum,
     startTime: timeString("Horário inicial"),
     endTime: timeString("Horário final"),
@@ -62,7 +62,7 @@ export const providerSchedulesParamsSchema = z.object({
     .positive("providerId deve ser um número inteiro positivo."),
 });
 
-export type CreateScheduleInput = z.infer<typeof createScheduleSchema>;
+export type CreateScheduleInput = z.infer<typeof addScheduleSchema>;
 export type UpdateScheduleInput = z.infer<typeof updateScheduleSchema>;
 export type ScheduleParams = z.infer<typeof scheduleParamsSchema>;
 export type ProviderSchedulesParams = z.infer<
