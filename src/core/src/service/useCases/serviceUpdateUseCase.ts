@@ -14,6 +14,7 @@ export class ServiceUpdateUseCase {
   ) {
     //console.log("Auth userId:", auth.userId);
 
+    // validar se o serviço existe e pertence ao usuário autenticado
     const [existingService] = await Promise.all([
       this.servicesRepository.findById(id, auth.userId),
     ]);

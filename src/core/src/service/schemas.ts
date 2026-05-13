@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const addServiceSchema = z.object({
-  userId: z
+  /* userId: z
     .string()
-    .min(1, "Identificador do usuário/prestador é obrigatório."),
+    .min(1, "Identificador do usuário/prestador é obrigatório."), */
   name: z.string().min(1, "Nome do serviço é obrigatório."),
   description: z.string().min(1, "Descrição do serviço é obrigatória."),
   durationMinutes: z

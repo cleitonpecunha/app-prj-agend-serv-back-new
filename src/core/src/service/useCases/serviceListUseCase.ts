@@ -6,14 +6,15 @@ export class ServiceListUseCase {
   constructor(private servicesRepository: IServicesRepository) {}
 
   async execute(auth: { userId: string }) {
-    const services = await this.servicesRepository.findByManyUserId(
-      auth.userId,
-    );
+    // Buscar os serviços do usuário autenticado
+    const [existingServices] = await Promise.all([
+      this.servicesRepository.findByManyUserId(auth.userId),
+    ]);
 
-    if (!services || services.length === 0) {
+    if (!existingServices || existingServices.length === 0) {
       throw new NotFoundError(MensagensPadronizadas.SERVICOS_NAO_ENCONTRADOS);
     }
 
-    return services;
+    return existingServices;
   }
 }

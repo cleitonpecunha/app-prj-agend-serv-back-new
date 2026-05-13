@@ -10,18 +10,19 @@ export class ServiceGetByUserIdUseCase {
   ) {}
 
   async execute(userId: string) {
-    const user = await this.usersRepository.findById(userId);
+    const [existingUser, existingServices] = await Promise.all([
+      this.usersRepository.findById(userId),
+      this.servicesRepository.findByManyUserId(userId),
+    ]);
 
-    if (!user) {
+    if (!existingUser) {
       throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
     }
 
-    const services = await this.servicesRepository.findByManyUserId(userId);
-
-    if (!services || services.length === 0) {
+    if (!existingServices || existingServices.length === 0) {
       throw new NotFoundError(MensagensPadronizadas.SERVICOS_NAO_ENCONTRADOS);
     }
 
-    return services;
+    return existingServices;
   }
 }

@@ -7,10 +7,10 @@ export class ServiceDeleteUseCase {
   constructor(private servicesRepository: IServicesRepository) {}
 
   async execute(id: string, auth: { userId: string }) {
-    const existingService = await this.servicesRepository.findById(
-      id,
-      auth.userId,
-    );
+    // validar se o serviço existe e pertence ao usuário autenticado
+    const [existingService] = await Promise.all([
+      this.servicesRepository.findById(id, auth.userId),
+    ]);
 
     if (!existingService) {
       throw new NotFoundError(MensagensPadronizadas.SERVICO_NAO_ENCONTRADO);

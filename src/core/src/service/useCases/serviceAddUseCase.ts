@@ -16,12 +16,12 @@ export class ServiceAddUseCase {
     auth: { userId: string },
     data: IServiceAddRequestDTO,
   ): Promise<void> {
-    // Verificar se o usuário/prestador existe
+    // Verificar se o usuário/prestador logado existe
     const [existingUser] = await Promise.all([
-      this.userRepository.findById(data.userId),
+      this.userRepository.findById(auth.userId),
     ]);
 
-    // Se o usuário/prestador não existir, lançar um erro
+    // Se o usuário/prestador logado não existir, lançar um erro
     if (!existingUser) {
       throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
     }
@@ -32,7 +32,10 @@ export class ServiceAddUseCase {
     //console.log("Dados recebidos para criação do serviço:", data);
 
     // Criar a instância do serviço e salvar no repositório
-    const service = new Service(data);
+    const service = new Service({
+      ...data,
+      userId: auth.userId,
+    });
 
     // Salvar o serviço no repositório
     await this.servicesRepository.save(service);

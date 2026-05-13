@@ -10,14 +10,17 @@ export class ServiceGetByIdUseCase {
     //console.log("id:", id);
     //console.log("auth:", auth.userId);
 
-    const service = await this.servicesRepository.findById(id, auth.userId);
+    // validar se o serviço existe e pertence ao usuário autenticado
+    const [existingService] = await Promise.all([
+      this.servicesRepository.findById(id, auth.userId),
+    ]);
 
-    if (!service) {
+    if (!existingService) {
       throw new NotFoundError(MensagensPadronizadas.SERVICOS_NAO_ENCONTRADOS);
     }
 
-    assertProviderOwnership(auth.userId, service.userId!);
+    assertProviderOwnership(auth.userId, existingService.userId!);
 
-    return service;
+    return existingService;
   }
 }
