@@ -28,38 +28,28 @@ export async function serviceRoutes(app: FastifyInstance) {
     servicesRepository,
     usersRepository,
   );
+  const serviceUpdateUseCase = new ServiceUpdateUseCase(servicesRepository);
   const serviceDeleteUseCase = new ServiceDeleteUseCase(servicesRepository);
-  const serviceListUseCase = new ServiceListUseCase(servicesRepository);
   const serviceGetByIdUseCase = new ServiceGetByIdUseCase(servicesRepository);
+  const serviceListUseCase = new ServiceListUseCase(servicesRepository);
   const serviceGetByUserIdUseCase = new ServiceGetByUserIdUseCase(
     servicesRepository,
     usersRepository,
   );
-  const serviceUpdateUseCase = new ServiceUpdateUseCase(servicesRepository);
 
   // Instanciar os Controllers com os UseCases
-  const registerService = new ServiceAddController(serviceAddUseCase);
+  const addService = new ServiceAddController(serviceAddUseCase);
+  const updateService = new ServiceUpdateController(serviceUpdateUseCase);
   const deleteService = new ServiceDeleteController(serviceDeleteUseCase);
-  const listServices = new ServiceListController(serviceListUseCase);
   const getByServiceId = new ServiceGetByIdController(serviceGetByIdUseCase);
+  const listServices = new ServiceListController(serviceListUseCase);
   const getByUserIdServices = new ServiceGetByUserIdController(
     serviceGetByUserIdUseCase,
   );
-  const updateService = new ServiceUpdateController(serviceUpdateUseCase);
 
   // add serviço do prestador logado
   app.post<{ Body: IServiceAddRequestDTO }>("/", async (request, reply) => {
-    return registerService.handle(request, reply);
-  });
-
-  // listar todos serviços do prestador logado
-  app.get("/", async (_request, reply) => {
-    return await listServices.handle(_request, reply);
-  });
-
-  // buscar por ID de serviço do prestador logado
-  app.get("/:id", async (request, reply) => {
-    return await getByServiceId.handle(request, reply);
+    return addService.handle(request, reply);
   });
 
   // atualizar serviço do prestador logado
@@ -73,6 +63,16 @@ export async function serviceRoutes(app: FastifyInstance) {
   // excluir serviço do prestador logado
   app.delete("/:id", async (request, reply) => {
     return await deleteService.handle(request, reply);
+  });
+
+  // buscar por ID de serviço do prestador logado
+  app.get("/:id", async (request, reply) => {
+    return await getByServiceId.handle(request, reply);
+  });
+
+  // listar todos serviços do prestador logado
+  app.get("/", async (_request, reply) => {
+    return await listServices.handle(_request, reply);
   });
 
   // listar todos os serviços de um usuario/prestador
