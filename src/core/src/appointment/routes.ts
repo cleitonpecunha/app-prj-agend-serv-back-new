@@ -6,7 +6,7 @@ import {
   IAppointmentUpdateRequestDTO,
 } from "./dto/appointmentDTO";
 
-export async function scheduleRoutes(app: FastifyInstance) {
+export async function appointmentRoutes(app: FastifyInstance) {
   // Instanciar as dependências
   const appointmentsRepository = new PostgresAppointmentsRepository();
   const usersRepository = new PostgresUsersRepository();
