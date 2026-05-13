@@ -13,6 +13,8 @@ import { ScheduleAddController } from "./controller/scheduleAddController";
 import { ScheduleUpdateController } from "./controller/scheduleUpdateController";
 import { ScheduleDeleteController } from "./controller/scheduleDEleteController";
 import { ScheduleGetByUserIdController } from "./controller/scheduleGetByUserIdController";
+import { ScheduleGetByIdUseCase } from "./useCase/scheduleGetByIdUseCase";
+import { ScheduleGetByIdController } from "./controller/scheduleGetByIdController";
 
 export async function scheduleRoutes(app: FastifyInstance) {
   // Instanciar as dependências
@@ -26,6 +28,9 @@ export async function scheduleRoutes(app: FastifyInstance) {
   );
   const scheduleUpdateUseCase = new ScheduleUpdateUseCase(schedulesRepository);
   const scheduleDeleteUseCase = new ScheduleDeleteUseCase(schedulesRepository);
+  const scheduleGetByIdUseCase = new ScheduleGetByIdUseCase(
+    schedulesRepository,
+  );
   const scheduleGetByUserIdUseCase = new ScheduleGetByUserIdUseCase(
     schedulesRepository,
     usersRepository,
@@ -35,6 +40,7 @@ export async function scheduleRoutes(app: FastifyInstance) {
   const addSchedule = new ScheduleAddController(scheduleAddUseCase);
   const updateSchedule = new ScheduleUpdateController(scheduleUpdateUseCase);
   const deleteSchedule = new ScheduleDeleteController(scheduleDeleteUseCase);
+  const getByScheduleId = new ScheduleGetByIdController(scheduleGetByIdUseCase);
   const getByUserIdSchedule = new ScheduleGetByUserIdController(
     scheduleGetByUserIdUseCase,
   );
@@ -55,6 +61,11 @@ export async function scheduleRoutes(app: FastifyInstance) {
   // excluir horario de atendimento do prestador logado
   app.delete("/:id", async (request, reply) => {
     return await deleteSchedule.handle(request, reply);
+  });
+
+  // buscar por ID de horario do prestador logado
+  app.get("/:id", async (request, reply) => {
+    return await getByScheduleId.handle(request, reply);
   });
 
   // listar todos os horarios de atendimento de um usuario/prestador
