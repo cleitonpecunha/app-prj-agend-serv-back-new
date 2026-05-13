@@ -17,7 +17,7 @@ function sortSchedules<T extends { dayOfWeek: string; startTime: string }>(
   schedules: T[],
 ): T[] {
   return [...schedules].sort((a, b) => {
-    const dayDiff = DAY_ORDER[a.dayOfWeek] - DAY_ORDER[b.dayOfWeek];
+    const dayDiff = DAY_ORDER[a.dayOfWeek]! - DAY_ORDER[b.dayOfWeek]!;
     if (dayDiff !== 0) return dayDiff;
     return a.startTime.localeCompare(b.startTime);
   });
