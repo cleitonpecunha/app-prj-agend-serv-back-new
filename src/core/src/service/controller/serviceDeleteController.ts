@@ -19,7 +19,7 @@ export class ServiceDeleteController {
       return response.status(204).send();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
+      return response.status(404).send({
         message,
       });
     }
