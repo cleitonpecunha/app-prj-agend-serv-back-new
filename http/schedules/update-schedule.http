@@ -1,52 +1,55 @@
 @baseUrl = http://localhost:3333
-@scheduleId = 1
-@accessToken = COLE_SEU_TOKEN_AQUI
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgQ2h1cGV0aW5oYSIsImVtYWlsIjoiYWJtYWVsQGVsZXRyaWNpc3RhLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3ODY3MjEwNCwiZXhwIjoxNzc4Njg2NTA0fQ.Gc7-lZEQZ7i1sug5lZNEhWqM6rpkBXqHnQiN_kYhAmk
+
+@scheduleIdAbmael = 3187a57a-518b-4d9d-8b03-df03f12efe49
+@scheduleIdAbmaelInexistente = gc3a020d-aad1-4950-9bf5-ba1865c5431h
 
 ### [SUCESSO] Atualizar horário existente
 # Esperado: 200 com horário atualizado
-PUT {{baseUrl}}/api/schedules/{{scheduleId}}
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
   "dayOfWeek": "tuesday",
-  "startTime": "08:00",
-  "endTime": "12:00"
+  "startTime": "07:00",
+  "endTime": "13:00"
 }
 
 ###
 
 ### [SUCESSO] Atualizar mantendo mesmo horário (sem conflito consigo mesmo)
 # Esperado: 200 — o próprio registro é ignorado na checagem de conflito
-PUT {{baseUrl}}/api/schedules/{{scheduleId}}
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
   "dayOfWeek": "monday",
-  "startTime": "09:00",
-  "endTime": "12:00"
+  "startTime": "07:00",
+  "endTime": "13:00"
 }
 
 ###
 
-### [FALHA] Horário inexistente
-# Esperado: 404 NotFoundError
-PUT {{baseUrl}}/api/schedules/999999
+### [FALHA] Atualização gera conflito com outro horário existente
+# Esperado: 400 
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmaelInexistente}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "dayOfWeek": "tuesday",
-  "startTime": "08:00",
-  "endTime": "12:00"
+  "dayOfWeek": "monday",
+  "startTime": "07:00",
+  "endTime": "13:00"
 }
 
 ###
 
 ### [FALHA] Atualização gera conflito com outro horário existente
 # Esperado: 409 ConflictError
-PUT {{baseUrl}}/api/schedules/{{scheduleId}}
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -58,23 +61,9 @@ Content-Type: application/json
 
 ###
 
-### [FALHA] ID inválido no path
-# Esperado: 422 Validation Error
-PUT {{baseUrl}}/api/schedules/abc
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "dayOfWeek": "monday",
-  "startTime": "09:00",
-  "endTime": "17:00"
-}
-
-###
-
 ### [FALHA] dayOfWeek ausente no body
 # Esperado: 422 Validation Error com campo dayOfWeek nos issues
-PUT {{baseUrl}}/api/schedules/{{scheduleId}}
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -87,7 +76,7 @@ Content-Type: application/json
 
 ### [FALHA] startTime >= endTime
 # Esperado: 422 Validation Error com campo startTime nos issues
-PUT {{baseUrl}}/api/schedules/{{scheduleId}}
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -101,7 +90,7 @@ Content-Type: application/json
 
 ### [FALHA] Sem token de autenticação
 # Esperado: 401 UnauthorizedError
-PUT {{baseUrl}}/api/schedules/{{scheduleId}}
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 Content-Type: application/json
 
 {
@@ -111,16 +100,3 @@ Content-Type: application/json
 }
 
 ###
-
-### [FALHA] Token de outro prestador (sem permissão para atualizar este horário)
-# Pré-requisito: @accessToken pertence ao prestador id=2; horário id=1 pertence ao id=1
-# Esperado: 403 ForbiddenError
-PUT {{baseUrl}}/api/schedules/{{scheduleId}}
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "dayOfWeek": "tuesday",
-  "startTime": "08:00",
-  "endTime": "12:00"
-}

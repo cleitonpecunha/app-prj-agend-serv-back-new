@@ -1,10 +1,10 @@
 @baseUrl = http://localhost:3333
-@providerId = 1
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicHJvdmlkZXJJZCI6MSwiZW1haWwiOiJqb2FvQGJhcmJlYXJpYS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzcyOTg5NzEsImV4cCI6MTc3NzI5OTg3MX0.oftZAiaohEfIqmMFcKLbnH7A9I3hlfjUoy9jix5vevg
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgQ2h1cGV0aW5oYSIsImVtYWlsIjoiYWJtYWVsQGVsZXRyaWNpc3RhLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3ODY3MjEwNCwiZXhwIjoxNzc4Njg2NTA0fQ.Gc7-lZEQZ7i1sug5lZNEhWqM6rpkBXqHnQiN_kYhAmk
 
 ### [SUCESSO] Criar horário válido na segunda-feira
 # Esperado: 201 com objeto do horário criado
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ### [SUCESSO] Criar segundo horário no mesmo dia sem sobreposição (adjacente)
 # Esperado: 201 — horários adjacentes são permitidos
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 ### [SUCESSO] Criar horário em dia diferente
 # Esperado: 201
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -44,9 +44,23 @@ Content-Type: application/json
 
 ###
 
+### [SUCESSO] Criar horário em dia diferente
+# Esperado: 201
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "saturday",
+  "startTime": "08:00",
+  "endTime": "17:00"
+}
+
+###
+
 ### [FALHA] Criar horário com conflito de sobreposição
 # Esperado: 409 ConflictError
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -58,23 +72,9 @@ Content-Type: application/json
 
 ###
 
-### [FALHA] Criar horário com prestador inexistente
-# Esperado: 404 NotFoundError
-POST {{baseUrl}}/api/providers/999999/schedules
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "dayOfWeek": "monday",
-  "startTime": "09:00",
-  "endTime": "17:00"
-}
-
-###
-
 ### [FALHA] dayOfWeek com valor inválido (em português)
 # Esperado: 422 Validation Error com campo dayOfWeek nos issues
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -88,7 +88,7 @@ Content-Type: application/json
 
 ### [FALHA] startTime com formato inválido
 # Esperado: 422 Validation Error com campo startTime nos issues
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -102,7 +102,7 @@ Content-Type: application/json
 
 ### [FALHA] endTime com formato inválido
 # Esperado: 422 Validation Error com campo endTime nos issues
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -116,7 +116,7 @@ Content-Type: application/json
 
 ### [FALHA] startTime maior que endTime
 # Esperado: 422 Validation Error com campo startTime nos issues
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
@@ -130,8 +130,9 @@ Content-Type: application/json
 
 ### [FALHA] startTime igual a endTime
 # Esperado: 422 Validation Error
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "dayOfWeek": "monday",
@@ -141,23 +142,9 @@ Content-Type: application/json
 
 ###
 
-### [FALHA] providerId inválido no path
-# Esperado: 422 Validation Error
-POST {{baseUrl}}/api/providers/abc/schedules
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "dayOfWeek": "monday",
-  "startTime": "09:00",
-  "endTime": "17:00"
-}
-
-###
-
 ### [FALHA] Sem token de autenticação
 # Esperado: 401 UnauthorizedError
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
+POST {{baseUrl}}/api/schedules
 Content-Type: application/json
 
 {
@@ -167,16 +154,3 @@ Content-Type: application/json
 }
 
 ###
-
-### [FALHA] Token de outro prestador (sem permissão para criar horário para este providerId)
-# Pré-requisito: @accessToken pertence ao prestador id=2; tentando criar horário para id=1
-# Esperado: 403 ForbiddenError
-POST {{baseUrl}}/api/providers/{{providerId}}/schedules
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "dayOfWeek": "monday",
-  "startTime": "09:00",
-  "endTime": "17:00"
-}

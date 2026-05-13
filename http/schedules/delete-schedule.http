@@ -1,43 +1,26 @@
 @baseUrl = http://localhost:3333
-@scheduleId = 1
-@accessToken = COLE_SEU_TOKEN_AQUI
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgQ2h1cGV0aW5oYSIsImVtYWlsIjoiYWJtYWVsQGVsZXRyaWNpc3RhLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3ODY3MjEwNCwiZXhwIjoxNzc4Njg2NTA0fQ.Gc7-lZEQZ7i1sug5lZNEhWqM6rpkBXqHnQiN_kYhAmk
+
+@scheduleIdAbmael = 2a8315a6-e1c8-452b-8881-d68f424a8d78
+@scheduleIdAbmaelInexistente = gc3a020d-aad1-4950-9bf5-ba1865c5431h
 
 ### [SUCESSO] Remover horário existente
 # Esperado: 204 sem corpo
-DELETE {{baseUrl}}/api/schedules/{{scheduleId}}
+DELETE {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 Authorization: Bearer {{accessToken}}
 
 ###
 
-### [FALHA] Horário inexistente
-# Esperado: 404 NotFoundError
-DELETE {{baseUrl}}/api/schedules/999999
+### [FALHA] Tentar remover horário inexistente
+# Esperado: 404 Not Found
+DELETE {{baseUrl}}/api/schedules/{{scheduleIdAbmaelInexistente}}
 Authorization: Bearer {{accessToken}}
 
-###
-
-### [FALHA] ID inválido no path
-# Esperado: 422 Validation Error
-DELETE {{baseUrl}}/api/schedules/abc
-Authorization: Bearer {{accessToken}}
-
-###
-
-### [FALHA] ID zero (inválido)
-# Esperado: 422 Validation Error
-DELETE {{baseUrl}}/api/schedules/0
-Authorization: Bearer {{accessToken}}
-
-###
+### 
 
 ### [FALHA] Sem token de autenticação
 # Esperado: 401 UnauthorizedError
-DELETE {{baseUrl}}/api/schedules/{{scheduleId}}
+DELETE {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
 
 ###
-
-### [FALHA] Token de outro prestador (sem permissão para remover este horário)
-# Pré-requisito: @accessToken pertence ao prestador id=2; horário id=1 pertence ao id=1
-# Esperado: 403 ForbiddenError
-DELETE {{baseUrl}}/api/schedules/{{scheduleId}}
-Authorization: Bearer {{accessToken}}
