@@ -10,7 +10,7 @@ export default class Appointment {
   public clientName?: string;
   public clientEmail?: string;
   public clientPhone?: string;
-  public notes?: string;
+  public notes?: string | null;
 
   constructor(props: Omit<Appointment, "id">, id?: string) {
     Object.assign(this, props);

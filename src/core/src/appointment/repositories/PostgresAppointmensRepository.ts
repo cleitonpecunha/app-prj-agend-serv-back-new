@@ -1,6 +1,7 @@
 import Appointment from "../model/appointment";
 import {
   IAppointmentResponseDTO,
+  IAppointmentServiceResponseDTO,
   IAppointmentUpdateRequestDTO,
 } from "../dto/appointmentDTO";
 import { prisma } from "@/lib/prisma";
@@ -45,28 +46,26 @@ export class PostgresAppointmentsRepository implements IAppointmentsRepository {
     return appointment!;
   }
 
-  async findManyByUserAndDate(
+  async findManyByUserIdAndDate(
     userId: string,
     appointmentDate: Date,
-  ): Promise<IAppointmentResponseDTO[]> {
+  ): Promise<IAppointmentServiceResponseDTO[]> {
     return prisma.appointment.findMany({
       where: { userId, appointmentDate },
       include: {
         service: {
-          select: {
-            durationMinutes: true,
-          },
+          select: { name: true, durationMinutes: true, priceInCents: true },
         },
       },
       orderBy: { startTime: "asc" },
     });
   }
 
-  async findManyByUserAndMonth(
+  async findManyByUserIdAndMonth(
     userId: string,
     year: number,
     month: number,
-  ): Promise<IAppointmentResponseDTO[]> {
+  ): Promise<IAppointmentServiceResponseDTO[]> {
     const startDate = new Date(Date.UTC(year, month - 1, 1));
     const endDate = new Date(Date.UTC(year, month, 1));
     return prisma.appointment.findMany({
@@ -76,7 +75,7 @@ export class PostgresAppointmentsRepository implements IAppointmentsRepository {
       },
       include: {
         service: {
-          select: { name: true, price: true },
+          select: { name: true, durationMinutes: true, priceInCents: true },
         },
       },
       orderBy: [{ appointmentDate: "asc" }, { startTime: "asc" }],

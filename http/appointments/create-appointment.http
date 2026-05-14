@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3333
-@serviceId = 1
+@serviceId = 050eaad5-68d0-4bfa-9962-d8bf22b29ed2
+@serviceIdInexistente = 050eaad5-1g44-4bfa-9962-d8bf22b29ed2
 
 ### [SUCESSO] Criar agendamento válido para serviço ativo
 # Esperado: 201 com objeto do agendamento criado e status scheduled
@@ -10,11 +11,11 @@ POST {{baseUrl}}/api/services/{{serviceId}}/appointments
 Content-Type: application/json
 
 {
-  "appointmentDate": "2026-05-11",
+  "appointmentDate": "2026-05-15",
   "startTime": "09:00",
   "clientName": "Maria Souza",
   "clientEmail": "maria@email.com",
-  "clientPhone": "11999991111",
+  "clientPhone": "+55 (11) 99999-1111",
   "notes": "Primeira visita"
 }
 
@@ -22,15 +23,15 @@ Content-Type: application/json
 
 ### [FALHA] Serviço inexistente
 # Esperado: 404 NotFoundError
-POST {{baseUrl}}/api/services/999999/appointments
+POST {{baseUrl}}/api/services/{{serviceIdInexistente}}/appointments
 Content-Type: application/json
 
 {
-  "appointmentDate": "2026-05-11",
+  "appointmentDate": "2026-05-15",
   "startTime": "09:00",
   "clientName": "Maria Souza",
   "clientEmail": "maria@email.com",
-  "clientPhone": "11999991111"
+  "clientPhone": "+55 (11) 99999-1111"
 }
 
 ###
@@ -41,11 +42,11 @@ POST {{baseUrl}}/api/services/{{serviceId}}/appointments
 Content-Type: application/json
 
 {
-  "appointmentDate": "2026-05-11",
+  "appointmentDate": "2026-05-15",
   "startTime": "06:00",
   "clientName": "Cliente Fora do Turno",
   "clientEmail": "fora@email.com",
-  "clientPhone": "11999992222"
+  "clientPhone": "+55 (11) 99999-2222"
 }
 
 ###
@@ -56,11 +57,11 @@ POST {{baseUrl}}/api/services/{{serviceId}}/appointments
 Content-Type: application/json
 
 {
-  "appointmentDate": "2026-05-11",
+  "appointmentDate": "2026-05-15",
   "startTime": "09:15",
   "clientName": "Cliente em Conflito",
   "clientEmail": "conflito@email.com",
-  "clientPhone": "11999993333"
+  "clientPhone": "+55 (11) 99999-3333"
 }
 
 ###
@@ -71,11 +72,11 @@ POST {{baseUrl}}/api/services/{{serviceId}}/appointments
 Content-Type: application/json
 
 {
-  "appointmentDate": "2026-05-11",
+  "appointmentDate": "2026-05-15",
   "startTime": "09:00",
   "clientName": "Email Inválido",
   "clientEmail": "email-invalido",
-  "clientPhone": "11999994444"
+  "clientPhone": "+55 (11) 99999-4444"
 }
 
 ###
@@ -90,20 +91,7 @@ Content-Type: application/json
   "startTime": "09:00",
   "clientName": "Data Inválida",
   "clientEmail": "data@email.com",
-  "clientPhone": "11999995555"
+  "clientPhone": "+55 (11) 99999-5555"
 }
 
 ###
-
-### [FALHA] serviceId inválido no path
-# Esperado: 422 Validation Error
-POST {{baseUrl}}/api/services/abc/appointments
-Content-Type: application/json
-
-{
-  "appointmentDate": "2026-05-11",
-  "startTime": "09:00",
-  "clientName": "ID Inválido",
-  "clientEmail": "id@email.com",
-  "clientPhone": "11999996666"
-}

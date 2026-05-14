@@ -1,7 +1,4 @@
 export interface IAppointmentAddRequestDTO {
-  id: string;
-  userId: string;
-  serviceId: string;
   appointmentDate: Date;
   startTime: string;
   clientName: string;
@@ -24,4 +21,21 @@ export interface IAppointmentResponseDTO {
   clientEmail: string;
   clientPhone: string;
   notes: string | null;
+}
+
+export interface IAppointmentServiceResponseDTO {
+  id: string;
+  userId: string;
+  serviceId: string;
+  appointmentDate: Date;
+  startTime: string;
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  notes: string | null;
+  service: {
+    name: string;
+    durationMinutes: number;
+    priceInCents: number;
+  };
 }

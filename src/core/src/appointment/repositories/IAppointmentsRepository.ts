@@ -1,6 +1,7 @@
 import Appointment from "../model/appointment";
 import {
   IAppointmentResponseDTO,
+  IAppointmentServiceResponseDTO,
   IAppointmentUpdateRequestDTO,
 } from "../dto/appointmentDTO";
 import Schedule from "@/core/src/schedule/model/schedule";
@@ -20,14 +21,14 @@ export interface IAppointmentsRepository {
     serviceId: string,
   ): Promise<IAppointmentResponseDTO>;
 
-  findManyByUserAndDate(
+  findManyByUserIdAndDate(
     userId: string,
     appointmentDate: Date,
-  ): Promise<IAppointmentResponseDTO[]>;
+  ): Promise<IAppointmentServiceResponseDTO[]>;
 
-  findManyByUserAndMonth(
+  findManyByUserIdAndMonth(
     userId: string,
     year: number,
     month: number,
-  ): Promise<IAppointmentResponseDTO[]>;
+  ): Promise<IAppointmentServiceResponseDTO[]>;
 }
