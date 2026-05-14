@@ -11,7 +11,7 @@ import { ScheduleGetByUserIdUseCase } from "./useCase/scheduleGetByUserIdUseCase
 import { ScheduleUpdateUseCase } from "./useCase/scheduleUpdateUseCase";
 import { ScheduleAddController } from "./controller/scheduleAddController";
 import { ScheduleUpdateController } from "./controller/scheduleUpdateController";
-import { ScheduleDeleteController } from "./controller/scheduleDEleteController";
+import { ScheduleDeleteController } from "./controller/scheduleDeleteController";
 import { ScheduleGetByUserIdController } from "./controller/scheduleGetByUserIdController";
 import { ScheduleGetByIdUseCase } from "./useCase/scheduleGetByIdUseCase";
 import { ScheduleGetByIdController } from "./controller/scheduleGetByIdController";
