@@ -18,9 +18,16 @@ export class PostgresServicesRepository implements IServicesRepository {
     return services;
   }
 
-  async findById(id: string, userId: string): Promise<Service> {
+  async findByIdUserId(id: string, userId: string): Promise<Service> {
     const service = await prisma.service.findUnique({
       where: { id: id, userId: userId },
+    });
+    return service!;
+  }
+
+  async findById(id: string): Promise<Service> {
+    const service = await prisma.service.findUnique({
+      where: { id: id },
     });
     return service!;
   }

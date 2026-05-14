@@ -6,7 +6,9 @@ export interface IServicesRepository {
 
   findByManyUserId(userId: string): Promise<Service[]>;
 
-  findById(id: string, userId: string): Promise<Service>;
+  findByIdUserId(id: string, userId: string): Promise<Service>;
+
+  findById(id: string): Promise<Service>;
 
   update(
     id: string,

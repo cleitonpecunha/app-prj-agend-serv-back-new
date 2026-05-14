@@ -9,7 +9,7 @@ export class ServiceDeleteUseCase {
   async execute(id: string, auth: { userId: string }) {
     // validar se o serviço existe e pertence ao usuário autenticado
     const [existingService] = await Promise.all([
-      this.servicesRepository.findById(id, auth.userId),
+      this.servicesRepository.findByIdUserId(id, auth.userId),
     ]);
 
     if (!existingService) {
