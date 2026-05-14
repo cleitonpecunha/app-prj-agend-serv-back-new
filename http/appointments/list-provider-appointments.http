@@ -4,7 +4,7 @@
 
 ### [SUCESSO] Listar agendamentos do prestador
 # Esperado: 200 com array de agendamentos ordenado por data e hora
-GET {{baseUrl}}/api/providers/{{providerId}}/appointments
+GET {{baseUrl}}/api/users/{{providerId}}/appointments
 Authorization: Bearer {{accessToken}}
 
 ###
