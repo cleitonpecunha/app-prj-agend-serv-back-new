@@ -206,7 +206,7 @@ export type ScheduleWhereInput = {
   isActive?: Prisma.BoolFilter<"Schedule"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
-  provider?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type ScheduleOrderByWithRelationInput = {
@@ -218,7 +218,7 @@ export type ScheduleOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  provider?: Prisma.UserOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ScheduleWhereUniqueInput = Prisma.AtLeast<{
@@ -233,7 +233,7 @@ export type ScheduleWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"Schedule"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
-  provider?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type ScheduleOrderByWithAggregationInput = {
@@ -272,7 +272,7 @@ export type ScheduleCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  provider: Prisma.UserCreateNestedOneWithoutSchedulesInput
+  user: Prisma.UserCreateNestedOneWithoutSchedulesInput
 }
 
 export type ScheduleUncheckedCreateInput = {
@@ -294,7 +294,7 @@ export type ScheduleUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  provider?: Prisma.UserUpdateOneRequiredWithoutSchedulesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSchedulesNestedInput
 }
 
 export type ScheduleUncheckedUpdateInput = {
@@ -383,49 +383,49 @@ export type ScheduleMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ScheduleCreateNestedManyWithoutProviderInput = {
-  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutProviderInput, Prisma.ScheduleUncheckedCreateWithoutProviderInput> | Prisma.ScheduleCreateWithoutProviderInput[] | Prisma.ScheduleUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutProviderInput | Prisma.ScheduleCreateOrConnectWithoutProviderInput[]
-  createMany?: Prisma.ScheduleCreateManyProviderInputEnvelope
+export type ScheduleCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutUserInput, Prisma.ScheduleUncheckedCreateWithoutUserInput> | Prisma.ScheduleCreateWithoutUserInput[] | Prisma.ScheduleUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutUserInput | Prisma.ScheduleCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ScheduleCreateManyUserInputEnvelope
   connect?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
 }
 
-export type ScheduleUncheckedCreateNestedManyWithoutProviderInput = {
-  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutProviderInput, Prisma.ScheduleUncheckedCreateWithoutProviderInput> | Prisma.ScheduleCreateWithoutProviderInput[] | Prisma.ScheduleUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutProviderInput | Prisma.ScheduleCreateOrConnectWithoutProviderInput[]
-  createMany?: Prisma.ScheduleCreateManyProviderInputEnvelope
+export type ScheduleUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutUserInput, Prisma.ScheduleUncheckedCreateWithoutUserInput> | Prisma.ScheduleCreateWithoutUserInput[] | Prisma.ScheduleUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutUserInput | Prisma.ScheduleCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ScheduleCreateManyUserInputEnvelope
   connect?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
 }
 
-export type ScheduleUpdateManyWithoutProviderNestedInput = {
-  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutProviderInput, Prisma.ScheduleUncheckedCreateWithoutProviderInput> | Prisma.ScheduleCreateWithoutProviderInput[] | Prisma.ScheduleUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutProviderInput | Prisma.ScheduleCreateOrConnectWithoutProviderInput[]
-  upsert?: Prisma.ScheduleUpsertWithWhereUniqueWithoutProviderInput | Prisma.ScheduleUpsertWithWhereUniqueWithoutProviderInput[]
-  createMany?: Prisma.ScheduleCreateManyProviderInputEnvelope
+export type ScheduleUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutUserInput, Prisma.ScheduleUncheckedCreateWithoutUserInput> | Prisma.ScheduleCreateWithoutUserInput[] | Prisma.ScheduleUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutUserInput | Prisma.ScheduleCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ScheduleUpsertWithWhereUniqueWithoutUserInput | Prisma.ScheduleUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ScheduleCreateManyUserInputEnvelope
   set?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
   disconnect?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
   delete?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
   connect?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
-  update?: Prisma.ScheduleUpdateWithWhereUniqueWithoutProviderInput | Prisma.ScheduleUpdateWithWhereUniqueWithoutProviderInput[]
-  updateMany?: Prisma.ScheduleUpdateManyWithWhereWithoutProviderInput | Prisma.ScheduleUpdateManyWithWhereWithoutProviderInput[]
+  update?: Prisma.ScheduleUpdateWithWhereUniqueWithoutUserInput | Prisma.ScheduleUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ScheduleUpdateManyWithWhereWithoutUserInput | Prisma.ScheduleUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.ScheduleScalarWhereInput | Prisma.ScheduleScalarWhereInput[]
 }
 
-export type ScheduleUncheckedUpdateManyWithoutProviderNestedInput = {
-  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutProviderInput, Prisma.ScheduleUncheckedCreateWithoutProviderInput> | Prisma.ScheduleCreateWithoutProviderInput[] | Prisma.ScheduleUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutProviderInput | Prisma.ScheduleCreateOrConnectWithoutProviderInput[]
-  upsert?: Prisma.ScheduleUpsertWithWhereUniqueWithoutProviderInput | Prisma.ScheduleUpsertWithWhereUniqueWithoutProviderInput[]
-  createMany?: Prisma.ScheduleCreateManyProviderInputEnvelope
+export type ScheduleUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ScheduleCreateWithoutUserInput, Prisma.ScheduleUncheckedCreateWithoutUserInput> | Prisma.ScheduleCreateWithoutUserInput[] | Prisma.ScheduleUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ScheduleCreateOrConnectWithoutUserInput | Prisma.ScheduleCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ScheduleUpsertWithWhereUniqueWithoutUserInput | Prisma.ScheduleUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ScheduleCreateManyUserInputEnvelope
   set?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
   disconnect?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
   delete?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
   connect?: Prisma.ScheduleWhereUniqueInput | Prisma.ScheduleWhereUniqueInput[]
-  update?: Prisma.ScheduleUpdateWithWhereUniqueWithoutProviderInput | Prisma.ScheduleUpdateWithWhereUniqueWithoutProviderInput[]
-  updateMany?: Prisma.ScheduleUpdateManyWithWhereWithoutProviderInput | Prisma.ScheduleUpdateManyWithWhereWithoutProviderInput[]
+  update?: Prisma.ScheduleUpdateWithWhereUniqueWithoutUserInput | Prisma.ScheduleUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ScheduleUpdateManyWithWhereWithoutUserInput | Prisma.ScheduleUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.ScheduleScalarWhereInput | Prisma.ScheduleScalarWhereInput[]
 }
 
-export type ScheduleCreateWithoutProviderInput = {
+export type ScheduleCreateWithoutUserInput = {
   id: string
   dayOfWeek: string
   startTime: string
@@ -435,7 +435,7 @@ export type ScheduleCreateWithoutProviderInput = {
   updatedAt?: Date | string
 }
 
-export type ScheduleUncheckedCreateWithoutProviderInput = {
+export type ScheduleUncheckedCreateWithoutUserInput = {
   id: string
   dayOfWeek: string
   startTime: string
@@ -445,30 +445,30 @@ export type ScheduleUncheckedCreateWithoutProviderInput = {
   updatedAt?: Date | string
 }
 
-export type ScheduleCreateOrConnectWithoutProviderInput = {
+export type ScheduleCreateOrConnectWithoutUserInput = {
   where: Prisma.ScheduleWhereUniqueInput
-  create: Prisma.XOR<Prisma.ScheduleCreateWithoutProviderInput, Prisma.ScheduleUncheckedCreateWithoutProviderInput>
+  create: Prisma.XOR<Prisma.ScheduleCreateWithoutUserInput, Prisma.ScheduleUncheckedCreateWithoutUserInput>
 }
 
-export type ScheduleCreateManyProviderInputEnvelope = {
-  data: Prisma.ScheduleCreateManyProviderInput | Prisma.ScheduleCreateManyProviderInput[]
+export type ScheduleCreateManyUserInputEnvelope = {
+  data: Prisma.ScheduleCreateManyUserInput | Prisma.ScheduleCreateManyUserInput[]
   skipDuplicates?: boolean
 }
 
-export type ScheduleUpsertWithWhereUniqueWithoutProviderInput = {
+export type ScheduleUpsertWithWhereUniqueWithoutUserInput = {
   where: Prisma.ScheduleWhereUniqueInput
-  update: Prisma.XOR<Prisma.ScheduleUpdateWithoutProviderInput, Prisma.ScheduleUncheckedUpdateWithoutProviderInput>
-  create: Prisma.XOR<Prisma.ScheduleCreateWithoutProviderInput, Prisma.ScheduleUncheckedCreateWithoutProviderInput>
+  update: Prisma.XOR<Prisma.ScheduleUpdateWithoutUserInput, Prisma.ScheduleUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ScheduleCreateWithoutUserInput, Prisma.ScheduleUncheckedCreateWithoutUserInput>
 }
 
-export type ScheduleUpdateWithWhereUniqueWithoutProviderInput = {
+export type ScheduleUpdateWithWhereUniqueWithoutUserInput = {
   where: Prisma.ScheduleWhereUniqueInput
-  data: Prisma.XOR<Prisma.ScheduleUpdateWithoutProviderInput, Prisma.ScheduleUncheckedUpdateWithoutProviderInput>
+  data: Prisma.XOR<Prisma.ScheduleUpdateWithoutUserInput, Prisma.ScheduleUncheckedUpdateWithoutUserInput>
 }
 
-export type ScheduleUpdateManyWithWhereWithoutProviderInput = {
+export type ScheduleUpdateManyWithWhereWithoutUserInput = {
   where: Prisma.ScheduleScalarWhereInput
-  data: Prisma.XOR<Prisma.ScheduleUpdateManyMutationInput, Prisma.ScheduleUncheckedUpdateManyWithoutProviderInput>
+  data: Prisma.XOR<Prisma.ScheduleUpdateManyMutationInput, Prisma.ScheduleUncheckedUpdateManyWithoutUserInput>
 }
 
 export type ScheduleScalarWhereInput = {
@@ -485,7 +485,7 @@ export type ScheduleScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
 }
 
-export type ScheduleCreateManyProviderInput = {
+export type ScheduleCreateManyUserInput = {
   id: string
   dayOfWeek: string
   startTime: string
@@ -495,7 +495,7 @@ export type ScheduleCreateManyProviderInput = {
   updatedAt?: Date | string
 }
 
-export type ScheduleUpdateWithoutProviderInput = {
+export type ScheduleUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -505,7 +505,7 @@ export type ScheduleUpdateWithoutProviderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ScheduleUncheckedUpdateWithoutProviderInput = {
+export type ScheduleUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -515,7 +515,7 @@ export type ScheduleUncheckedUpdateWithoutProviderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ScheduleUncheckedUpdateManyWithoutProviderInput = {
+export type ScheduleUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -536,7 +536,7 @@ export type ScheduleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  provider?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
 export type ScheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -548,7 +548,7 @@ export type ScheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  provider?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
 export type ScheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -560,7 +560,7 @@ export type ScheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  provider?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
 export type ScheduleSelectScalar = {
@@ -576,19 +576,19 @@ export type ScheduleSelectScalar = {
 
 export type ScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "dayOfWeek" | "startTime" | "endTime" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["schedule"]>
 export type ScheduleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  provider?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ScheduleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  provider?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ScheduleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  provider?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $SchedulePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Schedule"
   objects: {
-    provider: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -993,7 +993,7 @@ readonly fields: ScheduleFieldRefs;
  */
 export interface Prisma__ScheduleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  provider<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

@@ -305,9 +305,9 @@ export type UserCreateInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  services?: Prisma.ServiceCreateNestedManyWithoutProviderInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutProviderInput
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutProviderInput
+  services?: Prisma.ServiceCreateNestedManyWithoutUserInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutUserInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -321,9 +321,9 @@ export type UserUncheckedCreateInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutProviderInput
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProviderInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutUserInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutUserInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -337,9 +337,9 @@ export type UserUpdateInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  services?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutProviderNestedInput
-  appointments?: Prisma.AppointmentUpdateManyWithoutProviderNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutUserNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutUserNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -353,9 +353,9 @@ export type UserUncheckedUpdateInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutProviderNestedInput
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProviderNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutUserNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutUserNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -502,8 +502,8 @@ export type UserCreateWithoutServicesInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutProviderInput
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutProviderInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutUserInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutServicesInput = {
@@ -517,8 +517,8 @@ export type UserUncheckedCreateWithoutServicesInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutProviderInput
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProviderInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutUserInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutServicesInput = {
@@ -548,8 +548,8 @@ export type UserUpdateWithoutServicesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  schedules?: Prisma.ScheduleUpdateManyWithoutProviderNestedInput
-  appointments?: Prisma.AppointmentUpdateManyWithoutProviderNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutUserNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutServicesInput = {
@@ -563,8 +563,8 @@ export type UserUncheckedUpdateWithoutServicesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutProviderNestedInput
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProviderNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutUserNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSchedulesInput = {
@@ -578,8 +578,8 @@ export type UserCreateWithoutSchedulesInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  services?: Prisma.ServiceCreateNestedManyWithoutProviderInput
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutProviderInput
+  services?: Prisma.ServiceCreateNestedManyWithoutUserInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSchedulesInput = {
@@ -593,8 +593,8 @@ export type UserUncheckedCreateWithoutSchedulesInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProviderInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutUserInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSchedulesInput = {
@@ -624,8 +624,8 @@ export type UserUpdateWithoutSchedulesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  services?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
-  appointments?: Prisma.AppointmentUpdateManyWithoutProviderNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutUserNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSchedulesInput = {
@@ -639,8 +639,8 @@ export type UserUncheckedUpdateWithoutSchedulesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProviderNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutUserNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAppointmentsInput = {
@@ -654,8 +654,8 @@ export type UserCreateWithoutAppointmentsInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  services?: Prisma.ServiceCreateNestedManyWithoutProviderInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutProviderInput
+  services?: Prisma.ServiceCreateNestedManyWithoutUserInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAppointmentsInput = {
@@ -669,8 +669,8 @@ export type UserUncheckedCreateWithoutAppointmentsInput = {
   address: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutProviderInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutUserInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAppointmentsInput = {
@@ -700,8 +700,8 @@ export type UserUpdateWithoutAppointmentsInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  services?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutProviderNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutUserNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAppointmentsInput = {
@@ -715,8 +715,8 @@ export type UserUncheckedUpdateWithoutAppointmentsInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutProviderNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutUserNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
