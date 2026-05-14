@@ -11,12 +11,12 @@ POST {{baseUrl}}/api/services/{{serviceId}}/appointments
 Content-Type: application/json
 
 {
-  "appointmentDate": "2026-05-15",
+  "appointmentDate": "2026-05-22",
   "startTime": "09:00",
   "clientName": "Maria Souza",
   "clientEmail": "maria@email.com",
   "clientPhone": "+55 (11) 99999-1111",
-  "notes": "Primeira visita"
+  "notes": "Terceiro agendamento para teste de conflito"
 }
 
 ###
