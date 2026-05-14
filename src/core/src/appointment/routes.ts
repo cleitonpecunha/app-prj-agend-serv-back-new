@@ -9,6 +9,8 @@ import { AppointmentAddUseCase } from "./useCase/appointmentAddUseCase";
 import { AppointmentAddController } from "./controller/appointmentAddController";
 import { PostgresServicesRepository } from "../service/repositories/PostgresServicesRepository";
 import { PostgresSchedulesRepository } from "../schedule/repositories/PostgresSchedulesRepository";
+import { AppointmentGetAllUserIdUseCase } from "./useCase/appointmentGetAllUserIdUseCase";
+import { AppointmentGetAllUserIdController } from "./controller/appointmentGetAllUserIdController";
 
 // criar agendamento, para o serviço de um usuário/prestador, solictado pelo cliente
 export async function serviceAppointmentRoutes(app: FastifyInstance) {
@@ -40,30 +42,21 @@ export async function serviceAppointmentRoutes(app: FastifyInstance) {
   );
 }
 
+// buscar agendamento, para o serviço de um usuário/prestador, solicitado pelo cliente
 export async function userAppointmentRoutes(app: FastifyInstance) {
-  app.get("/:userId/appointments", async (request, reply) => {
-    /*
-    const auth = await requireAuth(request);
+  // Instanciar as dependências
+  const appointmentsRepository = new PostgresAppointmentsRepository();
 
-    const parsed = parseWith(providerAppointmentsParamsSchema, request.params);
-    if (!parsed.success) throw parsed.error;
+  // Instanciar os UseCases com as dependências
+  const appointmentGetAllUserIdUseCase = new AppointmentGetAllUserIdUseCase(
+    appointmentsRepository,
+  );
 
-    const existingProvider = await providerRepository.findById(
-      parsed.data.providerId,
-    );
-
-    if (!existingProvider) {
-      throw new NotFoundError("Prestador");
-    }
-
-    assertProviderOwnership(auth.providerId, existingProvider.id);
-
-    const appointments = await listAppointmentsByProvider(
-      parsed.data.providerId,
-    );
-    return reply.send(appointments);
-    */
-    return;
+  // Instanciar os Controllers com os UseCases
+  const appointmentGetAllUserIdController =
+    new AppointmentGetAllUserIdController(appointmentGetAllUserIdUseCase);
+  app.get("/appointments", async (request, reply) => {
+    return appointmentGetAllUserIdController.handle(request, reply);
   });
 }
 
