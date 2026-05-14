@@ -1,6 +1,5 @@
 import Appointment from "../model/appointment";
 import {
-  IAppointmentResponseDTO,
   IAppointmentServiceResponseDTO,
   IAppointmentUpdateRequestDTO,
 } from "../dto/appointmentDTO";
@@ -13,13 +12,13 @@ export interface IAppointmentsRepository {
 
   delete(id: string, userId: string, serviceId: string): Promise<void>;
 
-  findByManyUserId(userId: string): Promise<IAppointmentResponseDTO[]>;
-
   findById(
     id: string,
     userId: string,
     serviceId: string,
-  ): Promise<IAppointmentResponseDTO>;
+  ): Promise<IAppointmentServiceResponseDTO>;
+
+  findByManyUserId(userId: string): Promise<IAppointmentServiceResponseDTO[]>;
 
   findManyByUserIdAndDate(
     userId: string,

@@ -26,16 +26,17 @@ export interface IAppointmentResponseDTO {
 export interface IAppointmentServiceResponseDTO {
   id: string;
   userId: string;
+  user: { name: string };
   serviceId: string;
+  service: {
+    name: string;
+    durationMinutes: number;
+    priceInCents: number;
+  };
   appointmentDate: Date;
   startTime: string;
   clientName: string;
   clientEmail: string;
   clientPhone: string;
   notes: string | null;
-  service: {
-    name: string;
-    durationMinutes: number;
-    priceInCents: number;
-  };
 }

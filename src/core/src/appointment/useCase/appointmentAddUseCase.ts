@@ -10,7 +10,7 @@ import { IScheduleResponseDTO } from "../../schedule/dto/scheduleDTO";
 import Appointment from "../model/appointment";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 import { ConflictError, NotFoundError } from "@/lib/errors";
-import { dayOfWeek } from "../../shared/dayofweek";
+import { dayOfWeek } from "../../shared/dayOfWeek";
 
 function toAppointmentDate(dateString: string) {
   return new Date(`${dateString}T00:00:00.000Z`);

@@ -1,6 +1,5 @@
 import Appointment from "../model/appointment";
 import {
-  IAppointmentResponseDTO,
   IAppointmentServiceResponseDTO,
   IAppointmentUpdateRequestDTO,
 } from "../dto/appointmentDTO";
@@ -27,23 +26,37 @@ export class PostgresAppointmentsRepository implements IAppointmentsRepository {
     });
   }
 
-  async findByManyUserId(userId: string): Promise<IAppointmentResponseDTO[]> {
-    const appointments = await prisma.appointment.findMany({
-      where: { userId: userId },
-      orderBy: { appointmentDate: "desc" },
-    });
-    return appointments;
-  }
-
   async findById(
     id: string,
     userId: string,
     serviceId: string,
-  ): Promise<IAppointmentResponseDTO> {
+  ): Promise<IAppointmentServiceResponseDTO> {
     const appointment = await prisma.appointment.findUnique({
       where: { id: id, userId: userId, serviceId: serviceId },
+      include: {
+        user: { select: { name: true } },
+        service: {
+          select: { name: true, durationMinutes: true, priceInCents: true },
+        },
+      },
     });
     return appointment!;
+  }
+
+  async findByManyUserId(
+    userId: string,
+  ): Promise<IAppointmentServiceResponseDTO[]> {
+    const appointments = await prisma.appointment.findMany({
+      where: { userId: userId },
+      include: {
+        user: { select: { name: true } },
+        service: {
+          select: { name: true, durationMinutes: true, priceInCents: true },
+        },
+      },
+      orderBy: { appointmentDate: "desc" },
+    });
+    return appointments;
   }
 
   async findManyByUserIdAndDate(
@@ -53,6 +66,7 @@ export class PostgresAppointmentsRepository implements IAppointmentsRepository {
     return prisma.appointment.findMany({
       where: { userId, appointmentDate },
       include: {
+        user: { select: { name: true } },
         service: {
           select: { name: true, durationMinutes: true, priceInCents: true },
         },
@@ -74,6 +88,7 @@ export class PostgresAppointmentsRepository implements IAppointmentsRepository {
         appointmentDate: { gte: startDate, lt: endDate },
       },
       include: {
+        user: { select: { name: true } },
         service: {
           select: { name: true, durationMinutes: true, priceInCents: true },
         },
