@@ -144,7 +144,7 @@ Todas as rotas estão prefixadas em `/api`.
 | `DELETE` | `/api/schedules/:id`                    | PR  | Remover horário                  | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/services/:serviceId/appointments` | PU  | Criar agendamento                | DONE     |
-| `GET`    | `/api/users/:userId/appointments`       | PR  | Listar agendamentos do prestador | TO DO    |
+| `GET`    | `/api/users/appointments`               | PR  | Listar agendamentos do prestador | DONE     |
 | `GET`    | `/api/appointments/:id`                 | PR  | Buscar agendamento               | TO DO    |
 | `PATCH`  | `/api/appointments/:id/status`          | PR  | Atualizar status do agendamento  | TO DO    |
 | `DELETE` | `/api/appointments/:id`                 | PR  | Remover agendamento              | TO DO    |
