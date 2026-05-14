@@ -17,6 +17,8 @@ export enum MensagensPadronizadas {
   AGENDA_HORARIO_INDISPONIVEL = "O horário solicitado não está dentro da disponibilidade do prestador.",
   AGENDA_CONFLITO = "Já existe um agendamento para o intervalo informado.",
   AGENDA_DATA_HORARIO_INVALIDO = "Data ou horário inválido para agendamento.",
+  AGENDAMENTO_NAO_ENCONTRADO = "Agendamento não encontrado.",
+  AGENDAMENTOS_NAO_ENCONTRADOS = "Não existem agendamentos cadastrados para serem apresentados.",
 
   UNAUTHORIZED_ERROR = "Este usuário/prestador não está autorizado.",
   FORBIDDEN_ERROR = "Este usuário/prestador não tem permissão para acessar este recurso.",
