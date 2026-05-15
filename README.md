@@ -127,24 +127,25 @@ Todas as rotas estão prefixadas em `/api`.
 | `POST`   | `/api/auth/refresh`                     | XX  | Renovação do access token        | TO DO    |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/services`                         | PR  | Criar serviço                    | DONE     |
-| `GET`    | `/api/services/:id`                     | PR  | Buscar serviço                   | DONE     |
-| `PUT`    | `/api/services/:id`                     | PR  | Atualizar serviço                | DONE     |
-| `DELETE` | `/api/services/:id`                     | PR  | Remover serviço                  | DONE     |
+| `PUT`    | `/api/services/:id`                     | PR  | Atualizar                        | DONE     |
+| `DELETE` | `/api/services/:id`                     | PR  | Remover                          | DONE     |
+| `GET`    | `/api/services/:id`                     | PR  | Buscar                           | DONE     |
 | `GET`    | `/api/services`                         | PR  | Listar todos os serviços         | DONE     |
 | `GET`    | `/api/services/:userId/services`        | PU  | Listar serviços de um prestador  | DONE     |
-| `GET`    | `/api/services/:id/appointments`        | XX  | Agendamentos de um serviço       | TO DO    |
+| `GET`    | `/api/services/:idService/appointments` | XX  | Listar serviços agendados        | TO DO    |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/schedules`                        | PR  | Criar horário de atendimento     | DONE     |
+| `PUT`    | `/api/schedules/:id`                    | PR  | Atualizar                        | DONE     |
+| `DELETE` | `/api/schedules/:id`                    | PR  | Remover                          | DONE     |
+| `GET`    | `/api/schedules/:id`                    | PR  | Buscar                           | DONE     |
+| `GET`    | `/api/schedules`                        | PR  | Listar horarios do prestador     | DONE     |
 | `GET`    | `/api/schedules/:userId/schedules`      | PU  | Listar horarios de um prestador  | DONE     |
-| `GET`    | `/api/schedules/:id`                    | PR  | Buscar horário                   | DONE     |
-| `PUT`    | `/api/schedules/:id`                    | PR  | Atualizar horário                | DONE     |
-| `DELETE` | `/api/schedules/:id`                    | PR  | Remover horário                  | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/services/:serviceId/appointments` | PU  | Criar agendamento                | DONE     |
-| `GET`    | `/api/users/appointments`               | PR  | Listar agendamentos do prestador | DONE     |
+| `PATCH`  | `/api/appointments/:id/status`          | PR  | Atualizar status                 | DONE     |
+| `DELETE` | `/api/appointments/:id`                 | PR  | Remover                          | DONE     |
 | `GET`    | `/api/appointments/:id`                 | PR  | Buscar agendamento               | DONE     |
-| `PATCH`  | `/api/appointments/:id/status`          | PR  | Atualizar status do agendamento  | DONE     |
-| `DELETE` | `/api/appointments/:id`                 | PR  | Remover agendamento              | DONE     |
+| `GET`    | `/api/appointments`                     | PR  | Listar agendamentos do prestador | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `GET`    | `/api/providers/:id/dashboard`          | XX  | Dashboard com métricas           | TO DO    |
 | `GET`    | `/api/providers/:id/revenue`            | XX  | Relatório de receita             | TO DO    |
@@ -183,36 +184,61 @@ src/
 ├── app.ts                   # Configuração do Fastify (plugins, rotas)
 ├── server.ts                # Ponto de entrada
 ├── api/
-│   ├── routes.ts            # Registro de todas as rotas
-│   └── controllers/         # Controllers por domínio
-│       ├── auth/
-│       ├── appointments/
-│       ├── providers/
-│       ├── services/
-│       └── schedules/
+│   ├── routes.ts            # Registro de todas as rotas dos domínios
 ├── config/
 │   └── env.ts               # Variáveis de ambiente validadas com Zod
-|── core/
-│   └── src/                 # definir
-│       ├── auth/            # autenticação de usuário
-|       |   ├── controller   # definir
-|       |   ├── dto          # definir
-|       |   ├── model        # definir
-|       |   ├── provider     # definir
-|       |   ├── useCase      # definir
-|       |   ├── routes.ts    # definir
-|       |   ├── schema.ts    # definir
-|       ├── error            # definir
-|       ├── shared           # componentes compartilhados
-|       ├── user/            # usuários
-|       |   ├── controller   # definir
-|       |   ├── dto          # definir
-|       |   ├── model        # definir
-|       |   ├── provider     # definir
-|       |   ├── repositories # definir
-|       |   ├── useCase      # definir
-|       |   ├── routes.ts    # definir
-|       |   ├── schema.ts    # definir
+|── core/                    # core da aplicação (backend)
+│   └── src/
+│       ├── appointment/     # referente ao endpoit do domínio de "agendamentos de serviços/horário"
+|       |   ├── controller
+|       |   ├── dto
+|       |   ├── model
+|       |   ├── repositories
+|       |   ├── useCase
+|       |   ├── routes.ts    # registro das rotas do domínio
+|       |   ├── schema.ts    # Validações do domínio
+|       |   |
+│       ├── auth/            # referente ao endpoit do domínio de "autenticação"
+|       |   ├── controller
+|       |   ├── dto
+|       |   ├── model
+|       |   ├── provider
+|       |   ├── useCase
+|       |   ├── routes.ts    # registro das rotas do domínio
+|       |   ├── schema.ts    # Validações do domínio
+|       |   |
+|       ├── error
+|       |   |
+│       ├── schedule/        # referente ao endpoit do domínio de "horários de atendimento do usuário/prestador"
+|       |   ├── controller
+|       |   ├── dto
+|       |   ├── model
+|       |   ├── repositories
+|       |   ├── useCase
+|       |   ├── routes.ts    # registro das rotas do domínio
+|       |   ├── schema.ts    # Validações do domínio
+|       |   |
+│       ├── service/         # referente ao endpoit do domínio de "serviços do usuário/prestador"
+|       |   ├── controller
+|       |   ├── dto
+|       |   ├── model
+|       |   ├── repositories
+|       |   ├── useCase
+|       |   ├── routes.ts    # registro das rotas do domínio
+|       |   ├── schema.ts    # Validações do domínio
+|       |   |
+|       ├── shared
+|       |   |
+|       ├── user/            # referente ao endpoit do domínio de "usuário/prestador"
+|       |   ├── controller
+|       |   ├── dto
+|       |   ├── model
+|       |   ├── provider
+|       |   ├── repositories
+|       |   ├── useCase
+|       |   ├── routes.ts    # registro das rotas do domínio
+|       |   ├── schema.ts    # Validações do domínio
+|       |
 │   └── test/                # testes unitários
 └── lib/
     ├── auth.ts              # Helpers JWT
