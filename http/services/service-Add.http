@@ -1,18 +1,15 @@
 @baseUrl = http://localhost:3333
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgQ2h1cGV0aW5oYSIsImVtYWlsIjoiYWJtYWVsQGVsZXRyaWNpc3RhLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3ODY3MjEwNCwiZXhwIjoxNzc4Njg2NTA0fQ.Gc7-lZEQZ7i1sug5lZNEhWqM6rpkBXqHnQiN_kYhAmk
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
 
-@userIdAbmael = "9d1dc639-8cb6-432e-82e4-f20ec459aca0"
-@userIdCarlos = "8b89e3fc-16e6-45cd-ba9d-2e1dd076a170"
-@userIdJoao = "c8b9e3fc-16e6-45cd-ba9d-2e1dd076a170"
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4ODYwNTQxLCJleHAiOjE3Nzg4NzQ5NDF9.NmrFjxA72Z-LFDzaIY6eDZir0yr9XksB4PiAVWROdhE
 
 ### [SUCESSO] Criar serviço com payload válido e isActive explícito
 # Esperado: 201 com objeto do serviço criado
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
-{
-  "userId": {{userIdAbmael}},
+{ 
   "name": "Cabeamento de telefone/internet",
   "description": "Serviço de cabeamento de telefone e internet",
   "durationMinutes": 60,
@@ -25,11 +22,10 @@ Content-Type: application/json
 ### [SUCESSO] Criar serviço com payload válido e isActive explícito
 # Esperado: 201 com objeto do serviço criado
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
-  "userId": {{userIdAbmael}},
   "name": "Instalação elétrica",
   "description": "Serviço de instalação elétrica em geral",
   "durationMinutes": 60,
@@ -42,11 +38,10 @@ Content-Type: application/json
 ### [SUCESSO] Criar serviço sem enviar isActive (deve usar true por padrão)
 # Esperado: 201 com isActive = true na resposta
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
-  "userId": {{userIdAbmael}},
   "name": "Configuração de TV",
   "description": "Serviço de configuração de TV",
   "durationMinutes": 30,
@@ -58,11 +53,10 @@ Content-Type: application/json
 ### [SUCESSO] Criar serviço sem enviar isActive (deve usar true por padrão)
 # Esperado: 201 com isActive = true na resposta
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
-  "userId": {{userIdAbmael}},
   "name": "Troca de lâmpada",
   "description": "Serviço de troca de lâmpada",
   "durationMinutes": 30,
@@ -74,7 +68,7 @@ Content-Type: application/json
 ### [SUCESSO] Criar serviço sem enviar isActive (deve usar true por padrão)
 # Esperado: 201 com isActive = true na resposta
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
@@ -86,19 +80,17 @@ Content-Type: application/json
 
 ###
 
-### [FALHA] Criar serviço com prestador inexistente
-# Esperado: 404 NotFoundError
+### [SUCESSO] Criar serviço sem enviar isActive (deve usar true por padrão)
+# Esperado: 201 com isActive = true na resposta
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
-  "userId": {{userIdJoao}},
-  "name": "Serviço teste",
-  "description": "Descrição",
-  "durationMinutes": 30,
-  "priceInCents": 5000,
-  "isActive": true
+  "name": "Teste de serviço",
+  "description": "Serviço de teste",
+  "durationMinutes": 10,
+  "priceInCents": 100
 }
 
 ###
@@ -106,11 +98,10 @@ Content-Type: application/json
 ### [FALHA] Campo name ausente
 # Esperado: 422 Validation Error com campo name nos issues
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
-  "userId": {{userIdAbmael}},
   "description": "Sem nome",
   "durationMinutes": 30,
   "priceInCents": 5000,
@@ -122,11 +113,10 @@ Content-Type: application/json
 ### [FALHA] durationMinutes zero (inválido)
 # Esperado: 422 Validation Error com campo durationMinutes nos issues
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
-  "userId": {{userIdAbmael}},
   "name": "Serviço inválido",
   "description": "Duração zero",
   "durationMinutes": 0,
@@ -139,11 +129,10 @@ Content-Type: application/json
 ### [FALHA] price negativo (inválido)
 # Esperado: 422 Validation Error com campo price nos issues
 POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 Content-Type: application/json
 
 {
-  "userId": {{userIdAbmael}},
   "name": "Serviço inválido",
   "description": "Preço negativo",
   "durationMinutes": 30,
@@ -157,9 +146,9 @@ Content-Type: application/json
 # Esperado: 422 Validation Error com campo price nos issues
 POST {{baseUrl}}/api/services
 Content-Type: application/json
+Authorization: Bearer {{accessTokenAbmael}}
 
 {
-  "userId": {{userIdAbmael}},
   "name": "Serviço inválido",
   "description": "Preço zero",
   "durationMinutes": 30,
@@ -175,7 +164,6 @@ POST {{baseUrl}}/api/services
 Content-Type: application/json
 
 {
-  "userId": {{userIdAbmael}},
   "name": "Corte de cabelo",
   "description": "Corte masculino completo",
   "durationMinutes": 30,
@@ -184,19 +172,3 @@ Content-Type: application/json
 }
 
 ###
-
-### [FALHA] Token de outro prestador (sem permissão para criar serviço deste providerId)
-# Pré-requisito: @accessToken pertence ao prestador id=2; providerId no body é 1
-# Esperado: 403 ForbiddenError
-POST {{baseUrl}}/api/services
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "userId": {{userIdCarlos}},
-  "name": "Corte de cabelo",
-  "description": "Corte masculino completo",
-  "durationMinutes": 30,
-  "priceInCents": 5000,
-  "isActive": true
-}

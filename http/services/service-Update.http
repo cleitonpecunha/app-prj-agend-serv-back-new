@@ -1,0 +1,116 @@
+@baseUrl = http://localhost:3333
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
+
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4ODYwNTQxLCJleHAiOjE3Nzg4NzQ5NDF9.NmrFjxA72Z-LFDzaIY6eDZir0yr9XksB4PiAVWROdhE
+
+@serviceIdAbmael = 06d91e01-7016-40ab-962b-8563149527e4
+@serviceIdAbmaelInexistente = 39d8949c-6ca6-48bc-8b49-cc944b7ec05c
+
+### [SUCESSO] Atualizar serviço com payload válido
+# Pré-requisito: serviço com id = 1 deve existir
+# Esperado: 200 com objeto do serviço atualizado
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "name": "Teste de serviço atualizado",
+  "description": "Serviço de teste atualizado",
+  "durationMinutes": 10,
+  "priceInCents": 100,
+  "isActive": true
+}
+
+###
+
+### [SUCESSO] Desativar serviço via atualização
+# Esperado: 200 com isActive = false na resposta
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "name": "Teste de serviço atualizado",
+  "description": "Serviço de teste atualizado",
+  "durationMinutes": 10,
+  "priceInCents": 100,
+  "isActive": false
+}
+
+###
+
+### [FALHA] Atualizar serviço inexistente
+# Esperado: 404 NotFoundError
+PUT {{baseUrl}}/api/services/{{serviceIdAbmaelInexistente}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "name": "Instalação eletrica diversa",
+  "description": "Serviço de instalação eletrica diversa",
+  "durationMinutes": 60,
+  "priceInCents": 10000,
+  "isActive": true
+}
+
+###
+
+### [FALHA] Campo obrigatório ausente (description)
+# Esperado: 422 Validation Error com campo description nos issues
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "name": "Teste de serviço atualizado",
+  "description": "Serviço de teste atualizado",
+  "durationMinutes": 10,
+  "isActive": false
+}
+
+###
+
+### [FALHA] durationMinutes inválido (negativo)
+# Esperado: 422 Validation Error com campo durationMinutes nos issues
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "name": "Teste de serviço atualizado",
+  "description": "Serviço de teste atualizado",
+  "durationMinutes": -5,
+  "priceInCents": 100,
+  "isActive": false
+}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Content-Type: application/json
+
+{
+  "name": "Teste de serviço atualizado",
+  "description": "Serviço de teste atualizado",
+  "durationMinutes": 10,
+  "priceInCents": 100,
+  "isActive": false
+}
+
+###
+
+### [FALHA] Servico valido de outro usuário, tentativa de atualização
+# Esperado: 400 Bad Request com mensagem 
+PUT {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Authorization: Bearer {{accessTokenCarlos}}
+Content-Type: application/json
+
+{
+  "name": "Teste de serviço atualizado",
+  "description": "Serviço de teste atualizado",
+  "durationMinutes": 30,
+  "priceInCents": 100,
+  "isActive": false
+}

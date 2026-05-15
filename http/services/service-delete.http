@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:3333
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
+@serviceIdAbmael = 06d91e01-7016-40ab-962b-8563149527e4
+@serviceIdAbmaelInexistente = 39d8949c-6ca6-48bc-8b49-cc944b7ec05c
+@serviceIdAbmaelAgendado = 06d91e01-7016-40ab-962b-8563149527e4
+
+### [FALHA] Remover serviço sem agendamentos vinculados, de um serviço inexistente
+# Esperado: 204 sem corpo de resposta
+DELETE {{baseUrl}}/api/services/{{serviceIdAbmaelInexistente}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Remover serviço com agendamentos vinculados
+# Pré-requisito: Serviço deve existir e ter agendamentos associados
+# Esperado: 409 ConflictError — "Não é possível remover um serviço com agendamentos vinculados."
+DELETE {{baseUrl}}/api/services/{{serviceIdAbmaelAgendado}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+DELETE {{baseUrl}}/api/services/{{serviceIdAbmael}}
+
+###
+
+### [SUCESSO] Remover serviço sem agendamentos vinculados
+# Pré-requisito: Serviço deve existir e não pode ter agendamentos associados
+# Esperado: 204 sem corpo de resposta
+DELETE {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###

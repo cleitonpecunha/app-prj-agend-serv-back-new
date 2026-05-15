@@ -1,0 +1,44 @@
+@baseUrl = http://localhost:3333
+
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
+
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4ODYwNTQxLCJleHAiOjE3Nzg4NzQ5NDF9.NmrFjxA72Z-LFDzaIY6eDZir0yr9XksB4PiAVWROdhE
+
+@serviceIdAbmael = 06d91e01-7016-40ab-962b-8563149527e4
+@serviceIdAbmaelInexistente = 39d8949c-6ca6-48bc-8b49-cc944b7ec05c
+
+### [SUCESSO] Buscar serviço por ID existente, de um usuario/prestador logado
+# Pré-requisito: 
+# 1) estar logado como usuario/prestador
+# 2) ter ao menos um serviço criado
+# Esperado: 200 com objeto do serviço incluindo price como número
+GET {{baseUrl}}/api/services/{{serviceIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Buscar serviço por ID inexistente, de um usuario/prestador logado
+# Pré-requisito: 
+# 1) estar logado como usuario/prestador
+# 2) passar um id de serviço inexistente
+# Esperado: 400 - Bad Request com mensagem de erro "Service not found"
+GET {{baseUrl}}/api/services/{{serviceIdAbmaelInexistente}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Buscar serviço por ID existente, mas sem estar logado como usuario/prestador (sem token)
+# Pré-requisito: 
+# 1) ter ao menos um serviço criado
+# 2) não estar logado como usuario/prestador (não fornecer token de acesso)
+# Esperado: 401 - Unauthorized
+GET {{baseUrl}}/api/services/{{serviceIdAbmael}}
+
+###
+
+### [FALHA] Tentar buscar serviço por ID inexistente, mas sem estar logado como usuario/prestador (sem token)
+# Pré-requisito: 
+# 1) passar um id de serviço inexistente
+# 2) não estar logado como usuario/prestador (não fornecer token de acesso)
+# Esperado: 401 - Unauthorized
+GET {{baseUrl}}/api/services/{{serviceIdAbmaelInexistente}}

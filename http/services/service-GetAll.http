@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3333
+
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
+
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4ODYwNTQxLCJleHAiOjE3Nzg4NzQ5NDF9.NmrFjxA72Z-LFDzaIY6eDZir0yr9XksB4PiAVWROdhE
+
+### [SUCESSO] Listar todos os serviços de um usuário/prestador logado 
+# Esperado: 200 com array de todos os serviços cadastrados
+GET {{baseUrl}}/api/services
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Não existe serviços cadastrados para o usuário/prestador logado 
+# Esperado: 400 com mensagem de erro
+GET {{baseUrl}}/api/services
+Authorization: Bearer {{accessTokenCarlos}}
+
+### [FALHA] Listar todos os serviços sem estar logado como usuario/prestador (sem token)
+# Pré-requisito: 
+# 1) ter ao menos um serviço criado
+# 2) não estar logado como usuario/prestador (não fornecer token de acesso)
+# Esperado: 401 - Unauthorized
+GET {{baseUrl}}/api/services
+
+###
