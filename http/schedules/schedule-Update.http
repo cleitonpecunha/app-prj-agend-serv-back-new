@@ -1,0 +1,104 @@
+@baseUrl = http://localhost:3333
+
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NzUxMjcsImV4cCI6MTc3ODg4OTUyN30.9tYtyL8U1yfqb43bau8eCfvDBmYThIU8XGEc-VbYbV0
+
+@scheduleIdAbmael = ce69d49d-183a-4bef-8b47-2629756d342b
+@scheduleIdAbmaelInexistente = gc3a020d-aad1-4950-9bf5-ba1865c5431h
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "saturday",
+  "startTime": "08:00",
+  "endTime": "15:00"
+}
+
+###
+
+### [FALHA] Atualizar horário inexistente
+# Esperado: 400 BadRequestError
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmaelInexistente}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "saturday",
+  "startTime": "07:30",
+  "endTime": "17:30"
+}
+
+###
+
+### [SUCESSO] Atualizar horário existente
+# Esperado: 200 com horário atualizado
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "saturday",
+  "startTime": "07:30",
+  "endTime": "17:30"
+}
+
+###
+
+### [FALHA] Atualização gera conflito com outro horário existente
+# Esperado: 400 
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "07:00",
+  "endTime": "13:00"
+}
+
+###
+
+### [FALHA] Atualização gera conflito com outro horário existente
+# Esperado: 409 ConflictError
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "10:00",
+  "endTime": "16:00"
+}
+
+###
+
+### [FALHA] dayOfWeek ausente no body
+# Esperado: 422 Validation Error com campo dayOfWeek nos issues
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "startTime": "09:00",
+  "endTime": "17:00"
+}
+
+###
+
+### [FALHA] startTime >= endTime
+# Esperado: 422 Validation Error com campo startTime nos issues
+PUT {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "17:00",
+  "endTime": "09:00"
+}
+
+###
+
+

@@ -1,32 +1,24 @@
 @baseUrl = http://localhost:3333
 
-@idjoao = ba6f7a3e-d5c0-49e0-9d3a-1407c285f874
-@idmaria = 9e407a55-12a0-4c23-97c2-795cee162303
-@idcarlos = 8b89e3fc-16e6-45cd-ba9d-2e1dd076a170
-@idabmael = 9d1dc639-8cb6-432e-82e4-f20ec459aca0
-@idnexiste = 7b89e3fc-16e6-45cd-ba9d-2e1dd076a179
+@idUserCarlos = 40940206-3190-4040-b70a-5f33c7d70cce
+@idUserAbmael = 422298f9-ee0b-4935-8556-4bb2c5a0da8a
+@idUserInexistente = 7b89e3fc-16e6-45cd-ba9d-2e1dd076a179
 
 ### [SUCESSO] Listar serviços de um usuario/prestador existente
 # Rota publica, não precisa de token
 # Esperado: 200 com array de serviços do prestador
-GET {{baseUrl}}/api/schedules/{{idabmael}}/schedules
+GET {{baseUrl}}/api/users/{{idUserAbmael}}/schedules
 
 ###
 
 ### [FALHA] Tentar Listar serviços de um usuario/prestador inexistente
 # Rota publica, não precisa de token
 # Esperado: 404 com mensagem de erro
-GET {{baseUrl}}/api/schedules/{{idnexiste}}/schedules
+GET {{baseUrl}}/api/users/{{idUserInexistente}}/schedules
 
 ###
 
 ### [FALHA] Tentar Listar serviços inexistente de um usuario/prestador existente
 # Rota publica, não precisa de token
 # Esperado: 404 com mensagem de erro
-GET {{baseUrl}}/api/schedules/{{idcarlos}}/schedules
-
-
-
-
-
-
+GET {{baseUrl}}/api/users/{{idUserCarlos}}/schedules

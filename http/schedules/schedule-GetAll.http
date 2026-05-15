@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3333
+
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NzUxMjcsImV4cCI6MTc3ODg4OTUyN30.9tYtyL8U1yfqb43bau8eCfvDBmYThIU8XGEc-VbYbV0
+
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4ODc1MTUwLCJleHAiOjE3Nzg4ODk1NTB9.d2vNNzCW3iHqlrFkpjxPcjc0KljvmKjxqOvnuQhD0qQ
+
+### [SUCESSO] Listar todos os horarios de atendimento de um usuário/prestador logado 
+# Esperado: 200 com array de todos os horários cadastrados
+GET {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Não existe horários de atendimento cadastrados para o usuário/prestador logado 
+# Esperado: 400 com mensagem de erro
+GET {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenCarlos}}
+
+### [FALHA] Listar todos os horários de atendimento sem estar logado como usuario/prestador (sem token)
+# Pré-requisito: 
+# 1) ter ao menos um horário de atendimento criado
+# 2) não estar logado como usuario/prestador (não fornecer token de acesso)
+# Esperado: 401 - Unauthorized
+GET {{baseUrl}}/api/schedules
+
+###

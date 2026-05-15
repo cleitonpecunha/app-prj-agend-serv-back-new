@@ -1,0 +1,226 @@
+@baseUrl = http://localhost:3333
+
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "08:00",
+  "endTime": "11:00"
+}
+
+###
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "13:00",
+  "endTime": "17:00"
+}
+
+###
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "tuesday",
+  "startTime": "07:00",
+  "endTime": "12:00"
+}
+
+###
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "wednesday",
+  "startTime": "08:00",
+  "endTime": "11:00"
+}
+
+###
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "wednesday",
+  "startTime": "13:00",
+  "endTime": "17:00"
+}
+
+###
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "thursday",
+  "startTime": "07:00",
+  "endTime": "12:00"
+}
+
+###
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "friday",
+  "startTime": "08:00",
+  "endTime": "11:00"
+}
+
+###
+
+### [SUCESSO] Criar horário válido na segunda-feira
+# Esperado: 201 com objeto do horário criado
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "friday",
+  "startTime": "13:00",
+  "endTime": "17:00"
+}
+
+###
+
+### [SUCESSO] Criar horário em dia diferente
+# Esperado: 201
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "saturday",
+  "startTime": "08:00",
+  "endTime": "17:00"
+}
+
+###
+
+### [FALHA] Criar horário com conflito de sobreposição
+# Esperado: 409 ConflictError
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "10:00",
+  "endTime": "14:00"
+}
+
+###
+
+### [FALHA] dayOfWeek com valor inválido (em português)
+# Esperado: 422 Validation Error com campo dayOfWeek nos issues
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "segunda",
+  "startTime": "09:00",
+  "endTime": "17:00"
+}
+
+###
+
+### [FALHA] startTime com formato inválido
+# Esperado: 422 Validation Error com campo startTime nos issues
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "9h00",
+  "endTime": "17:00"
+}
+
+###
+
+### [FALHA] endTime com formato inválido
+# Esperado: 422 Validation Error com campo endTime nos issues
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "09:00",
+  "endTime": "99:99"
+}
+
+###
+
+### [FALHA] startTime maior que endTime
+# Esperado: 422 Validation Error com campo startTime nos issues
+POST {{baseUrl}}/api/schedules
+Authorization: Bearer {{accessTokenAbmael}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "18:00",
+  "endTime": "09:00"
+}
+
+###
+
+### [FALHA] startTime igual a endTime
+# Esperado: 422 Validation Error
+POST {{baseUrl}}/api/schedules
+Content-Type: application/json
+Authorization: Bearer {{accessTokenAbmael}}
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "09:00",
+  "endTime": "09:00"
+}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+POST {{baseUrl}}/api/schedules
+Content-Type: application/json
+
+{
+  "dayOfWeek": "monday",
+  "startTime": "09:00",
+  "endTime": "17:00"
+}
+
+###

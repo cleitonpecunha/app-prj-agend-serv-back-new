@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:3333
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgQ2h1cGV0aW5oYSIsImVtYWlsIjoiYWJtYWVsQGVsZXRyaWNpc3RhLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3ODY5MTYxNCwiZXhwIjoxNzc4NzA2MDE0fQ.-L2m9uLiftH7pmiFSgDx1YONLgpOcehD501fqEfDrks
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
 
-@scheduleIdAbmael = 3187a57a-518b-4d9d-8b03-df03f12efe49
+@scheduleIdAbmael = 3741cb73-1b69-4451-93f3-f2be26bc8e52
 @scheduleIdAbmaelInexistente = gc3a020d-aad1-4950-9bf5-ba1865c5431h
 
 ### [SUCESSO] Buscar serviço por ID existente, de um usuario/prestador logado
@@ -11,7 +11,7 @@
 # 2) ter ao menos um serviço criado
 # Esperado: 200 com objeto do serviço incluindo price como número
 GET {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 
 ###
 
@@ -21,7 +21,7 @@ Authorization: Bearer {{accessToken}}
 # 2) passar um id de serviço inexistente
 # Esperado: 400 - Bad Request com mensagem de erro "Service not found"
 GET {{baseUrl}}/api/schedules/{{scheduleIdAbmaelInexistente}}
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessTokenAbmael}}
 
 ###
 

@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3333
+
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NzUxMjcsImV4cCI6MTc3ODg4OTUyN30.9tYtyL8U1yfqb43bau8eCfvDBmYThIU8XGEc-VbYbV0
+
+@scheduleIdAbmael = ce69d49d-183a-4bef-8b47-2629756d342b
+@scheduleIdAbmaelInexistente = gc3a020d-aad1-4950-9bf5-ba1865c5431h
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+DELETE {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+
+###
+
+### [FALHA] Tentar remover horário inexistente
+# Esperado: 404 Not Found
+DELETE {{baseUrl}}/api/schedules/{{scheduleIdAbmaelInexistente}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [SUCESSO] Remover horário existente
+# Esperado: 204 sem corpo
+DELETE {{baseUrl}}/api/schedules/{{scheduleIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+### 
