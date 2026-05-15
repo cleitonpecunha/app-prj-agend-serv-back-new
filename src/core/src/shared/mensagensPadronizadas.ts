@@ -19,6 +19,8 @@ export enum MensagensPadronizadas {
   AGENDA_DATA_HORARIO_INVALIDO = "Data ou horário inválido para agendamento.",
   AGENDAMENTO_NAO_ENCONTRADO = "Agendamento não encontrado.",
   AGENDAMENTOS_NAO_ENCONTRADOS = "Não existem agendamentos cadastrados para serem apresentados.",
+  AGENDAMENTO_STATUS_INVALIDO = "O status do agendamento não pode mais ser alterado.",
+  AGENDAMENTO_STATUS_INVALIDO_PARA_ATUALIZACAO = "Status inválido para atualização.",
 
   UNAUTHORIZED_ERROR = "Este usuário/prestador não está autorizado.",
   FORBIDDEN_ERROR = "Este usuário/prestador não tem permissão para acessar este recurso.",
