@@ -1,8 +1,10 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { ServiceGetByUserIdUseCase } from "../useCases/serviceGetByUserIdUseCase";
+import { ServiceGetAllByUserIdUseCase } from "../useCases/serviceGetAllByUserIdUseCase";
 
-export class ServiceGetByUserIdController {
-  constructor(private serviceGetByUserIdUseCase: ServiceGetByUserIdUseCase) {}
+export class ServiceGetAllByUserIdController {
+  constructor(
+    private serviceGetAllByUserIdUseCase: ServiceGetAllByUserIdUseCase,
+  ) {}
 
   async handle(
     request: FastifyRequest,
@@ -13,7 +15,7 @@ export class ServiceGetByUserIdController {
 
       console.log("userId:", userId);
 
-      const services = await this.serviceGetByUserIdUseCase.execute(userId);
+      const services = await this.serviceGetAllByUserIdUseCase.execute(userId);
 
       return response.status(200).send(services);
     } catch (err) {

@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { requireAuth } from "@/lib/auth";
-import { ServiceListUseCase } from "../useCases/serviceListUseCase";
+import { ServiceGetAllUseCase } from "../useCases/serviceGetAllUseCase";
 
-export class ServiceListController {
-  constructor(private serviceListUseCase: ServiceListUseCase) {}
+export class ServiceGetAllController {
+  constructor(private serviceGetAllUseCase: ServiceGetAllUseCase) {}
 
   async handle(
     request: FastifyRequest,
@@ -12,7 +12,7 @@ export class ServiceListController {
     const auth = await requireAuth(request);
 
     try {
-      const services = await this.serviceListUseCase.execute(auth);
+      const services = await this.serviceGetAllUseCase.execute(auth);
 
       return response.status(200).send(services);
     } catch (err) {

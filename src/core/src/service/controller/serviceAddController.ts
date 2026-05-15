@@ -18,7 +18,6 @@ export class ServiceAddController {
     if (!parsed.success) throw parsed.error;
 
     const {
-      id,
       userId,
       name,
       description,
@@ -29,7 +28,6 @@ export class ServiceAddController {
 
     try {
       await this.serviceAddUseCase.execute(auth, {
-        id,
         userId,
         name,
         description,

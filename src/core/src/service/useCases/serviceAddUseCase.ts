@@ -3,7 +3,6 @@ import { IServiceAddRequestDTO } from "../dto/serviceDTO";
 import { IServicesRepository } from "../repositories/IServicesRepository";
 import { IUsersRepository } from "../../user/repositories/IUsersRepository";
 import Service from "../model/service";
-import { assertProviderOwnership } from "@/lib/auth";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class ServiceAddUseCase {
@@ -27,7 +26,7 @@ export class ServiceAddUseCase {
     }
 
     // Verificar se o usuário autenticado é o proprietário do serviço
-    assertProviderOwnership(auth.userId, existingUser.id!);
+    //assertProviderOwnership(auth.userId, existingUser.id!);
 
     //console.log("Dados recebidos para criação do serviço:", data);
 

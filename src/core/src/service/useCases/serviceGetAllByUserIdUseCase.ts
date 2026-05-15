@@ -3,7 +3,7 @@ import { IServicesRepository } from "../repositories/IServicesRepository";
 import { IUsersRepository } from "../../user/repositories/IUsersRepository";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
-export class ServiceGetByUserIdUseCase {
+export class ServiceGetAllByUserIdUseCase {
   constructor(
     private readonly servicesRepository: IServicesRepository,
     private readonly usersRepository: IUsersRepository,

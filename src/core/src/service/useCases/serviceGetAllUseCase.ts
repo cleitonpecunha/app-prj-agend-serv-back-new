@@ -2,7 +2,7 @@ import { NotFoundError } from "@/lib/errors";
 import { IServicesRepository } from "../repositories/IServicesRepository";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
-export class ServiceListUseCase {
+export class ServiceGetAllUseCase {
   constructor(private servicesRepository: IServicesRepository) {}
 
   async execute(auth: { userId: string }) {
