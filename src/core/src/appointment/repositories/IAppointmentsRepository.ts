@@ -8,15 +8,15 @@ import Schedule from "@/core/src/schedule/model/schedule";
 export interface IAppointmentsRepository {
   save(data: Appointment): Promise<void>;
 
-  updateStatus(id: string, data: IAppointmentUpdateRequestDTO): Promise<void>;
-
-  delete(id: string, userId: string, serviceId: string): Promise<void>;
-
-  findById(
+  updateStatus(
     id: string,
     userId: string,
-    serviceId: string,
-  ): Promise<IAppointmentServiceResponseDTO>;
+    data: IAppointmentUpdateRequestDTO,
+  ): Promise<void>;
+
+  delete(id: string, userId: string): Promise<void>;
+
+  findById(id: string, userId: string): Promise<IAppointmentServiceResponseDTO>;
 
   findByManyUserId(userId: string): Promise<IAppointmentServiceResponseDTO[]>;
 

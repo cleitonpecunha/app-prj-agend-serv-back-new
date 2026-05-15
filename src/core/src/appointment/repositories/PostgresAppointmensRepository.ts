@@ -15,24 +15,27 @@ export class PostgresAppointmentsRepository implements IAppointmentsRepository {
 
   async updateStatus(
     id: string,
+    userId: string,
     data: IAppointmentUpdateRequestDTO,
   ): Promise<void> {
-    await prisma.appointment.update({ where: { id }, data });
+    await prisma.appointment.update({
+      where: { id: id, userId: userId },
+      data,
+    });
   }
 
-  async delete(id: string, userId: string, serviceId: string): Promise<void> {
+  async delete(id: string, userId: string): Promise<void> {
     await prisma.appointment.delete({
-      where: { id: id, userId: userId, serviceId: serviceId },
+      where: { id: id, userId: userId },
     });
   }
 
   async findById(
     id: string,
     userId: string,
-    serviceId: string,
   ): Promise<IAppointmentServiceResponseDTO> {
     const appointment = await prisma.appointment.findUnique({
-      where: { id: id, userId: userId, serviceId: serviceId },
+      where: { id: id, userId: userId },
       include: {
         user: { select: { name: true } },
         service: {

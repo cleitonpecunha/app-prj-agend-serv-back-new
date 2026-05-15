@@ -8,13 +8,14 @@ export interface IAppointmentAddRequestDTO {
 }
 
 export interface IAppointmentUpdateRequestDTO {
-  status: "completed" | "canceled" | "no_show";
+  status: "scheduled" | "completed" | "canceled" | "no_show";
 }
 
 export interface IAppointmentResponseDTO {
   id: string;
   userId: string;
   serviceId: string;
+  status: "scheduled" | "completed" | "canceled" | "no_show";
   appointmentDate: Date;
   startTime: string;
   clientName: string;
@@ -33,6 +34,7 @@ export interface IAppointmentServiceResponseDTO {
     durationMinutes: number;
     priceInCents: number;
   };
+  status: "scheduled" | "completed" | "canceled" | "no_show";
   appointmentDate: Date;
   startTime: string;
   clientName: string;
