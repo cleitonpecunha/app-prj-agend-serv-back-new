@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3333
-@serviceId = 050eaad5-68d0-4bfa-9962-d8bf22b29ed2
+@serviceId = 262f7939-6fe6-406e-8ed6-5ad518d7ca46
 @serviceIdInexistente = 050eaad5-1g44-4bfa-9962-d8bf22b29ed2
 
 ### [SUCESSO] Criar agendamento válido para serviço ativo
@@ -16,7 +16,7 @@ Content-Type: application/json
   "clientName": "Maria Souza",
   "clientEmail": "maria@email.com",
   "clientPhone": "+55 (11) 99999-1111",
-  "notes": "Terceiro agendamento para teste de conflito"
+  "notes": "Primeiro agendamento de teste"
 }
 
 ###
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 ###
 
-### [FALHA] Horário fora da disponibilidade do prestador
+### [FALHA] Horário fora da disponibilidade do prestador (passado)
 # Esperado: 409 ConflictError
 POST {{baseUrl}}/api/services/{{serviceId}}/appointments
 Content-Type: application/json
@@ -57,7 +57,7 @@ POST {{baseUrl}}/api/services/{{serviceId}}/appointments
 Content-Type: application/json
 
 {
-  "appointmentDate": "2026-05-15",
+  "appointmentDate": "2026-05-22",
   "startTime": "09:15",
   "clientName": "Cliente em Conflito",
   "clientEmail": "conflito@email.com",
