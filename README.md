@@ -117,17 +117,14 @@ Todas as rotas estão prefixadas em `/api`.
 | -------- | --------------------------------------- | --- | -------------------------------- | -------- |
 | `GET`    | `/api/ping`                             | PU  | Health check                     | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
-| `POST`   | `/api/user`                             | PU  | Cadastrar o usuário prestador    | DONE     |
-| `GET`    | `/api/user/:id`                         | PR  | Buscar usuário                   | DONE     |
-| `PUT`    | `/api/user/:id`                         | PR  | Atualizar usuário                | DONE     |
-| `DELETE` | `/api/user/:id`                         | PR  | Remover usuário                  | DONE     |
+| `POST`   | `/api/user`                             | PU  | Add usuário/prestador            | DONE     |
+| `PUT`    | `/api/user/:id`                         | PR  | Atualizar                        | DONE     |
+| `DELETE` | `/api/user/:id`                         | PR  | Remover                          | DONE     |
+| `GET`    | `/api/user/:id`                         | PR  | Buscar                           | DONE     |
+| `GET`    | `/api/users`                            | PU  | Listar todos                     | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
-| `POST`   | `/api/auth/login`                       | PU  | Login do usuário prestador       | DONE     |
+| `POST`   | `/api/auth/login`                       | PU  | Login usuário/prestador          | DONE     |
 | `POST`   | `/api/auth/refresh`                     | XX  | Renovação do access token        | TO DO    |
-| -------- | --------------------------------------- | --  | -------------------------------- | -------- |
-| `GET`    | `/api/providers/:id/dashboard`          | XX  | Dashboard com métricas           | TO DO    |
-| `GET`    | `/api/providers/:id/revenue`            | XX  | Relatório de receita             | TO DO    |
-| `GET`    | `/api/providers/:id/schedules`          | XX  | Listar horários do prestador     | TO DO    |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/services`                         | PR  | Criar serviço                    | DONE     |
 | `GET`    | `/api/services/:id`                     | PR  | Buscar serviço                   | DONE     |
@@ -148,6 +145,10 @@ Todas as rotas estão prefixadas em `/api`.
 | `GET`    | `/api/appointments/:id`                 | PR  | Buscar agendamento               | DONE     |
 | `PATCH`  | `/api/appointments/:id/status`          | PR  | Atualizar status do agendamento  | DONE     |
 | `DELETE` | `/api/appointments/:id`                 | PR  | Remover agendamento              | DONE     |
+| -------- | --------------------------------------- | --  | -------------------------------- | -------- |
+| `GET`    | `/api/providers/:id/dashboard`          | XX  | Dashboard com métricas           | TO DO    |
+| `GET`    | `/api/providers/:id/revenue`            | XX  | Relatório de receita             | TO DO    |
+| `GET`    | `/api/providers/:id/schedules`          | XX  | Listar horários do prestador     | TO DO    |
 
 TP (Tipo de visuaização da rota):
 
