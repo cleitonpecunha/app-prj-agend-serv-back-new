@@ -3,16 +3,16 @@ import { MailtrapMailProvider } from "./providers/mail/MailProvider";
 import { PostgresUsersRepository } from "./repositories/PostgresUsersRepository";
 import CryptoProviderBcrypt from "./providers/crypto/CryptoProviderBcrypt";
 import { UserRegisterController } from "./controllers/userRegisterController";
-import { UserListController } from "./controllers/userListController";
 import { UserGetByIdController } from "./controllers/userGetByIdController";
 import { UserDeleteController } from "./controllers/userDeleteControler";
 import { UserUpdateController } from "./controllers/userUpdateController";
 import { UserRegisterUseCase } from "./useCases/userRegisterUseCase";
-import { UserListUseCase } from "./useCases/userListUseCase";
+import { UserGetAllUseCase } from "./useCases/userGetAllUseCase";
 import { UserGetByIdUseCase } from "./useCases/userGetByIdUseCase";
 import { UserDeleteUseCase } from "./useCases/userDeleteUseCase";
 import { UserUpdateUseCase } from "./useCases/userUpdateUseCase";
 import { IUserAddRequestDTO, IUserUpdateRequestDTO } from "./dto/userDTO";
+import { UserGetAllController } from "./controllers/userGetAllController";
 
 export async function userRoutes(app: FastifyInstance) {
   // Instanciar as dependências
@@ -26,14 +26,14 @@ export async function userRoutes(app: FastifyInstance) {
     mailProvider,
     cryptoProvider,
   );
-  const userListUseCase = new UserListUseCase(usersRepository);
+  const userGetAllUseCase = new UserGetAllUseCase(usersRepository);
   const userGetByIdUseCase = new UserGetByIdUseCase(usersRepository);
   const userDeleteUseCase = new UserDeleteUseCase(usersRepository);
   const userUpdateUseCase = new UserUpdateUseCase(usersRepository);
 
   // Instanciar o Controller com o UseCase
   const registerUser = new UserRegisterController(userRegisterUseCase);
-  const listUsers = new UserListController(userListUseCase);
+  const listGetAll = new UserGetAllController(userGetAllUseCase);
   const getUserById = new UserGetByIdController(userGetByIdUseCase);
   const deleteUser = new UserDeleteController(userDeleteUseCase);
   const updateUser = new UserUpdateController(userUpdateUseCase);
@@ -45,7 +45,7 @@ export async function userRoutes(app: FastifyInstance) {
 
   // listar todos os usuarios/prestadores
   app.get("/", async (_request, reply) => {
-    return await listUsers.handle(_request, reply);
+    return await listGetAll.handle(_request, reply);
   });
 
   // buscar usuario/prestador por ID

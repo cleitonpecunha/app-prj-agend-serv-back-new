@@ -1,15 +1,15 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { UserListUseCase } from "@/core/src/user/useCases/userListUseCase";
+import { UserGetAllUseCase } from "@/core/src/user/useCases/userGetAllUseCase";
 
-export class UserListController {
-  constructor(private userListUseCase: UserListUseCase) {}
+export class UserGetAllController {
+  constructor(private userGetAllUseCase: UserGetAllUseCase) {}
 
   async handle(
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
     try {
-      const users = await this.userListUseCase.execute();
+      const users = await this.userGetAllUseCase.execute();
 
       return response.status(200).send(users);
     } catch (err) {

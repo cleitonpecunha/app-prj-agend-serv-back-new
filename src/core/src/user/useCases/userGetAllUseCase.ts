@@ -2,7 +2,7 @@ import { NotFoundError } from "@/lib/errors";
 import { IUsersRepository } from "../repositories/IUsersRepository";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
-export class UserListUseCase {
+export class UserGetAllUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   async execute() {
