@@ -2,22 +2,13 @@ import { NotFoundError } from "@/lib/errors";
 import { IUsersRepository } from "../../user/repositories/IUsersRepository";
 import { ISchedulesRepository } from "../repositories/ISchedulesRepository";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
-
-const DAY_ORDER: Record<string, number> = {
-  monday: 0,
-  tuesday: 1,
-  wednesday: 2,
-  thursday: 3,
-  friday: 4,
-  saturday: 5,
-  sunday: 6,
-};
+import { DayOrder } from "../../shared/dayorder";
 
 function sortSchedules<T extends { dayOfWeek: string; startTime: string }>(
   schedules: T[],
 ): T[] {
   return [...schedules].sort((a, b) => {
-    const dayDiff = DAY_ORDER[a.dayOfWeek]! - DAY_ORDER[b.dayOfWeek]!;
+    const dayDiff = DayOrder[a.dayOfWeek]! - DayOrder[b.dayOfWeek]!;
     if (dayDiff !== 0) return dayDiff;
     return a.startTime.localeCompare(b.startTime);
   });
@@ -30,7 +21,7 @@ function isSortableSchedule(s: {
   return typeof s.dayOfWeek === "string" && typeof s.startTime === "string";
 }
 
-export class ScheduleGetByUserIdUseCase {
+export class ScheduleGetAllByUserIdUseCase {
   constructor(
     private readonly schedulesRepository: ISchedulesRepository,
     private readonly usersRepository: IUsersRepository,

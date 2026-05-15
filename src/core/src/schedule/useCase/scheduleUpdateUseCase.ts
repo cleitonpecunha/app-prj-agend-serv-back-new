@@ -22,6 +22,7 @@ export class ScheduleUpdateUseCase {
         dayOfWeek: data.dayOfWeek,
         startTime: data.startTime,
         endTime: data.endTime,
+        ignoreId: id,
       }),
     ]);
 

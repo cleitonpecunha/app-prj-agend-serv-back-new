@@ -1,8 +1,10 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { ScheduleGetByUserIdUseCase } from "../useCase/scheduleGetByUserIdUseCase";
+import { ScheduleGetAllByUserIdUseCase } from "../useCase/scheduleGetAllByUserIdUseCase";
 
-export class ScheduleGetByUserIdController {
-  constructor(private scheduleGetByUserIdUseCase: ScheduleGetByUserIdUseCase) {}
+export class ScheduleGetAllByUserIdController {
+  constructor(
+    private scheduleGetAllByUserIdUseCase: ScheduleGetAllByUserIdUseCase,
+  ) {}
 
   async handle(
     request: FastifyRequest,
@@ -13,7 +15,8 @@ export class ScheduleGetByUserIdController {
 
       //console.log("userId:", userId);
 
-      const schedules = await this.scheduleGetByUserIdUseCase.execute(userId);
+      const schedules =
+        await this.scheduleGetAllByUserIdUseCase.execute(userId);
 
       return response.status(200).send(schedules);
     } catch (err) {

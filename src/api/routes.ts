@@ -25,7 +25,7 @@ import {
 import { userRoutes } from "@/core/src/user/routes";
 import { authRoutes } from "@/core/src/auth/routes";
 import { serviceRoutes, userServiceRoutes } from "@/core/src/service/route";
-import { scheduleRoutes } from "@/core/src/schedule/routes";
+import { scheduleRoutes, userScheduleRoutes } from "@/core/src/schedule/routes";
 import {
   appointmentRoutes,
   serviceAppointmentRoutes,
@@ -63,6 +63,7 @@ export async function apiRoutes(app: FastifyInstance) {
 
   // rotas de agenda de atendimentos do usurio/prestador
   app.register(scheduleRoutes, { prefix: "/schedules" });
+  app.register(userScheduleRoutes, { prefix: "/users" });
 
   // rotas de agendamento
   app.register(appointmentRoutes, { prefix: "/appointments" });
