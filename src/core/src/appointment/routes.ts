@@ -9,8 +9,8 @@ import { AppointmentAddUseCase } from "./useCase/appointmentAddUseCase";
 import { AppointmentAddController } from "./controller/appointmentAddController";
 import { PostgresServicesRepository } from "../service/repositories/PostgresServicesRepository";
 import { PostgresSchedulesRepository } from "../schedule/repositories/PostgresSchedulesRepository";
-import { AppointmentGetAllUserIdUseCase } from "./useCase/appointmentGetAllUserIdUseCase";
-import { AppointmentGetAllUserIdController } from "./controller/appointmentGetAllUserIdController";
+import { AppointmentGetAllUseCase } from "./useCase/appointmentGetAllUseCase";
+import { AppointmentGetAllController } from "./controller/appointmentGetAllController";
 import { AppointmentDeleteUseCase } from "./useCase/appointmentDeleteUseCase";
 import { AppointmentDeleteController } from "./controller/appointmentDeleteController";
 import { AppointmentGetByIdUseCase } from "./useCase/appointmentGetByIdUseCase";
@@ -18,7 +18,7 @@ import { AppointmentGetByIdController } from "./controller/appointmentGetByIdCon
 import { AppointmentUpdateStatusUseCase } from "./useCase/appointmentUpdateStatusUseCase";
 import { AppointmentUpdateStatusController } from "./controller/appointmentUpdateStatusController";
 
-// rota para criar agendamento, para o serviço de um usuário/prestador, solictado pelo cliente
+// rota publica para criar agendamento, para o serviço de um usuário/prestador, solictado pelo cliente
 export async function serviceAppointmentRoutes(app: FastifyInstance) {
   // Instanciar as dependências
   const appointmentsRepository = new PostgresAppointmentsRepository();
@@ -48,27 +48,30 @@ export async function serviceAppointmentRoutes(app: FastifyInstance) {
   );
 }
 
-// rota para buscar agendamentos de serviços do usuário/prestador, solicitado pelo cliente
+// rota publica para buscar agendamentos de serviços do usuário/prestador, solicitado pelo cliente
+/*
 export async function userAppointmentRoutes(app: FastifyInstance) {
   // Instanciar as dependências
   const appointmentsRepository = new PostgresAppointmentsRepository();
 
   // Instanciar os UseCases com as dependências
-  const appointmentGetAllUserIdUseCase = new AppointmentGetAllUserIdUseCase(
+  const appointmentGetAllUseCase = new AppointmentGetAllUseCase(
     appointmentsRepository,
   );
 
   // Instanciar os Controllers com os UseCases
-  const appointmentGetAllUserIdController =
-    new AppointmentGetAllUserIdController(appointmentGetAllUserIdUseCase);
+  const appointmentGetAll = new AppointmentGetAllController(
+    appointmentGetAllUseCase,
+  );
 
   // executar a rota
   app.get("/appointments", async (request, reply) => {
-    return appointmentGetAllUserIdController.handle(request, reply);
+    return appointmentGetAll.handle(request, reply);
   });
 }
+  */
 
-// rotas diversas para atualizar, excluir e buscar um agendamento específico, para o serviço de um usuário/prestador, solicitado pelo cliente
+// rotas privadas para atualizar, excluir e buscar um agendamento específico, para o serviço de um usuário/prestador, solicitado pelo cliente
 export async function appointmentRoutes(app: FastifyInstance) {
   // Instanciar as dependências
   const appointmentsRepository = new PostgresAppointmentsRepository();
@@ -83,6 +86,9 @@ export async function appointmentRoutes(app: FastifyInstance) {
   const appointmentGetByIdUseCase = new AppointmentGetByIdUseCase(
     appointmentsRepository,
   );
+  const appointmentGetAllUseCase = new AppointmentGetAllUseCase(
+    appointmentsRepository,
+  );
 
   // Instanciar os Controllers com os UseCases
   const appointmentUpdateStatusController =
@@ -93,8 +99,11 @@ export async function appointmentRoutes(app: FastifyInstance) {
   const appointmentGetByIdController = new AppointmentGetByIdController(
     appointmentGetByIdUseCase,
   );
+  const appointmentGetAll = new AppointmentGetAllController(
+    appointmentGetAllUseCase,
+  );
 
-  // atualizar o status do agendamento, para o serviço de um usuário/prestador
+  // atualizar o status do agendamento
   app.patch<{ Body: IAppointmentUpdateRequestDTO }>(
     "/:id/status",
     async (request, reply) => {
@@ -102,13 +111,19 @@ export async function appointmentRoutes(app: FastifyInstance) {
     },
   );
 
-  // excluir agendamento, para o serviço de um usuário/prestador
+  // excluir agendamento
   app.delete("/:id", async (request, reply) => {
     return appointmentDeleteController.handle(request, reply);
   });
 
-  // buscar agendamento, para o serviço de um usuário/prestador
+  // buscar agendamento
+
   app.get("/:id", async (request, reply) => {
     return appointmentGetByIdController.handle(request, reply);
+  });
+
+  // listar todos agendamentos
+  app.get("/", async (request, reply) => {
+    return appointmentGetAll.handle(request, reply);
   });
 }

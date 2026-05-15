@@ -1,11 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { requireAuth } from "@/lib/auth";
-import { AppointmentGetAllUserIdUseCase } from "../useCase/appointmentGetAllUserIdUseCase";
+import { AppointmentGetAllUseCase } from "../useCase/appointmentGetAllUseCase";
 
-export class AppointmentGetAllUserIdController {
-  constructor(
-    private appointmentGetAllUserIdUseCase: AppointmentGetAllUserIdUseCase,
-  ) {}
+export class AppointmentGetAllController {
+  constructor(private appointmentGetAllUseCase: AppointmentGetAllUseCase) {}
 
   async handle(
     request: FastifyRequest,
@@ -14,8 +12,7 @@ export class AppointmentGetAllUserIdController {
     const auth = await requireAuth(request);
 
     try {
-      const appointments =
-        await this.appointmentGetAllUserIdUseCase.execute(auth);
+      const appointments = await this.appointmentGetAllUseCase.execute(auth);
 
       return response.status(200).send(appointments);
     } catch (err) {

@@ -3,7 +3,7 @@ import { IAppointmentsRepository } from "../repositories/IAppointmentsRepository
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 import { assertProviderOwnership } from "@/lib/auth";
 
-export class AppointmentGetAllUserIdUseCase {
+export class AppointmentGetAllUseCase {
   constructor(private appointmentsRepository: IAppointmentsRepository) {}
 
   async execute(auth: { userId: string }) {
