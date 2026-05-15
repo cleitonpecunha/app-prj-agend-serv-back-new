@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:3333
+
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgQ2h1cGV0aW5oYSIsImVtYWlsIjoiYWJtYWVsQGVsZXRyaWNpc3RhLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3ODgzODgzOSwiZXhwIjoxNzc4ODUzMjM5fQ.SAz7-thX802vgecZcYphAOxvFOGD_IgKnXt0O0wPjGQ
+
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Yjg5ZTNmYy0xNmU2LTQ1Y2QtYmE5ZC0yZTFkZDA3NmExNzAiLCJpZCI6IjhiODllM2ZjLTE2ZTYtNDVjZC1iYTlkLTJlMWRkMDc2YTE3MCIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4ODM4ODYxLCJleHAiOjE3Nzg4NTMyNjF9.gFvziVuHSbYVP7DAqmp8Xd4mdy9LK3i4efxOTaI5ekE
+
+@appointmentIdAbmael = 3a502e2d-e7ed-4056-b962-c8acabea859b
+@appointmentIdAbmaelInexistente = gc3a020d-aad1-4950-9bf5-ba1865c5431h
+
+### [SUCESSO] Buscar agendamento por ID
+# Esperado: 200 com objeto do agendamento
+GET {{baseUrl}}/api/appointments/{{appointmentIdAbmael}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Agendamento inexistente
+# Esperado: 404 NotFoundError
+GET {{baseUrl}}/api/appointments/{{appointmentIdAbmaelInexistente}}
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+GET {{baseUrl}}/api/appointments/{{appointmentIdAbmael}}
+
+###
