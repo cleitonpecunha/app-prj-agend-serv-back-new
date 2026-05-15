@@ -145,9 +145,16 @@ Todas as rotas estão prefixadas em `/api`.
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/services/:serviceId/appointments` | PU  | Criar agendamento                | DONE     |
 | `GET`    | `/api/users/appointments`               | PR  | Listar agendamentos do prestador | DONE     |
-| `GET`    | `/api/appointments/:id`                 | PR  | Buscar agendamento               | TO DO    |
-| `PATCH`  | `/api/appointments/:id/status`          | PR  | Atualizar status do agendamento  | TO DO    |
-| `DELETE` | `/api/appointments/:id`                 | PR  | Remover agendamento              | TO DO    |
+| `GET`    | `/api/appointments/:id`                 | PR  | Buscar agendamento               | DONE     |
+| `PATCH`  | `/api/appointments/:id/status`          | PR  | Atualizar status do agendamento  | DONE     |
+| `DELETE` | `/api/appointments/:id`                 | PR  | Remover agendamento              | DONE     |
+
+TP (Tipo de visuaização da rota):
+
+| Tipo | Descrição           |
+| ---- | ------------------- |
+| `PU` | Pública (Sem Token) |
+| `PR` | Privada (Com token) |
 
 Consulte a documentação completa em [`docs/openapi/openapi.yaml`](docs/openapi/openapi.yaml) ou utilize os arquivos `.http` na pasta [`http/`](http/).
 
