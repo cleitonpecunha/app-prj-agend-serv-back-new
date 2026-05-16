@@ -1,0 +1,64 @@
+@baseUrl = http://localhost:3333
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MzE3NzMsImV4cCI6MTc3ODk0NjE3M30.qtOCl8vqNwtBIrrv6-im7WnyrSKsq_szSTWeNV90cXQ
+
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4OTMxODAwLCJleHAiOjE3Nzg5NDYyMDB9.O_dXg4B7SNsAlBOlH6jZaKMhJ3XnEoLLplAv3GmPYO0
+
+### [SUCESSO] Faturamento do mês com agrupamento padrão (por dia)
+# Esperado: 200 com summary e buckets agrupados por dia
+GET {{baseUrl}}/api/users/revenue?month=2026-05
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [SUCESSO] Faturamento agrupado por semana
+# Esperado: 200 com buckets com label "Semana 1", "Semana 2", etc.
+GET {{baseUrl}}/api/users/revenue?month=2026-05&groupBy=week
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [SUCESSO] Faturamento agrupado por mês (bucket único)
+# Esperado: 200 com único bucket consolidando todo o mês
+GET {{baseUrl}}/api/users/revenue?month=2026-05&groupBy=month
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [SUCESSO] Mês sem agendamentos
+# Esperado: 200 com summary zerado e buckets vazio
+GET {{baseUrl}}/api/users/revenue?month=2024-01
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+GET {{baseUrl}}/api/users/revenue?month=2026-05
+
+###
+
+### [FALHA] month ausente na query
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/users/revenue
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] month com formato inválido (DD-YYYY)
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/users/revenue?month=05-2026
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] month com mês inexistente (00)
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/users/revenue?month=2026-00
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] groupBy com valor inválido
+# Esperado: 422 Validation Error com field "groupBy"
+GET {{baseUrl}}/api/users/revenue?month=2026-05&groupBy=year
+Authorization: Bearer {{accessTokenAbmael}}

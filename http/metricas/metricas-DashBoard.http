@@ -1,0 +1,43 @@
+@baseUrl = http://localhost:3333
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MzE3NzMsImV4cCI6MTc3ODk0NjE3M30.qtOCl8vqNwtBIrrv6-im7WnyrSKsq_szSTWeNV90cXQ
+
+@accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4OTMxODAwLCJleHAiOjE3Nzg5NDYyMDB9.O_dXg4B7SNsAlBOlH6jZaKMhJ3XnEoLLplAv3GmPYO0
+
+### [SUCESSO] Dashboard do mês atual (sem parâmetros)
+# Esperado: 200 com resumo do mês corrente (UTC)
+GET {{baseUrl}}/api/users/dashboard
+Authorization: Bearer {{accessTokenCarlos}}
+
+###
+
+### [SUCESSO] Dashboard de um mês específico
+# Esperado: 200 com resumo completo de maio/2026
+GET {{baseUrl}}/api/users/dashboard?month=2026-05
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [SUCESSO] Dashboard de mês sem agendamentos
+# Esperado: 200 com totais zerados, attendanceRate null e nextAppointments vazio
+GET {{baseUrl}}/api/users/dashboard?month=2024-01
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+GET {{baseUrl}}/api/users/dashboard
+
+###
+
+### [FALHA] month com formato inválido
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/users/dashboard?month=2026-1
+Authorization: Bearer {{accessTokenAbmael}}
+
+###
+
+### [FALHA] month com mês inválido (13)
+# Esperado: 422 Validation Error com field "month"
+GET {{baseUrl}}/api/users/dashboard?month=2026-13
+Authorization: Bearer {{accessTokenAbmael}}
