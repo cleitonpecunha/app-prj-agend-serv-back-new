@@ -30,6 +30,7 @@ import {
   appointmentRoutes,
   serviceAppointmentRoutes,
 } from "@/core/src/appointment/routes";
+import { metricasRoutes } from "@/core/src/dashboard/route";
 
 export async function apiRoutes(app: FastifyInstance) {
   /* app.register(authRoutes, { prefix: "/auth" });
@@ -68,4 +69,7 @@ export async function apiRoutes(app: FastifyInstance) {
   app.register(appointmentRoutes, { prefix: "/appointments" });
   app.register(serviceAppointmentRoutes, { prefix: "/services" });
   /*app.register(userAppointmentRoutes, { prefix: "/users" });*/
+
+  // rota de metricas
+  app.register(metricasRoutes, { prefix: "/users" });
 }
