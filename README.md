@@ -122,6 +122,10 @@ Todas as rotas estão prefixadas em `/api`.
 | `DELETE` | `/api/user/:id`                         | PR  | Remover                          | DONE     |
 | `GET`    | `/api/user/:id`                         | PR  | Buscar                           | DONE     |
 | `GET`    | `/api/users`                            | PU  | Listar todos                     | DONE     |
+| `GET`    | `/api/user/:userId/services`            | PU  | Listar serviços                  | DONE     |
+| `GET`    | `/api/user/:userId/schedules`           | PU  | Listar horarios de atendimento   | DONE     |
+| `GET`    | `/api/users/dashboard`                  | PR  | Dashboard de agendamentos        | DONE     |
+| `GET`    | `/api/users/revenue`                    | PR  | Receitas de agendamentos         | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/auth/login`                       | PU  | Login usuário/prestador          | DONE     |
 | `POST`   | `/api/auth/refresh`                     | XX  | Renovação do access token        | TO DO    |
@@ -131,7 +135,7 @@ Todas as rotas estão prefixadas em `/api`.
 | `DELETE` | `/api/services/:id`                     | PR  | Remover                          | DONE     |
 | `GET`    | `/api/services/:id`                     | PR  | Buscar                           | DONE     |
 | `GET`    | `/api/services`                         | PR  | Listar todos os serviços         | DONE     |
-| `GET`    | `/api/services/:userId/services`        | PU  | Listar serviços de um prestador  | DONE     |
+| `POST`   | `/api/services/:serviceId/appointments` | PU  | Criar agendamento                | DONE     |
 | `GET`    | `/api/services/:idService/appointments` | XX  | Listar serviços agendados        | TO DO    |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/schedules`                        | PR  | Criar horário de atendimento     | DONE     |
@@ -139,17 +143,11 @@ Todas as rotas estão prefixadas em `/api`.
 | `DELETE` | `/api/schedules/:id`                    | PR  | Remover                          | DONE     |
 | `GET`    | `/api/schedules/:id`                    | PR  | Buscar                           | DONE     |
 | `GET`    | `/api/schedules`                        | PR  | Listar horarios do prestador     | DONE     |
-| `GET`    | `/api/schedules/:userId/schedules`      | PU  | Listar horarios de um prestador  | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
-| `POST`   | `/api/services/:serviceId/appointments` | PU  | Criar agendamento                | DONE     |
 | `PATCH`  | `/api/appointments/:id/status`          | PR  | Atualizar status                 | DONE     |
 | `DELETE` | `/api/appointments/:id`                 | PR  | Remover                          | DONE     |
 | `GET`    | `/api/appointments/:id`                 | PR  | Buscar agendamento               | DONE     |
 | `GET`    | `/api/appointments`                     | PR  | Listar agendamentos do prestador | DONE     |
-| -------- | --------------------------------------- | --  | -------------------------------- | -------- |
-| `GET`    | `/api/providers/:id/dashboard`          | XX  | Dashboard com métricas           | TO DO    |
-| `GET`    | `/api/providers/:id/revenue`            | XX  | Relatório de receita             | TO DO    |
-| `GET`    | `/api/providers/:id/schedules`          | XX  | Listar horários do prestador     | TO DO    |
 
 TP (Tipo de visuaização da rota):
 
