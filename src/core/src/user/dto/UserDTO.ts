@@ -14,3 +14,8 @@ export interface IUserUpdateRequestDTO {
   phone: string;
   address: string;
 }
+
+export interface IUserMailRegisterConfirmationDTO {
+  userName: string;
+  descriptionBusinessName: string;
+}

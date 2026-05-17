@@ -30,7 +30,7 @@ import {
   appointmentRoutes,
   serviceAppointmentRoutes,
 } from "@/core/src/appointment/routes";
-import { metricasRoutes } from "@/core/src/dashboard/route";
+import { metricasRoutes } from "@/core/src/metricas/route";
 
 export async function apiRoutes(app: FastifyInstance) {
   /* app.register(authRoutes, { prefix: "/auth" });

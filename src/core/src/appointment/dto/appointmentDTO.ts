@@ -42,3 +42,11 @@ export interface IAppointmentServiceResponseDTO {
   clientPhone: string;
   notes: string | null;
 }
+
+export interface IAppointmentMailRegisterConfirmationDTO {
+  clientName: string;
+  serviceName: string;
+  userBusinessName: string;
+  appointmentDate: string;
+  startTime: string;
+}

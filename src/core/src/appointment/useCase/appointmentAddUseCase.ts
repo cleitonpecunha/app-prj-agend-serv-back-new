@@ -14,6 +14,9 @@ import {
   toAppointmentDate,
   validateDate,
 } from "../../shared/libs";
+import { IMailProvider } from "../../user/providers/mail/IMailProvider";
+import { buildMailAppointmentRegisterInfo } from "../providers/MailAppointmentRegisterInfo";
+import { env } from "@/config/env";
 
 export class AppointmentAddUseCase {
   constructor(
@@ -21,6 +24,7 @@ export class AppointmentAddUseCase {
     private readonly serviceRepository: IServicesRepository,
     private readonly schedulesRepository: ISchedulesRepository,
     private readonly userRepository: IUsersRepository,
+    private readonly mailProvider: IMailProvider,
   ) {}
 
   async execute(
@@ -114,5 +118,26 @@ export class AppointmentAddUseCase {
 
     // Salvar o appointment no repositório
     await this.appointmentsRepository.save(appointment);
+
+    const mailAppointmentRegisterInfo = buildMailAppointmentRegisterInfo({
+      clientName: data.clientName,
+      serviceName: existingService.name!,
+      userBusinessName: existingUser.businessName!,
+      appointmentDate: data.appointmentDate.toString(),
+      startTime: data.startTime,
+    });
+
+    await this.mailProvider.sendMail({
+      to: {
+        name: data.clientName,
+        email: data.clientEmail,
+      },
+      from: {
+        name: env.MAIL_FROM_NAME,
+        email: env.MAIL_FROM_EMAIL,
+      },
+      subject: mailAppointmentRegisterInfo.subject,
+      body: mailAppointmentRegisterInfo.html,
+    });
   }
 }

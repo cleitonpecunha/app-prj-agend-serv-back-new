@@ -7,6 +7,7 @@ import User from "@/core/src/user/model/user";
 import { ConflictError } from "@/lib/errors";
 import { buildMailUserRegisterInfo } from "../providers/mail/MailUserRegisterInfo";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { env } from "@/config/env";
 
 export class UserRegisterUseCase {
   constructor(
@@ -56,8 +57,8 @@ export class UserRegisterUseCase {
         email: data.email,
       },
       from: {
-        name: "Suporte MeuApp",
-        email: "suporte@meuapp.com.br",
+        name: env.MAIL_FROM_NAME,
+        email: env.MAIL_FROM_EMAIL,
       },
       subject: mailUserRegisterInfo.subject,
       body: mailUserRegisterInfo.html,
