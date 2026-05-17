@@ -2,82 +2,18 @@ import { ISchedulesRepository } from "../../schedule/repositories/ISchedulesRepo
 import { IServicesRepository } from "../../service/repositories/IServicesRepository";
 import { IUsersRepository } from "../../user/repositories/IUsersRepository";
 import { IAppointmentsRepository } from "../repositories/IAppointmentsRepository";
-import {
-  IAppointmentAddRequestDTO,
-  IAppointmentServiceResponseDTO,
-} from "../dto/appointmentDTO";
-import { IScheduleResponseDTO } from "../../schedule/dto/scheduleDTO";
+import { IAppointmentAddRequestDTO } from "../dto/appointmentDTO";
 import Appointment from "../model/appointment";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 import { ConflictError, NotFoundError } from "@/lib/errors";
-import { dayOfWeek } from "../../shared/dayOfWeek";
-
-function toAppointmentDate(dateString: string) {
-  return new Date(`${dateString}T00:00:00.000Z`);
-}
-
-function getDayOfWeek(date: Date) {
-  return dayOfWeek[date.getUTCDay()];
-}
-
-function parseTimeToMinutes(time: string) {
-  const [hours = 0, minutes = 0] = time.split(":").map(Number);
-  return hours * 60 + minutes;
-}
-
-export function validateDate(data: string, hora: string): boolean {
-  const appointmentDateTime = toAppointmentDate(data);
-
-  if (Number.isNaN(appointmentDateTime.getTime())) {
-    return false;
-  }
-
-  const [hours, minutes] = hora.split(":").map(Number);
-  if (Number.isNaN(hours) || Number.isNaN(minutes)) {
-    return false;
-  }
-
-  appointmentDateTime.setUTCHours(hours!, minutes, 0, 0);
-  return appointmentDateTime.getTime() < Date.now();
-}
-
-function intervalFitsSchedule(
-  schedules: IScheduleResponseDTO[],
-  appointmentDayOfWeek: string,
-  requestedStartMinutes: number,
-  requestedEndMinutes: number,
-) {
-  return schedules.some((schedules) => {
-    if (schedules.dayOfWeek !== appointmentDayOfWeek) {
-      return false;
-    }
-
-    const scheduleStartMinutes = parseTimeToMinutes(schedules.startTime);
-    const scheduleEndMinutes = parseTimeToMinutes(schedules.endTime);
-
-    return (
-      scheduleStartMinutes <= requestedStartMinutes &&
-      scheduleEndMinutes >= requestedEndMinutes
-    );
-  });
-}
-
-function hasAppointmentConflict(
-  existingAppointments: IAppointmentServiceResponseDTO[],
-  requestedStartMinutes: number,
-  requestedEndMinutes: number,
-) {
-  return existingAppointments.some((appointment) => {
-    const existingStartMinutes = parseTimeToMinutes(appointment.startTime);
-    const existingEndMinutes =
-      existingStartMinutes + appointment.service.durationMinutes;
-
-    return (
-      existingStartMinutes < requestedEndMinutes &&
-      existingEndMinutes > requestedStartMinutes
-    );
-  });
-}
+import {
+  getDayOfWeek,
+  hasAppointmentConflict,
+  intervalFitsSchedule,
+  parseTimeToMinutes,
+  toAppointmentDate,
+  validateDate,
+} from "../../shared/libs";
 
 export class AppointmentAddUseCase {
   constructor(

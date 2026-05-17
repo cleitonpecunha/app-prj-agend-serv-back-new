@@ -4,29 +4,7 @@ import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 import { AppointmentStatus } from "@/generated/prisma/enums";
 import { RevenueQuery } from "../schema";
 import { RevenueDTO } from "../dto/revenueDTO";
-
-function toDateString(date: Date): string {
-  return date.toISOString().slice(0, 10);
-}
-
-function getBucketKey(dateStr: string, groupBy: string): string {
-  if (groupBy === "week") {
-    const day = new Date(`${dateStr}T00:00:00.000Z`).getUTCDate();
-    return `week-${Math.ceil(day / 7)}`;
-  }
-  if (groupBy === "month") {
-    return dateStr.slice(0, 7);
-  }
-  return dateStr;
-}
-
-function getBucketLabel(key: string, groupBy: string): string {
-  if (groupBy === "week") {
-    const weekNum = key.split("-")[1];
-    return `Semana ${weekNum}`;
-  }
-  return key;
-}
+import { getBucketKey, getBucketLabel, toDateString } from "../../shared/libs";
 
 export class MetricasRevenueUseCase {
   constructor(

@@ -2,17 +2,7 @@ import { NotFoundError } from "@/lib/errors";
 import { IAppointmentsRepository } from "../../appointment/repositories/IAppointmentsRepository";
 import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 import { AppointmentStatus } from "@/generated/prisma/enums";
-
-function toDateString(date: Date): string {
-  return date.toISOString().slice(0, 10);
-}
-
-function currentMonthString(): string {
-  const now = new Date();
-  const y = now.getUTCFullYear();
-  const m = String(now.getUTCMonth() + 1).padStart(2, "0");
-  return `${y}-${m}`;
-}
+import { currentMonthString, toDateString } from "../../shared/libs";
 
 export class MetricasDashBoardUseCase {
   constructor(

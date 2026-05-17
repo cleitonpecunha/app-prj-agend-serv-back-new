@@ -1,4 +1,4 @@
-export const dayOfWeek = [
+export const dayofweek = [
   "sunday",
   "monday",
   "tuesday",
