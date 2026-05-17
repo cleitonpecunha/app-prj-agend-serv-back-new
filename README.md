@@ -190,6 +190,7 @@ src/
 ├── app.ts                   # Configuração do Fastify (plugins, rotas)
 ├── server.ts                # Ponto de entrada
 ├── api/
+│   ├── ping/                # Tested e api conm acesso ao banco de dados
 │   ├── routes.ts            # Registro de todas as rotas dos domínios
 ├── config/
 │   └── env.ts               # Variáveis de ambiente validadas com Zod
