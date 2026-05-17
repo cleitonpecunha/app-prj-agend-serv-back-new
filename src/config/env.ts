@@ -23,6 +23,8 @@ const envSchema = z.object({
   SMTP_PASS: z.string().min(1),
   SMTP_FROM_EMAIL: z.string().email(),
   SMTP_FROM_NAME: z.string().default("TWAgenda"),
+  MAIL_FROM_NAME: z.string().default("Suporte meu App"),
+  MAIL_FROM_EMAIL: z.string().email(),
 });
 
 const _env = envSchema.safeParse(process.env);
