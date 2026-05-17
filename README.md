@@ -60,15 +60,23 @@ cp env.example .env
 
 Variáveis principais:
 
-| Variável                  | Descrição                                  |
-| ------------------------- | ------------------------------------------ |
-| `PORT`                    | Porta da API (padrão: `3333`)              |
-| `DATABASE_URL`            | URL de conexão PostgreSQL                  |
-| `JWT_SECRET`              | Segredo para o access token                |
-| `JWT_REFRESH_SECRET`      | Segredo para o refresh token               |
-| `MAIL_ENABLED`            | Habilita envio de e-mails (`true`/`false`) |
-| `SMTP_HOST`               | Host do servidor SMTP                      |
-| `SMTP_USER` / `SMTP_PASS` | Credenciais SMTP                           |
+| Variável                  | Descrição                                            |
+| ------------------------- | ---------------------------------------------------- |
+| `PORT`                    | Porta da API (padrão: `3333`)                        |
+| `DATABASE_URL`            | URL de conexão PostgreSQL                            |
+| `JWT_SECRET`              | Segredo para o access token                          |
+| `JWT_REFRESH_SECRET`      | Segredo para o refresh token                         |
+| `JWT_ACCESS_EXPIRES_IN`   | Tempo de expiração do access token                   |
+| `JWT_REFRESH_EXPIRES_IN`  | Tempo de expiração do refresh token                  |
+| `MAIL_FROM_NAME`          | Nome padrão para envio de e-mail                     |
+| `MAIL_FROM_EMAIL`         | E-Mail padrão para envio de e-mail                   |
+| `MAIL_ENABLED`            | Habilita envio de e-mails (`true`/`false`)           |
+| `SMTP_HOST`               | Host do servidor SMTP                                |
+| `SMTP_PORT`               | Port do servidor SMTP                                |
+| `SMTP_SECURE`             | Habilita segurança do servidor SMTP (`true`/`false`) |
+| `SMTP_USER` / `SMTP_PASS` | Credenciais SMTP                                     |
+| `SMTP_FROM_NAME`          | Nome padrão para envio de e-mail                     |
+| `SMTP_FROM_EMAIL`         | E-Mail padrão para envio de e-mail                   |
 
 > Para gerar segredos JWT seguros: `openssl rand -hex 64`
 
