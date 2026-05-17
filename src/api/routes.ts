@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { pingRoutes } from "./controllers/ping/routes";
+import { pingRoutes } from "./ping/routes";
 
 /* 
 import {
