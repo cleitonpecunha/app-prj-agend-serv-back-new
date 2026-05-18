@@ -9,21 +9,15 @@ export class UserDeleteController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // Requer autenticação para obter o ID do usuário logado
     const auth = await requireAuth(request);
 
-    try {
-      const { id } = request.params as { id: string };
+    // Executa o caso de uso para excluir o usuário logado
+    await this.userDeleteUseCase.execute(auth);
 
-      await this.userDeleteUseCase.execute(id, auth);
-
-      return response
-        .status(204)
-        .send({ message: "Usuário excluído com sucesso." });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(404).send({
-        message,
-      });
-    }
+    // Retorna uma resposta de sucesso sem conteúdo (204 No Content)
+    return response
+      .status(204)
+      .send({ message: "Usuário excluído com sucesso." });
   }
 }

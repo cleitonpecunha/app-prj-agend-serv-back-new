@@ -1,47 +1,29 @@
+import User from "@/core/src/user/model/user";
+import { generateSlug } from "@/lib/slug";
 import { IUserUpdateRequestDTO } from "@/core/src/user/dto/userDTO";
 import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
-import { generateSlug } from "@/lib/slug";
-import User from "@/core/src/user/model/user";
-import { ConflictError, NotFoundError } from "@/lib/errors";
-import { assertProviderOwnership } from "@/lib/auth";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { UserServices } from "../services/userServices";
 
 export class UserUpdateUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
-  async execute(
-    id: string,
-    auth: { userId: string },
-    data: IUserUpdateRequestDTO,
-  ) {
-    //console.log("Auth userId:", auth.userId);
-
+  async execute(auth: { userId: string }, data: IUserUpdateRequestDTO) {
+    // Gerando o slug a partir do nome do negócio
     const slug = generateSlug(data.businessName);
 
-    const [existingUser, existingSlug] = await Promise.all([
-      this.usersRepository.findById(id),
-      this.usersRepository.findBySlug(slug),
-    ]);
+    // instanciando o serviço de usuário para validar as regras de negócio relacionadas a um novo usuário
+    const userService = new UserServices(this.usersRepository);
 
-    if (!existingUser) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
-    }
+    // Valida se o usuário/pretador logado existe, antes de excluir
+    await userService.validarRegraAtualizarUsuario(auth.userId, slug);
 
-    //console.log("Existing user ID:", existingUser.id);
-
-    assertProviderOwnership(auth.userId, existingUser.id!);
-
-    if (existingSlug && existingSlug.id !== id) {
-      throw new ConflictError(
-        MensagensPadronizadas.USUARIO_NOME_NEGOCIO_JA_CADASTRADO,
-      );
-    }
-
+    // Criando a instância do usuário com os dados fornecidos, incluindo o slug gerado e a senha criptografada
     const user = new User({
       ...data,
       slug,
     });
 
-    await this.usersRepository.update(id, user);
+    // Atualizando o usuário no banco de dados através do repositório de usuários
+    await this.usersRepository.update(auth.userId, user);
   }
 }

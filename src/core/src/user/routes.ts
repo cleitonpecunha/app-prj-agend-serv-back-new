@@ -1,10 +1,9 @@
 import { FastifyInstance } from "fastify";
-import { MailtrapMailProvider } from "./providers/mail/MailProvider";
+import { MailtrapMailProvider } from "../shared/providerEmail/MailProvider";
 import { PostgresUsersRepository } from "./repositories/PostgresUsersRepository";
 import CryptoProviderBcrypt from "./providers/crypto/CryptoProviderBcrypt";
 import { UserRegisterController } from "./controllers/userRegisterController";
 import { UserGetByIdController } from "./controllers/userGetByIdController";
-import { UserDeleteController } from "./controllers/userDeleteControler";
 import { UserUpdateController } from "./controllers/userUpdateController";
 import { UserRegisterUseCase } from "./useCases/userRegisterUseCase";
 import { UserGetAllUseCase } from "./useCases/userGetAllUseCase";
@@ -13,6 +12,7 @@ import { UserDeleteUseCase } from "./useCases/userDeleteUseCase";
 import { UserUpdateUseCase } from "./useCases/userUpdateUseCase";
 import { IUserAddRequestDTO, IUserUpdateRequestDTO } from "./dto/userDTO";
 import { UserGetAllController } from "./controllers/userGetAllController";
+import { UserDeleteController } from "./controllers/UserDeleteControler";
 
 export async function userRoutes(app: FastifyInstance) {
   // Instanciar as dependências
@@ -44,22 +44,22 @@ export async function userRoutes(app: FastifyInstance) {
   });
 
   // listar todos os usuarios/prestadores
-  app.get("/", async (_request, reply) => {
+  app.get("/todos", async (_request, reply) => {
     return await listGetAll.handle(_request, reply);
   });
 
-  // buscar usuario/prestador por ID
-  app.get("/:id", async (request, reply) => {
+  // buscar usuario/prestador logad
+  app.get("/", async (request, reply) => {
     return await getUserById.handle(request, reply);
   });
 
   // atualizar usuario/prestador logado
-  app.put<{ Body: IUserUpdateRequestDTO }>("/:id", async (request, reply) => {
+  app.put<{ Body: IUserUpdateRequestDTO }>("/", async (request, reply) => {
     return updateUser.handle(request, reply);
   });
 
   // deletar usuario/prestador logado
-  app.delete("/:id", async (request, reply) => {
+  app.delete("/", async (request, reply) => {
     return await deleteUser.handle(request, reply);
   });
 }
