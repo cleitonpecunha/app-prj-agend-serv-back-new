@@ -12,6 +12,18 @@ POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
+  "email": "usuario@teste.com",
+  "passwordHash": "#Senha123"
+}
+
+###
+
+### [SUCESSO] Login com credenciais válidas
+# Esperado: 200 com accessToken, refreshToken e dados públicos do prestador
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
   "email": "joao@barbearia.com",
   "passwordHash": "#Senha123"
 }
