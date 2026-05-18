@@ -2,9 +2,9 @@ import { FastifyInstance } from "fastify";
 import { MailtrapMailProvider } from "../shared/providerEmail/MailProvider";
 import { PostgresUsersRepository } from "./repositories/PostgresUsersRepository";
 import CryptoProviderBcrypt from "./providers/crypto/CryptoProviderBcrypt";
-import { UserRegisterController } from "./controllers/userRegisterController";
-import { UserGetByIdController } from "./controllers/userGetByIdController";
-import { UserUpdateController } from "./controllers/userUpdateController";
+import { UserRegisterController } from "./controllers/UserRegisterController";
+import { UserGetByIdController } from "./controllers/UserGetByIdController";
+import { UserUpdateController } from "./controllers/UserUpdateController";
 import { UserRegisterUseCase } from "./useCases/userRegisterUseCase";
 import { UserGetAllUseCase } from "./useCases/userGetAllUseCase";
 import { UserGetByIdUseCase } from "./useCases/userGetByIdUseCase";
@@ -12,7 +12,7 @@ import { UserDeleteUseCase } from "./useCases/userDeleteUseCase";
 import { UserUpdateUseCase } from "./useCases/userUpdateUseCase";
 import { IUserAddRequestDTO, IUserUpdateRequestDTO } from "./dto/userDTO";
 import { UserGetAllController } from "./controllers/userGetAllController";
-import { UserDeleteController } from "./controllers/UserDeleteControler";
+import { UserDeleteController } from "./controllers/userDeleteControler";
 
 export async function userRoutes(app: FastifyInstance) {
   // Instanciar as dependências

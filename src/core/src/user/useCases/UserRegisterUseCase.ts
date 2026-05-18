@@ -1,5 +1,4 @@
 import User from "@/core/src/user/model/user";
-import { IUserAddRequestDTO } from "@/core/src/user/dto/userDTO";
 import ICryptoProvider from "@/core/src/user/providers/crypto/ICryptoProvider";
 import { IMailProvider } from "@/core/src/shared/providerEmail/IMailProvider";
 import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
@@ -7,6 +6,7 @@ import { generateSlug } from "@/lib/slug";
 import { buildMailUserRegisterInfo } from "../../shared/templateEmail/MailUserRegisterInfo";
 import { env } from "@/config/env";
 import { UserServices } from "../services/userServices";
+import { IUserAddRequestDTO } from "../dto/userDTO";
 
 export class UserRegisterUseCase {
   constructor(
