@@ -16,10 +16,11 @@ export async function authRoutes(app: FastifyInstance) {
   const authLoginUseCase = new AuthLoginUseCase(
     usersRepository,
     cryptoProvider,
+    jwtProvider,
   );
 
   // Instanciar o Controller com o UseCase
-  const authUser = new AuthLoginController(authLoginUseCase, jwtProvider);
+  const authUser = new AuthLoginController(authLoginUseCase);
 
   app.post<{ Body: IAuthLoginRequestDTO }>("/login", async (request, reply) => {
     return authUser.handle(request, reply);

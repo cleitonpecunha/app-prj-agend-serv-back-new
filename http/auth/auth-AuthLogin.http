@@ -4,7 +4,29 @@
 
 @accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4OTMxODAwLCJleHAiOjE3Nzg5NDYyMDB9.O_dXg4B7SNsAlBOlH6jZaKMhJ3XnEoLLplAv3GmPYO0
 
-@refreshToken = 
+### [FALHA] Login com credenciais inválidas
+# Esperado: 401 UnauthorizedError
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario@teste.com",
+  "passwordHash": "$#Senha123"
+}
+
+###
+
+### [FALHA] Usuário não existe
+# Esperado: 409 Conflict
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "uusuario@teste.com",
+  "passwordHash": "#Senha123"
+}
+
+###
 
 ### [SUCESSO] Login com credenciais válidas
 # Esperado: 200 com accessToken, refreshToken e dados públicos do prestador
@@ -53,25 +75,3 @@ Content-Type: application/json
 }
 
 ###
-
-### [FALHA] Senha inválida
-# Esperado: 401 UnauthorizedError
-POST {{baseUrl}}/api/auth/login
-Content-Type: application/json
-
-{
-  "email": "joao@barbearia.com",
-  "passwordHash": "senha-errada"
-}
-
-###
-
-### [FALHA] E-mail inválido
-# Esperado: 422 Validation Error
-POST {{baseUrl}}/api/auth/login
-Content-Type: application/json
-
-{
-  "email": "email-invalido",
-  "passwordHash": "12345678"
-}
