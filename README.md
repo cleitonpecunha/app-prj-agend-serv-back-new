@@ -210,6 +210,7 @@ src/
 |       |   ├── dto
 |       |   ├── model
 |       |   ├── provider
+|       |   ├── services
 |       |   ├── useCase
 |       |   ├── routes.ts    # registro das rotas do domínio
 |       |   ├── schema.ts    # Validações do domínio
