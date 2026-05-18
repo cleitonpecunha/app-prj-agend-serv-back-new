@@ -2,8 +2,8 @@ import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository"
 import ICryptoProvider from "../../user/providers/crypto/ICryptoProvider";
 import { IAuthLoginRequestDTO } from "../dto/authDTO";
 import { UserServices } from "../../user/services/userServices";
-import { AuthServices } from "../services";
 import JwtProvider from "../providers/jwt/jwtProvider";
+import { AuthServices } from "../services/authServices";
 
 export class AuthLoginUseCase {
   constructor(

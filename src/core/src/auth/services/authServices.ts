@@ -1,8 +1,7 @@
-import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
 import ICryptoProvider from "@/core/src/user/providers/crypto/ICryptoProvider";
 import { UnauthorizedError } from "@/lib/errors";
-import { MensagensPadronizadas } from "../shared/mensagensPadronizadas";
-import JwtProvider from "./providers/jwt/jwtProvider";
+import JwtProvider from "../providers/jwt/jwtProvider";
+import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
 
 export class AuthServices {
   constructor(
