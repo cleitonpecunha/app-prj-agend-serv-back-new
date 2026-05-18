@@ -17,7 +17,7 @@ import { AppointmentGetByIdUseCase } from "./useCase/appointmentGetByIdUseCase";
 import { AppointmentGetByIdController } from "./controller/appointmentGetByIdController";
 import { AppointmentUpdateStatusUseCase } from "./useCase/appointmentUpdateStatusUseCase";
 import { AppointmentUpdateStatusController } from "./controller/appointmentUpdateStatusController";
-import { MailtrapMailProvider } from "../user/providers/mail/MailProvider";
+import { MailtrapMailProvider } from "../shared/providerEmail/MailProvider";
 
 // rota publica para criar agendamento, para o serviço de um usuário/prestador, solictado pelo cliente
 export async function serviceAppointmentRoutes(app: FastifyInstance) {
