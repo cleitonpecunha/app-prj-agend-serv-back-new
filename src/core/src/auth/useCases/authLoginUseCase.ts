@@ -1,31 +1,57 @@
 import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
-import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 import ICryptoProvider from "../../user/providers/crypto/ICryptoProvider";
 import { IAuthLoginRequestDTO } from "../dto/authDTO";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { UserServices } from "../../user/services/userServices";
+import { AuthServices } from "../services";
+import JwtProvider from "../providers/jwt/jwtProvider";
 
 export class AuthLoginUseCase {
   constructor(
-    private usersRepository: IUsersRepository,
-    private cryptoProvider: ICryptoProvider,
+    private readonly usersRepository: IUsersRepository,
+    private readonly cryptoProvider: ICryptoProvider,
+    private readonly jwtProvider: JwtProvider,
   ) {}
 
-  async execute(login: IAuthLoginRequestDTO) {
-    const user = await this.usersRepository.findByEmail(login.email);
+  async execute(data: IAuthLoginRequestDTO) {
+    // instanciando o serviço de usuário para validar as regras de negócio relacionadas a um novo usuário
+    const userService = new UserServices(this.usersRepository);
 
-    if (!user) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
-    }
+    // instanciando o serviço de autenticação para validar as credenciais do usuário
+    const authService = new AuthServices(this.cryptoProvider, this.jwtProvider);
 
-    const isPasswordValid = await this.cryptoProvider.comparar(
-      login.passwordHash,
-      user.passwordHash!,
+    // Valida se o usuário/pretador logado existe, antes de excluir
+    const usuario = await userService.buscarUsuarioPorEmail(data.email);
+
+    // Caso as credenciais sejam inválidas, lançar um erro de autenticação
+    await authService.validarCredenciais(
+      data.passwordHash,
+      usuario.passwordHash!,
     );
 
-    if (!isPasswordValid) {
-      throw new UnauthorizedError(MensagensPadronizadas.CREDENCIAIS_INVALIDAS);
-    }
+    // Gerar "accessToken" de autenticação (ex: JWT) para o usuário
+    const accessToken = await authService.gerarToken({
+      sub: usuario.id!,
+      id: usuario.id!,
+      name: usuario.name!,
+      email: usuario.email!,
+      tokenType: "access",
+    });
 
-    return user;
+    // Validar o "accessToken" gerado para garantir que é um token válido e pode ser usado para autenticação
+    await authService.validarToken(accessToken!, "access");
+
+    // Gerar "refreshToken" de autenticação (ex: JWT) para o usuário
+    const refreshToken = await authService.gerarToken({
+      sub: usuario.id!,
+      id: usuario.id!,
+      name: usuario.name!,
+      email: usuario.email!,
+      tokenType: "refresh",
+    });
+
+    // Validar o "refreshToken" gerado para garantir que é um token válido e pode ser usado para autenticação
+    await authService.validarToken(refreshToken!, "refresh");
+
+    return { usuario, accessToken, refreshToken };
   }
 }
