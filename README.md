@@ -126,10 +126,10 @@ Todas as rotas estão prefixadas em `/api`.
 | `GET`    | `/api/ping`                             | PU  | Health check                     | DONE     |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |
 | `POST`   | `/api/user`                             | PU  | Add usuário/prestador            | DONE     |
-| `PUT`    | `/api/user/:id`                         | PR  | Atualizar                        | DONE     |
-| `DELETE` | `/api/user/:id`                         | PR  | Remover                          | DONE     |
-| `GET`    | `/api/user/:id`                         | PR  | Buscar                           | DONE     |
-| `GET`    | `/api/users`                            | PU  | Listar todos                     | DONE     |
+| `PUT`    | `/api/user`                             | PR  | Atualizar                        | DONE     |
+| `DELETE` | `/api/user`                             | PR  | Remover                          | DONE     |
+| `GET`    | `/api/user`                             | PR  | Buscar                           | DONE     |
+| `GET`    | `/api/user/todos`                       | PU  | Listar todos                     | DONE     |
 | `GET`    | `/api/user/:userId/services`            | PU  | Listar serviços                  | DONE     |
 | `GET`    | `/api/user/:userId/schedules`           | PU  | Listar horarios de atendimento   | DONE     |
 | `GET`    | `/api/users/dashboard`                  | PR  | Dashboard de agendamentos        | DONE     |
@@ -234,7 +234,13 @@ src/
 |       |   ├── routes.ts    # registro das rotas do domínio
 |       |   ├── schema.ts    # Validações do domínio
 |       |   |
-|       ├── shared
+|       ├── shared/
+|       |   ├── providerEmail
+|       |   ├── templateEmail
+|       |   ├── dayofweek.ts
+|       |   ├── dayorder.ts
+|       |   ├── libs.ts
+|       |   ├── mensagensPadronizadas.ts
 |       |   |
 |       ├── user/            # referente ao endpoit do domínio de "usuário/prestador"
 |       |   ├── controller
@@ -242,6 +248,7 @@ src/
 |       |   ├── model
 |       |   ├── provider
 |       |   ├── repositories
+|       |   ├── services
 |       |   ├── useCase
 |       |   ├── routes.ts    # registro das rotas do domínio
 |       |   ├── schema.ts    # Validações do domínio

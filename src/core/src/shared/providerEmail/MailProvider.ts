@@ -1,4 +1,7 @@
-import { IMailProvider, IMessage } from "./IMailProvider";
+import {
+  IMailProvider,
+  IMessage,
+} from "../../../shared/providerEmail/IMailProvider";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { env } from "@/config/env";

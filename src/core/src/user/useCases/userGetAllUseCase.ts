@@ -1,17 +1,17 @@
-import { NotFoundError } from "@/lib/errors";
 import { IUsersRepository } from "../repositories/IUsersRepository";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { UserServices } from "../services/userServices";
 
 export class UserGetAllUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   async execute() {
-    const users = await this.usersRepository.findMany();
+    // instanciando o serviço de usuário para validar as regras de negócio relacionadas a um novo usuário
+    const userService = new UserServices(this.usersRepository);
 
-    if (!users || users.length === 0) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIOS_NAO_ENCONTRADOS);
-    }
+    // Valida se o usuário/pretador logado existe, antes de excluir
+    const users = await userService.buscarTodosUsuarios();
 
+    // Retorna os dados do usuário encontrado
     return users;
   }
 }

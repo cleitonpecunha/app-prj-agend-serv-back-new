@@ -65,6 +65,22 @@ Content-Type: application/json
 
 ###
 
+### [SUCESSO] Criar prestador com payload válido
+# Esperado: 201 com objeto do prestador, incluindo slug gerado pela aplicação
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Usuario Teste",
+  "businessName": "Tesste emmpresa de tetsar",
+  "email": "usuario@teste.com",
+  "passwordHash": "#Senha123",
+  "phone": "+55 (11) 99999-0001",
+  "address": "Rua das Flores, 123 - São Paulo, SP"
+}
+
+###
+
 ### [FALHA] Campo obrigatório ausente (name)
 # Esperado: 422 Validation Error com campo name nos issues
 POST {{baseUrl}}/api/users

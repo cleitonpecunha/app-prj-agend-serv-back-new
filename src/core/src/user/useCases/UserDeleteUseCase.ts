@@ -1,20 +1,16 @@
 import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
-import { assertProviderOwnership } from "@/lib/auth";
-import { NotFoundError } from "@/lib/errors";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { UserServices } from "../services/userServices";
 
 export class UserDeleteUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
-  async execute(id: string, auth: { userId: string }) {
-    const existingUser = await this.usersRepository.findById(id);
+  async execute(auth: { userId: string }) {
+    // instanciando o serviço de usuário para validar as regras de negócio relacionadas a um novo usuário
+    const userService = new UserServices(this.usersRepository);
 
-    if (!existingUser) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
-    }
+    // Valida se o usuário/pretador logado existe, antes de excluir
+    await userService.buscarUsuarioPorId(auth.userId);
 
-    assertProviderOwnership(auth.userId, existingUser.id!);
-
-    await this.usersRepository.delete(id);
+    await this.usersRepository.delete(auth.userId);
   }
 }

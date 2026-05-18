@@ -1,7 +1,6 @@
 export interface IUserAddRequestDTO {
   name: string;
   businessName: string;
-  slug: string;
   email: string;
   passwordHash: string;
   phone: string;

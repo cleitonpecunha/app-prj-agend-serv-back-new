@@ -11,28 +11,25 @@ export class UserRegisterController {
     request: FastifyRequest<{ Body: IUserAddRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // Validando os dados de entrada usando o schema definido para criação de usuário
     const parsed = parseWith(createUserSchema, request.body);
     if (!parsed.success) throw parsed.error;
 
-    const { name, businessName, slug, email, passwordHash, phone, address } =
-      request.body;
+    // Extraindo os dados validados do corpo da requisição
+    const { name, businessName, email, passwordHash, phone, address } =
+      parsed.data;
 
-    try {
-      await this.userRegisterUseCase.execute({
-        name,
-        businessName,
-        slug,
-        email,
-        passwordHash,
-        phone,
-        address,
-      });
-      return response.status(201).send();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // Executando a lógica de registro do usuário através do caso de uso, passando os dados necessários
+    await this.userRegisterUseCase.execute({
+      name,
+      businessName,
+      email,
+      passwordHash,
+      phone,
+      address,
+    });
+
+    // Retornando uma resposta de sucesso para o client após o registro do usuário
+    return response.status(201).send();
   }
 }

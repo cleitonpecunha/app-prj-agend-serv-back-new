@@ -69,7 +69,6 @@ export const createUserSchema = z.object({
   phone: z
     .string()
     .trim()
-    .optional()
     .refine((val) => !val || /^\+55\s\(\d{2}\)\s\d{5}-\d{4}$/.test(val), {
       message: "Formato do telefone inválido. Use: +55 (11) 12345-1234",
     }),
@@ -120,7 +119,6 @@ export const updateUserSchema = z.object({
   phone: z
     .string()
     .trim()
-    .optional()
     .refine((val) => !val || /^\+55\s\(\d{2}\)\s\d{5}-\d{4}$/.test(val), {
       message: "Formato do telefone inválido. Use: +55 (11) 12345-1234",
     }),

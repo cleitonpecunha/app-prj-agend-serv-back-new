@@ -1,13 +1,12 @@
+import User from "@/core/src/user/model/user";
 import { IUserAddRequestDTO } from "@/core/src/user/dto/userDTO";
 import ICryptoProvider from "@/core/src/user/providers/crypto/ICryptoProvider";
-import { IMailProvider } from "@/core/src/user/providers/mail/IMailProvider";
+import { IMailProvider } from "@/core/src/shared/providerEmail/IMailProvider";
 import { IUsersRepository } from "@/core/src/user/repositories/IUsersRepository";
 import { generateSlug } from "@/lib/slug";
-import User from "@/core/src/user/model/user";
-import { ConflictError } from "@/lib/errors";
-import { buildMailUserRegisterInfo } from "../providers/mail/MailUserRegisterInfo";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { buildMailUserRegisterInfo } from "../../shared/templateEmail/MailUserRegisterInfo";
 import { env } from "@/config/env";
+import { UserServices } from "../services/userServices";
 
 export class UserRegisterUseCase {
   constructor(
@@ -17,36 +16,30 @@ export class UserRegisterUseCase {
   ) {}
 
   async execute(data: IUserAddRequestDTO) {
+    // instanciando o serviço de usuário para validar as regras de negócio relacionadas a um novo usuário
+    const userService = new UserServices(this.usersRepository);
+
+    // Gerando o slug a partir do nome do negócio
     const slug = generateSlug(data.businessName);
 
-    const [existingEmail, existingSlug] = await Promise.all([
-      this.usersRepository.findByEmail(data.email),
-      this.usersRepository.findBySlug(slug),
-    ]);
+    // Validando as regras de negócio para um novo usuário, como verificar se o email ou slug já estão cadastrados
+    await userService.validarRegraNovoUsuario(data.email, slug);
 
-    if (existingEmail) {
-      throw new ConflictError(
-        MensagensPadronizadas.USUARIO_EMAIL_JA_CADASTRADO,
-      );
-    }
-
-    if (existingSlug) {
-      throw new ConflictError(
-        MensagensPadronizadas.USUARIO_NOME_NEGOCIO_JA_CADASTRADO,
-      );
-    }
-
+    // Criptografando a senha do usuário antes de salvar no banco de dados
     const senhaCripto = this.cryptoProvider.criptografar(data.passwordHash);
 
+    // Criando a instância do usuário com os dados fornecidos, incluindo o slug gerado e a senha criptografada
     const user = new User({
       ...data,
       slug,
       passwordHash: senhaCripto,
     });
 
+    // Salvando o usuário no banco de dados através do repositório de usuários
     await this.usersRepository.save(user);
 
-    const mailUserRegisterInfo = buildMailUserRegisterInfo({
+    // Construindo o conteúdo do email de registro do usuário
+    /* const mailUserRegisterInfo = buildMailUserRegisterInfo({
       userName: data.name,
       descriptionBusinessName: data.businessName,
     });
@@ -62,6 +55,6 @@ export class UserRegisterUseCase {
       },
       subject: mailUserRegisterInfo.subject,
       body: mailUserRegisterInfo.html,
-    });
+    }); */
   }
 }

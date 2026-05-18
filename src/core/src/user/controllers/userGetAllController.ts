@@ -8,15 +8,10 @@ export class UserGetAllController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
-    try {
-      const users = await this.userGetAllUseCase.execute();
+    // Executa o caso de uso para obter os dados do usuário logado
+    const users = await this.userGetAllUseCase.execute();
 
-      return response.status(200).send(users);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // Retorna os dados do usuário encontrado ou uma resposta de erro se não encontrado
+    return response.status(200).send(users);
   }
 }

@@ -1,29 +1,17 @@
 @baseUrl = http://localhost:3333
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg1MTMwMDQsImV4cCI6MTc3ODUyNzQwNH0.ZCFvcr-BSjYLgkLRwe_xw6DYxgZ7I1J1b8F5iCdVo1c
-
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDFkYzYzOS04Y2I2LTQzMmUtODJlNC1mMjBlYzQ1OWFjYTAiLCJpZCI6IjlkMWRjNjM5LThjYjYtNDMyZS04MmU0LWYyMGVjNDU5YWNhMCIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc4NTEzMDA0LCJleHAiOjE3Nzg1MTM5MDR9.5kLt-nllwgmyeUxk_5pPG43xbW4Vmd996MywGzx0cWk
-
-@idjoao = ba6f7a3e-d5c0-49e0-9d3a-1407c285f874
-@idmaria = 9e407a55-12a0-4c23-97c2-795cee162303
-@idcarlos = 8b89e3fc-16e6-45cd-ba9d-2e1dd076a170
-@idabmael = 9d1dc639-8cb6-432e-82e4-f20ec459aca0
-@idnexiste = 7b89e3fc-16e6-45cd-ba9d-2e1dd076a179
-
-### [SUCESSO] Listar todos os usuários cadastrados deste que existam ou mostrar lista vazia
-GET {{baseUrl}}/api/users
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYWMxOGIyYS05NzY5LTQ0YzctYTkxNi0yOTk0MjViMGYyZDkiLCJpZCI6ImVhYzE4YjJhLTk3NjktNDRjNy1hOTE2LTI5OTQyNWIwZjJkOSIsIm5hbWUiOiJVc3VhcmlvIFRlc3RlIiwiZW1haWwiOiJ1c3VhcmlvQHRlc3RlLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3OTExNTQ4MCwiZXhwIjoxNzc5MTI5ODgwfQ.8PfpzbDJCF5Hvo7JUNjw-8XeuqPJl0AvWoxVdt3hzUg
 
 ### [SUCESSO] Buscar usuário por ID existente
 # Pré-requisito: ter ao menos um usuário criado para usar seu ID neste teste
 # Esperado: 200 com objeto do usuário incluindo o campo slug
-GET {{baseUrl}}/api/users/{{idabmael}}
+GET {{baseUrl}}/api/users
 Authorization: Bearer {{accessToken}}
 
 ###
 
 ### [FALHA] Buscar usuário por ID inexistente
 # Esperado: 404 NotFoundError com mensagem "Usuário não encontrado."
-GET {{baseUrl}}/api/users/{{idnexiste}}
-Authorization: Bearer {{accessToken}}
+GET {{baseUrl}}/api/users
 
 ###

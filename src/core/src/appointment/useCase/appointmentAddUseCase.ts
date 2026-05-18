@@ -14,8 +14,8 @@ import {
   toAppointmentDate,
   validateDate,
 } from "../../shared/libs";
-import { IMailProvider } from "../../user/providers/mail/IMailProvider";
-import { buildMailAppointmentRegisterInfo } from "../providers/MailAppointmentRegisterInfo";
+import { IMailProvider } from "../../shared/providerEmail/IMailProvider";
+import { buildMailAppointmentRegisterInfo } from "../../shared/templateEmail/MailAppointmentRegisterInfo";
 import { env } from "@/config/env";
 
 export class AppointmentAddUseCase {
