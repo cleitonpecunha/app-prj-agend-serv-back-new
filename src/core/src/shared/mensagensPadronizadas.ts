@@ -26,5 +26,6 @@ export enum MensagensPadronizadas {
   FORBIDDEN_ERROR = "Este usuário/prestador não tem permissão para acessar este recurso.",
   NOT_FOUND_ERROR = "Registro não encontrado.",
   TOKEN_EXPIRED_ERROR = "O token expirou. Faça login novamente.",
+  TOKEN_INVALIDO = "Token inválido.",
   CREDENCIAIS_INVALIDAS = "Credenciais inválidas.",
 }
