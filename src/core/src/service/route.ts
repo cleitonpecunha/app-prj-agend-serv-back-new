@@ -88,7 +88,7 @@ export async function serviceRoutes(app: FastifyInstance) {
   });
 
   // listar todos serviços
-  app.get("/", async (_request, reply) => {
+  app.get("/all", async (_request, reply) => {
     return await getAllServices.handle(_request, reply);
   });
 }

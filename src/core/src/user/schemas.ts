@@ -126,10 +126,7 @@ export const updateUserSchema = z.object({
 });
 
 export const userParamsSchema = z.object({
-  id: z.coerce
-    .number()
-    .int("ID deve ser um número inteiro.")
-    .positive("ID deve ser um número inteiro positivo."),
+  id: z.string().min(1, "ID do usuário é obrigatório."),
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;

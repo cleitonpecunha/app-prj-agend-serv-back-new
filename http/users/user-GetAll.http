@@ -1,6 +1,4 @@
 @baseUrl = http://localhost:3333
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYWMxOGIyYS05NzY5LTQ0YzctYTkxNi0yOTk0MjViMGYyZDkiLCJpZCI6ImVhYzE4YjJhLTk3NjktNDRjNy1hOTE2LTI5OTQyNWIwZjJkOSIsIm5hbWUiOiJVc3VhcmlvIFRlc3RlIiwiZW1haWwiOiJ1c3VhcmlvQHRlc3RlLmNvbSIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3OTExNTQ4MCwiZXhwIjoxNzc5MTI5ODgwfQ.8PfpzbDJCF5Hvo7JUNjw-8XeuqPJl0AvWoxVdt3hzUg
-
 ### [SUCESSO] Listar todos os usuários cadastrados deste que existam ou mostrar lista vazia
-GET {{baseUrl}}/api/users/todos
+GET {{baseUrl}}/api/users/all

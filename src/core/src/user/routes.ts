@@ -43,16 +43,6 @@ export async function userRoutes(app: FastifyInstance) {
     return registerUser.handle(request, reply);
   });
 
-  // listar todos os usuarios/prestadores
-  app.get("/todos", async (_request, reply) => {
-    return await listGetAll.handle(_request, reply);
-  });
-
-  // buscar usuario/prestador logad
-  app.get("/", async (request, reply) => {
-    return await getUserById.handle(request, reply);
-  });
-
   // atualizar usuario/prestador logado
   app.put<{ Body: IUserUpdateRequestDTO }>("/", async (request, reply) => {
     return updateUser.handle(request, reply);
@@ -61,5 +51,15 @@ export async function userRoutes(app: FastifyInstance) {
   // deletar usuario/prestador logado
   app.delete("/", async (request, reply) => {
     return await deleteUser.handle(request, reply);
+  });
+
+  // buscar usuario/prestador logad
+  app.get("/", async (request, reply) => {
+    return await getUserById.handle(request, reply);
+  });
+
+  // listar todos os usuarios/prestadores
+  app.get("/all", async (_request, reply) => {
+    return await listGetAll.handle(_request, reply);
   });
 }

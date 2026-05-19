@@ -1,5 +1,4 @@
 export interface IServiceAddRequestDTO {
-  userId: string;
   name: string;
   description: string;
   durationMinutes: number;

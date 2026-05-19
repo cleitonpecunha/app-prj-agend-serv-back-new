@@ -1,28 +1,20 @@
-import { ConflictError, NotFoundError } from "@/lib/errors";
 import { IServicesRepository } from "../repositories/IServicesRepository";
-import { assertProviderOwnership } from "@/lib/auth";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { ServiceServices } from "../services/serviceServices";
 
 export class ServiceDeleteUseCase {
   constructor(private servicesRepository: IServicesRepository) {}
 
   async execute(id: string, auth: { userId: string }) {
-    // validar se o serviço existe e pertence ao usuário autenticado
-    const [existingService] = await Promise.all([
-      this.servicesRepository.findByIdUserId(id, auth.userId),
-    ]);
+    // instanciando o serviço de Services para validar as regras de negócio
+    const serviceService = new ServiceServices(this.servicesRepository);
 
-    if (!existingService) {
-      throw new NotFoundError(MensagensPadronizadas.SERVICO_NAO_ENCONTRADO);
-    }
+    // valida se o serviço existe e pertence ao usuário autenticado
+    await serviceService.buscarServicoPorIdUserId(id, auth.userId);
 
-    const hasAppointments = await this.servicesRepository.hasAppointments(id);
-    if (hasAppointments) {
-      throw new ConflictError(MensagensPadronizadas.SERVICO_COM_AGENDAMENTOS);
-    }
+    // valida se o serviço tem agendamento, se tiver, não pode ser excluído
+    await serviceService.buscarServicosComAgendamento(id);
 
-    assertProviderOwnership(auth.userId, existingService.userId!);
-
+    // excluir o serviço do repositório
     await this.servicesRepository.delete(id, auth.userId);
   }
 }

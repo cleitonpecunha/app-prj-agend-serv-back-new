@@ -1,8 +1,9 @@
 @baseUrl = http://localhost:3333
 
-@idUserCarlos = 40940206-3190-4040-b70a-5f33c7d70cce
-@idUserAbmael = 422298f9-ee0b-4935-8556-4bb2c5a0da8a
+@idUserCarlos = d48c3b6d-decd-41f7-8bd9-df2bf84f3cb1
+@idUserAbmael = 3b8eaaca-47b5-4dd2-b584-df6086a1c765
 @idUserInexistente = 7b89e3fc-16e6-45cd-ba9d-2e1dd076a179
+@idUserVazio = 
 
 ### [SUCESSO] Listar serviços de um usuario/prestador existente
 # Rota publica, não precisa de token
@@ -22,3 +23,8 @@ GET {{baseUrl}}/api/users/{{idUserInexistente}}/services
 # Rota publica, não precisa de token
 # Esperado: 404 com mensagem de erro
 GET {{baseUrl}}/api/users/{{idUserCarlos}}/services
+
+### [FALHA] Tentar Listar serviços de um usuario/prestador existente, mas sem serviços cadastrados
+# Rota publica, não precisa de token
+# Esperado: 404 com mensagem de erro
+GET {{baseUrl}}/api/users/{{idUserVazio}}/services

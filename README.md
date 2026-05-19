@@ -129,7 +129,7 @@ Todas as rotas estão prefixadas em `/api`.
 | `PUT`    | `/api/user`                             | PR  | Atualizar                        | DONE     |
 | `DELETE` | `/api/user`                             | PR  | Remover                          | DONE     |
 | `GET`    | `/api/user`                             | PR  | Buscar                           | DONE     |
-| `GET`    | `/api/user/todos`                       | PU  | Listar todos                     | DONE     |
+| `GET`    | `/api/user/all`                         | PU  | Listar todos                     | DONE     |
 | `GET`    | `/api/user/:userId/services`            | PU  | Listar serviços                  | DONE     |
 | `GET`    | `/api/user/:userId/schedules`           | PU  | Listar horarios de atendimento   | DONE     |
 | `GET`    | `/api/users/dashboard`                  | PR  | Dashboard de agendamentos        | DONE     |
@@ -142,7 +142,7 @@ Todas as rotas estão prefixadas em `/api`.
 | `PUT`    | `/api/services/:id`                     | PR  | Atualizar                        | DONE     |
 | `DELETE` | `/api/services/:id`                     | PR  | Remover                          | DONE     |
 | `GET`    | `/api/services/:id`                     | PR  | Buscar                           | DONE     |
-| `GET`    | `/api/services`                         | PR  | Listar todos os serviços         | DONE     |
+| `GET`    | `/api/services/all`                     | PR  | Listar todos                     | DONE     |
 | `POST`   | `/api/services/:serviceId/appointments` | PU  | Criar agendamento                | DONE     |
 | `GET`    | `/api/services/:idService/appointments` | XX  | Listar serviços agendados        | TO DO    |
 | -------- | --------------------------------------- | --  | -------------------------------- | -------- |

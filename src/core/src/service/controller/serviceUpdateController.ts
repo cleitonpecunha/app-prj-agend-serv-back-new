@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/auth";
 import { ServiceUpdateUseCase } from "../useCases/serviceUpdateUseCase";
 import { IServiceUpdateRequestDTO } from "../dto/serviceDTO";
 import { parseWith } from "@/lib/validate";
-import { updateServiceSchema } from "../schemas";
+import { serviceParamsSchema, updateServiceSchema } from "../schemas";
 
 export class ServiceUpdateController {
   constructor(private serviceUpdateUseCase: ServiceUpdateUseCase) {}
@@ -12,29 +12,28 @@ export class ServiceUpdateController {
     request: FastifyRequest<{ Body: IServiceUpdateRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // valida autenticação
     const auth = await requireAuth(request);
 
+    // extrai o id do serviço dos parâmetros da rota
+    const { id } = request.params as { id: string };
+
+    // valida e parseia o ID do serviço
+    const paramsParsedID = parseWith(serviceParamsSchema, { id });
+    if (!paramsParsedID.success) throw paramsParsedID.error;
+
+    // valida e parseia o body da requisição do serviço
     const bodyParsed = parseWith(updateServiceSchema, request.body);
     if (!bodyParsed.success) throw bodyParsed.error;
 
-    const { name, description, durationMinutes, priceInCents, isActive } =
-      request.body;
+    // executa a lógica de atualização do serviço
+    await this.serviceUpdateUseCase.execute(
+      paramsParsedID.data.id,
+      auth,
+      bodyParsed.data,
+    );
 
-    try {
-      const { id } = request.params as { id: string };
-      await this.serviceUpdateUseCase.execute(id, auth, {
-        name,
-        description,
-        durationMinutes,
-        priceInCents,
-        isActive,
-      });
-      return response.status(200).send();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // retorna uma resposta de sucesso
+    return response.status(200).send();
   }
 }

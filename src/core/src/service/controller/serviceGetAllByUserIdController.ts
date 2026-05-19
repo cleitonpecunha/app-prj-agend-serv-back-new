@@ -1,5 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { ServiceGetAllByUserIdUseCase } from "../useCases/serviceGetAllByUserIdUseCase";
+import { parseWith } from "@/lib/validate";
+import { userParamsSchema } from "../../user/schemas";
 
 export class ServiceGetAllByUserIdController {
   constructor(
@@ -10,19 +12,19 @@ export class ServiceGetAllByUserIdController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
-    try {
-      const { userId } = request.params as { userId: string };
+    // Extrai o userId dos parâmetros da rota
+    const { userId } = request.params as { userId: string };
 
-      console.log("userId:", userId);
+    // valida e parseia o ID do usuário
+    const paramsParsedID = parseWith(userParamsSchema, { id: userId });
+    if (!paramsParsedID.success) throw paramsParsedID.error;
 
-      const services = await this.serviceGetAllByUserIdUseCase.execute(userId);
+    // Executa o caso de uso para obter todos os serviços do usuário informado
+    const existServices = await this.serviceGetAllByUserIdUseCase.execute(
+      paramsParsedID.data.id,
+    );
 
-      return response.status(200).send(services);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // Retorna os serviços encontrados
+    return response.status(200).send(existServices);
   }
 }

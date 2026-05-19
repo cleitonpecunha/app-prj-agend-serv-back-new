@@ -12,35 +12,17 @@ export class ServiceAddController {
     request: FastifyRequest<{ Body: IServiceAddRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // valida autenticação
     const auth = await requireAuth(request);
 
-    const parsed = parseWith(addServiceSchema, request.body);
-    if (!parsed.success) throw parsed.error;
+    // valida e parseia o body da requisição
+    const bodyParsed = parseWith(addServiceSchema, request.body);
+    if (!bodyParsed.success) throw bodyParsed.error;
 
-    const {
-      userId,
-      name,
-      description,
-      durationMinutes,
-      priceInCents,
-      isActive,
-    } = request.body;
+    // executa a lógica de negócio para adicionar um novo serviço
+    await this.serviceAddUseCase.execute(auth, bodyParsed.data);
 
-    try {
-      await this.serviceAddUseCase.execute(auth, {
-        userId,
-        name,
-        description,
-        durationMinutes,
-        priceInCents,
-        isActive,
-      });
-      return response.status(201).send();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // retorna uma resposta de sucesso
+    return response.status(201).send();
   }
 }
