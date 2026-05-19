@@ -1,26 +1,19 @@
-import { NotFoundError } from "@/lib/errors";
 import { IServicesRepository } from "../repositories/IServicesRepository";
-import { assertProviderOwnership } from "@/lib/auth";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { ServiceServices } from "../services/serviceServices";
 
 export class ServiceGetByIdUseCase {
   constructor(private servicesRepository: IServicesRepository) {}
 
   async execute(id: string, auth: { userId: string }) {
-    //console.log("id:", id);
-    //console.log("auth:", auth.userId);
+    // instanciando o serviço de Services para validar as regras de negócio
+    const serviceService = new ServiceServices(this.servicesRepository);
 
-    // validar se o serviço existe e pertence ao usuário autenticado
-    const [existingService] = await Promise.all([
-      this.servicesRepository.findByIdUserId(id, auth.userId),
-    ]);
+    // valida se o serviço existe e pertence ao usuário autenticado
+    const existService = await serviceService.buscarServicoPorIdUserId(
+      id,
+      auth.userId,
+    );
 
-    if (!existingService) {
-      throw new NotFoundError(MensagensPadronizadas.SERVICOS_NAO_ENCONTRADOS);
-    }
-
-    assertProviderOwnership(auth.userId, existingService.userId!);
-
-    return existingService;
+    return existService;
   }
 }

@@ -1,7 +1,7 @@
-import { NotFoundError } from "@/lib/errors";
 import { IServicesRepository } from "../repositories/IServicesRepository";
 import { IUsersRepository } from "../../user/repositories/IUsersRepository";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { UserServices } from "../../user/services/userServices";
+import { ServiceServices } from "../services/serviceServices";
 
 export class ServiceGetAllByUserIdUseCase {
   constructor(
@@ -10,19 +10,20 @@ export class ServiceGetAllByUserIdUseCase {
   ) {}
 
   async execute(userId: string) {
-    const [existingUser, existingServices] = await Promise.all([
-      this.usersRepository.findById(userId),
-      this.servicesRepository.findByManyUserId(userId),
-    ]);
+    // instanciando o serviço de usuário para validar as regras de negócio
+    const userService = new UserServices(this.usersRepository);
 
-    if (!existingUser) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
-    }
+    // Valida se o usuário/pretador existe
+    await userService.buscarUsuarioPorId(userId);
 
-    if (!existingServices || existingServices.length === 0) {
-      throw new NotFoundError(MensagensPadronizadas.SERVICOS_NAO_ENCONTRADOS);
-    }
+    /// instanciando o serviço de Services para validar as regras de negócio
+    const serviceService = new ServiceServices(this.servicesRepository);
 
-    return existingServices;
+    // valida se o serviço existe e pertence ao usuário informado
+    const existServices =
+      await serviceService.buscarTodosServicosPorUserId(userId);
+
+    // retorna os serviços encontrados
+    return existServices;
   }
 }

@@ -1,8 +1,6 @@
-import { NotFoundError } from "@/lib/errors";
 import { IServiceUpdateRequestDTO } from "../dto/serviceDTO";
 import { IServicesRepository } from "../repositories/IServicesRepository";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
-import { assertProviderOwnership } from "@/lib/auth";
+import { ServiceServices } from "../services/serviceServices";
 
 export class ServiceUpdateUseCase {
   constructor(private servicesRepository: IServicesRepository) {}
@@ -12,19 +10,13 @@ export class ServiceUpdateUseCase {
     auth: { userId: string },
     data: IServiceUpdateRequestDTO,
   ) {
-    //console.log("Auth userId:", auth.userId);
+    // instanciando o serviço de Services para validar as regras de negócio
+    const serviceService = new ServiceServices(this.servicesRepository);
 
-    // validar se o serviço existe e pertence ao usuário autenticado
-    const [existingService] = await Promise.all([
-      this.servicesRepository.findByIdUserId(id, auth.userId),
-    ]);
+    // valida se o serviço existe e pertence ao usuário autenticado
+    await serviceService.buscarServicoPorIdUserId(id, auth.userId);
 
-    if (!existingService) {
-      throw new NotFoundError(MensagensPadronizadas.SERVICO_NAO_ENCONTRADO);
-    }
-
-    assertProviderOwnership(auth.userId, existingService.userId!);
-
+    // atualiza o serviço no repositório
     await this.servicesRepository.update(id, auth.userId, data);
   }
 }

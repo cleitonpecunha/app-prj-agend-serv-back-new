@@ -1,34 +1,24 @@
-import { NotFoundError } from "@/lib/errors";
 import { IServiceAddRequestDTO } from "../dto/serviceDTO";
 import { IServicesRepository } from "../repositories/IServicesRepository";
 import { IUsersRepository } from "../../user/repositories/IUsersRepository";
 import Service from "../model/service";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
+import { UserServices } from "../../user/services/userServices";
 
 export class ServiceAddUseCase {
   constructor(
     private readonly servicesRepository: IServicesRepository,
-    private readonly userRepository: IUsersRepository,
+    private readonly usersRepository: IUsersRepository,
   ) {}
 
   async execute(
     auth: { userId: string },
     data: IServiceAddRequestDTO,
   ): Promise<void> {
-    // Verificar se o usuário/prestador logado existe
-    const [existingUser] = await Promise.all([
-      this.userRepository.findById(auth.userId),
-    ]);
+    // instanciando o serviço de usuário para validar as regras de negócio
+    const userService = new UserServices(this.usersRepository);
 
-    // Se o usuário/prestador logado não existir, lançar um erro
-    if (!existingUser) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
-    }
-
-    // Verificar se o usuário autenticado é o proprietário do serviço
-    //assertProviderOwnership(auth.userId, existingUser.id!);
-
-    //console.log("Dados recebidos para criação do serviço:", data);
+    // Valida se o usuário/pretador logado existe
+    await userService.buscarUsuarioPorId(auth.userId);
 
     // Criar a instância do serviço e salvar no repositório
     const service = new Service({

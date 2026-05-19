@@ -9,17 +9,13 @@ export class ServiceGetAllController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // Verifica a autenticação do usuário
     const auth = await requireAuth(request);
 
-    try {
-      const services = await this.serviceGetAllUseCase.execute(auth);
+    // Executa o caso de uso para obter todos os serviços do usuário autenticado
+    const existServices = await this.serviceGetAllUseCase.execute(auth);
 
-      return response.status(200).send(services);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // Retorna os serviços encontrados
+    return response.status(200).send(existServices);
   }
 }
