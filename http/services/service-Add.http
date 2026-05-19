@@ -1,7 +1,22 @@
 @baseUrl = http://localhost:3333
-@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYjhlYWFjYS00N2I1LTRkZDItYjU4NC1kZjYwODZhMWM3NjUiLCJpZCI6IjNiOGVhYWNhLTQ3YjUtNGRkMi1iNTg0LWRmNjA4NmExYzc2NSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzkxOTMzNzIsImV4cCI6MTc3OTIwNzc3Mn0._P1-E0Mc5AGmpBhLiRHYbGORZO53S_ZS_5OPVBKsygY
 
 @accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk0MDIwNi0zMTkwLTQwNDAtYjcwYS01ZjMzYzdkNzBjY2UiLCJpZCI6IjQwOTQwMjA2LTMxOTAtNDA0MC1iNzBhLTVmMzNjN2Q3MGNjZSIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4ODYwNTQxLCJleHAiOjE3Nzg4NzQ5NDF9.NmrFjxA72Z-LFDzaIY6eDZir0yr9XksB4PiAVWROdhE
+
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+POST {{baseUrl}}/api/services
+Content-Type: application/json
+
+{ 
+  "name": "Cabeamento de telefone/internet",
+  "description": "Serviço de cabeamento de telefone e internet",
+  "durationMinutes": 60,
+  "priceInCents": 5000,
+  "isActive": true
+}
+
+###
 
 ### [SUCESSO] Criar serviço com payload válido e isActive explícito
 # Esperado: 201 com objeto do serviço criado
@@ -153,21 +168,6 @@ Authorization: Bearer {{accessTokenAbmael}}
   "description": "Preço zero",
   "durationMinutes": 30,
   "priceInCents": 0,
-  "isActive": true
-}
-
-###
-
-### [FALHA] Sem token de autenticação
-# Esperado: 401 UnauthorizedError
-POST {{baseUrl}}/api/services
-Content-Type: application/json
-
-{
-  "name": "Corte de cabelo",
-  "description": "Corte masculino completo",
-  "durationMinutes": 30,
-  "priceInCents": 5000,
   "isActive": true
 }
 
