@@ -1,7 +1,8 @@
-import { IAppointmentServiceResponseDTO } from "../appointment/dto/appointmentDTO";
-import { IScheduleResponseDTO } from "../schedule/dto/scheduleDTO";
+import { DATE_REGEX } from "./validregex";
 import { dayofweek } from "./dayofweek";
 import { DayOrder } from "./dayorder";
+import { IAppointmentServiceResponseDTO } from "../appointment/dto/appointmentDTO";
+import { IScheduleResponseDTO } from "../schedule/dto/scheduleDTO";
 
 export function toDateString(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -120,4 +121,13 @@ export function isSortableSchedule(s: {
   startTime?: string;
 }): s is { dayOfWeek: string; startTime: string } {
   return typeof s.dayOfWeek === "string" && typeof s.startTime === "string";
+}
+
+export function isValidDateOnlyString(value: string) {
+  if (!DATE_REGEX.test(value)) {
+    return false;
+  }
+
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(value);
 }
