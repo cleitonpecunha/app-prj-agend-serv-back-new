@@ -1,29 +1,28 @@
+import { AppointmentServices } from "../services/appointmentServices";
+import { buildMailAppointmentRegisterInfo } from "../../shared/templateEmail/MailAppointmentRegisterInfo";
+import { env } from "@/config/env";
+import {
+  getDayOfWeek,
+  parseTimeToMinutes,
+  toAppointmentDate,
+} from "../../shared/libs";
+import { IAppointmentAddRequestDTO } from "../dto/appointmentDTO";
+import { IAppointmentsRepository } from "../repositories/IAppointmentsRepository";
+import { IMailProvider } from "../../shared/providerEmail/IMailProvider";
 import { ISchedulesRepository } from "../../schedule/repositories/ISchedulesRepository";
 import { IServicesRepository } from "../../service/repositories/IServicesRepository";
 import { IUsersRepository } from "../../user/repositories/IUsersRepository";
-import { IAppointmentsRepository } from "../repositories/IAppointmentsRepository";
-import { IAppointmentAddRequestDTO } from "../dto/appointmentDTO";
+import { ScheduleServices } from "../../schedule/services/scheduleServices";
+import { ServiceServices } from "../../service/services/serviceServices";
+import { UserServices } from "../../user/services/userServices";
 import Appointment from "../model/appointment";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
-import { ConflictError, NotFoundError } from "@/lib/errors";
-import {
-  getDayOfWeek,
-  hasAppointmentConflict,
-  intervalFitsSchedule,
-  parseTimeToMinutes,
-  toAppointmentDate,
-  validateDate,
-} from "../../shared/libs";
-import { IMailProvider } from "../../shared/providerEmail/IMailProvider";
-import { buildMailAppointmentRegisterInfo } from "../../shared/templateEmail/MailAppointmentRegisterInfo";
-import { env } from "@/config/env";
 
 export class AppointmentAddUseCase {
   constructor(
     private readonly appointmentsRepository: IAppointmentsRepository,
-    private readonly serviceRepository: IServicesRepository,
+    private readonly servicesRepository: IServicesRepository,
     private readonly schedulesRepository: ISchedulesRepository,
-    private readonly userRepository: IUsersRepository,
+    private readonly usersRepository: IUsersRepository,
     private readonly mailProvider: IMailProvider,
   ) {}
 
@@ -31,29 +30,27 @@ export class AppointmentAddUseCase {
     idService: string,
     data: IAppointmentAddRequestDTO,
   ): Promise<void> {
-    // Busca o serviço indicado para atendimento
-    const [existingService] = await Promise.all([
-      this.serviceRepository.findById(idService),
-    ]);
+    // Criar uma instância dos serviços de agendamento
+    const appointmentServices = new AppointmentServices(
+      this.appointmentsRepository,
+    );
 
-    // Se o serviço não existir, lançar um erro
-    if (!existingService) {
-      throw new NotFoundError(MensagensPadronizadas.SERVICO_NAO_ENCONTRADO);
-    }
+    // Criar uma instância dos serviços de agendamento
+    const serviceServices = new ServiceServices(this.servicesRepository);
 
-    if (!existingService.isActive) {
-      throw new ConflictError(MensagensPadronizadas.SERVICO_INATIVO);
-    }
+    // Criar uma instância dos serviços de agendamento
+    const userServices = new UserServices(this.usersRepository);
 
-    // Busca e validar o usuário/prestador do serviço agendado
-    const [existingUser] = await Promise.all([
-      this.userRepository.findById(existingService.userId!),
-    ]);
+    // Criar uma instância dos serviços de agendamento
+    const scheduleServices = new ScheduleServices(this.schedulesRepository);
 
-    // Se o usuário não existir, lançar um erro
-    if (!existingUser) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
-    }
+    // Busca e valida o serviço indicado para atendimento
+    const existingService = await serviceServices.buscarServicoPorId(idService);
+
+    // Busca e valida o usuário/prestador do serviço agendado
+    const existingUser = await userServices.buscarUsuarioPorId(
+      existingService.userId!,
+    );
 
     const appointmentDate = toAppointmentDate(data.appointmentDate.toString());
     const appointmentDayOfWeek = getDayOfWeek(appointmentDate);
@@ -61,50 +58,40 @@ export class AppointmentAddUseCase {
     const requestedEndMinutes =
       requestedStartMinutes + existingService.durationMinutes!;
 
-    if (validateDate(data.appointmentDate.toString(), data.startTime)) {
-      throw new ConflictError(
-        MensagensPadronizadas.AGENDA_DATA_HORARIO_INVALIDO,
-      );
-    }
+    // Validar a data e horário do agendamento
+    await appointmentServices.validarDataHorarioAgendamento(
+      data.appointmentDate.toString(),
+      data.startTime,
+    );
 
     // Buscar os horários de atendimento do usuário/prestador do serviço agendado
-    const [existingSchedules] = await Promise.all([
-      this.schedulesRepository.findByManyUserId(existingService.userId!),
-    ]);
-
-    // Se o horário solicitado não estiver dentro da disponibilidade do prestador, lançar um erro
-    if (
-      requestedEndMinutes > 24 * 60 ||
-      !intervalFitsSchedule(
-        existingSchedules,
-        appointmentDayOfWeek!,
-        requestedStartMinutes,
-        requestedEndMinutes,
-      )
-    ) {
-      throw new ConflictError(
-        MensagensPadronizadas.AGENDA_HORARIO_INDISPONIVEL,
+    const existingSchedules =
+      await scheduleServices.buscarTodosSchedulesPorUserId(
+        existingService.userId!,
       );
-    }
+
+    // Se o horário solicitado não estiver dentro da disponibilidade do prestador
+    await appointmentServices.validarDisponibilidadeHorarioAgendamento(
+      existingSchedules,
+      appointmentDayOfWeek!,
+      requestedStartMinutes,
+      requestedEndMinutes,
+    );
 
     // Buscar se existem horários ja agendados de atendimento do usuário/prestador do serviço agendado na data/hora solicitada
-    const [existingAppointments] = await Promise.all([
-      this.appointmentsRepository.findManyByUserIdAndDate(
+    const existingAppointments =
+      await appointmentServices.buscarAgendamentosPorUserIdEData(
         existingService.userId!,
         appointmentDate,
-      ),
-    ]);
+      );
 
     // Se existir um horário de atendimento já agendado para o intervalo solicitado, lançar um erro
-    if (
-      hasAppointmentConflict(
-        existingAppointments,
-        requestedStartMinutes,
-        requestedEndMinutes,
-      )
-    ) {
-      throw new ConflictError(MensagensPadronizadas.AGENDA_CONFLITO);
-    }
+    await appointmentServices.validarConflitoHorarioAgendamento(
+      existingAppointments,
+      requestedStartMinutes,
+      requestedEndMinutes,
+    );
+
     //console.log("Dados recebidos para criação do serviço:", data);
 
     // Criar a instância do appointment e salvar no repositório

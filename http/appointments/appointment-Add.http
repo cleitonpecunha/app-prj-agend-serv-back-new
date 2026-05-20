@@ -1,25 +1,6 @@
 @baseUrl = http://localhost:3333
-@serviceId = 262f7939-6fe6-406e-8ed6-5ad518d7ca46
+@serviceId = 3c985147-11db-488b-b1bc-83d66d312a4e
 @serviceIdInexistente = 050eaad5-1g44-4bfa-9962-d8bf22b29ed2
-
-### [SUCESSO] Criar agendamento válido para serviço ativo
-# Esperado: 201 com objeto do agendamento criado e status scheduled
-# Efeito colateral: dois e-mails enviados via SMTP
-#   - cliente (clientEmail): confirmação de agendamento
-#   - prestador (provider.email): notificação de novo agendamento
-POST {{baseUrl}}/api/services/{{serviceId}}/appointments
-Content-Type: application/json
-
-{
-  "appointmentDate": "2026-05-22",
-  "startTime": "09:00",
-  "clientName": "Maria Souza",
-  "clientEmail": "maria@email.com",
-  "clientPhone": "+55 (11) 99999-1111",
-  "notes": "Primeiro agendamento de teste"
-}
-
-###
 
 ### [FALHA] Serviço inexistente
 # Esperado: 404 NotFoundError
@@ -47,6 +28,26 @@ Content-Type: application/json
   "clientName": "Cliente Fora do Turno",
   "clientEmail": "fora@email.com",
   "clientPhone": "+55 (11) 99999-2222"
+}
+
+###
+
+
+### [SUCESSO] Criar agendamento válido para serviço ativo
+# Esperado: 201 com objeto do agendamento criado e status scheduled
+# Efeito colateral: dois e-mails enviados via SMTP
+#   - cliente (clientEmail): confirmação de agendamento
+#   - prestador (provider.email): notificação de novo agendamento
+POST {{baseUrl}}/api/services/{{serviceId}}/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-05-22",
+  "startTime": "09:00",
+  "clientName": "Maria Souza",
+  "clientEmail": "maria@email.com",
+  "clientPhone": "+55 (11) 99999-1111",
+  "notes": "Primeiro agendamento de teste"
 }
 
 ###

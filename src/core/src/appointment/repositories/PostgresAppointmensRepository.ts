@@ -30,7 +30,7 @@ export class PostgresAppointmentsRepository implements IAppointmentsRepository {
     });
   }
 
-  async findById(
+  async findByIdUserId(
     id: string,
     userId: string,
   ): Promise<IAppointmentServiceResponseDTO> {

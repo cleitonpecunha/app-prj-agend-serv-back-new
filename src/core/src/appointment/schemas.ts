@@ -1,16 +1,6 @@
+import { DATE_REGEX, TIME_REGEX } from "../shared/validregex";
+import { isValidDateOnlyString } from "../shared/libs";
 import { z } from "zod";
-
-const TIME_REGEX = /^([01]\d|2[0-3]):([0-5]\d)$/;
-const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-
-function isValidDateOnlyString(value: string) {
-  if (!DATE_REGEX.test(value)) {
-    return false;
-  }
-
-  const date = new Date(`${value}T00:00:00.000Z`);
-  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(value);
-}
 
 const timeString = (fieldLabel: string) =>
   z.string().regex(TIME_REGEX, `${fieldLabel} inválido. Use o formato HH:MM.`);
@@ -57,11 +47,14 @@ export const addAppointmentSchema = z.object({
   clientPhone: z
     .string()
     .trim()
-    .optional()
     .refine((val) => !val || /^\+55\s\(\d{2}\)\s\d{5}-\d{4}$/.test(val), {
       message: "Formato do telefone inválido. Use: +55 (11) 12345-1234",
     }),
   notes: z.string().trim().optional(),
+});
+
+export const appointmentParamsSchema = z.object({
+  id: z.string().min(1, "ID do agendamento é obrigatório."),
 });
 
 export const updateAppointmentStatusSchema = z.object({
@@ -74,3 +67,4 @@ export type AddAppointmentInput = z.infer<typeof addAppointmentSchema>;
 export type UpdateAppointmentStatusInput = z.infer<
   typeof updateAppointmentStatusSchema
 >;
+export type AppointmentParams = z.infer<typeof appointmentParamsSchema>;
