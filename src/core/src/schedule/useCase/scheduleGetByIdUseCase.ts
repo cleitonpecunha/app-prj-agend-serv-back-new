@@ -1,26 +1,20 @@
-import { NotFoundError } from "@/lib/errors";
 import { ISchedulesRepository } from "../repositories/ISchedulesRepository";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
-import { assertProviderOwnership } from "@/lib/auth";
+import { ScheduleServices } from "../services/scheduleServices";
 
 export class ScheduleGetByIdUseCase {
   constructor(private schedulesRepository: ISchedulesRepository) {}
 
   async execute(id: string, auth: { userId: string }) {
-    //console.log("id:", id);
-    //console.log("auth:", auth.userId);
+    // Instanciando o serviço para verificar a propriedade do horário
+    const scheduleServices = new ScheduleServices(this.schedulesRepository);
 
-    // validar se o horário existe e pertence ao usuário autenticado
-    const [existingSchedule] = await Promise.all([
-      this.schedulesRepository.findById(id, auth.userId),
-    ]);
+    // Verificando se o horário existe e pertence ao usuário autenticado
+    const existingSchedule = await scheduleServices.buscarHorarioPorIdUserId(
+      id,
+      auth.userId,
+    );
 
-    if (!existingSchedule) {
-      throw new NotFoundError(MensagensPadronizadas.HORARIO_NAO_ENCONTRADO);
-    }
-
-    assertProviderOwnership(auth.userId, existingSchedule.userId!);
-
+    // Se o horário não existir ou não pertencer ao usuário, lançar um erro
     return existingSchedule;
   }
 }

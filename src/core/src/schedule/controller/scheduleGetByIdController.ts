@@ -1,6 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
+import { parseWith } from "@/lib/validate";
 import { requireAuth } from "@/lib/auth";
 import { ScheduleGetByIdUseCase } from "../useCase/scheduleGetByIdUseCase";
+import { scheduleParamsSchema } from "../schemas";
 
 export class ScheduleGetByIdController {
   constructor(private scheduleGetByIdUseCase: ScheduleGetByIdUseCase) {}
@@ -9,18 +11,23 @@ export class ScheduleGetByIdController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // valida autenticação
     const auth = await requireAuth(request);
 
-    try {
-      const { id } = request.params as { id: string };
-      const schedule = await this.scheduleGetByIdUseCase.execute(id, auth);
+    // extrai o id do schedule dos parâmetros da rota
+    const { id } = request.params as { id: string };
 
-      return response.status(200).send(schedule);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // valida e parseia o ID do schedule
+    const paramsParsedID = parseWith(scheduleParamsSchema, { id });
+    if (!paramsParsedID.success) throw paramsParsedID.error;
+
+    // executa a lógica de negócio para obter o schedule pelo ID
+    const existSchedule = await this.scheduleGetByIdUseCase.execute(
+      paramsParsedID.data.id,
+      auth,
+    );
+
+    // retorna o schedule encontrado
+    return response.status(200).send(existSchedule);
   }
 }

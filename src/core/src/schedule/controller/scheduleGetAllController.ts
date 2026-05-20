@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { ScheduleGetAllUseCase } from "../useCase/scheduleGetAllUseCase";
 import { requireAuth } from "@/lib/auth";
+import { ScheduleGetAllUseCase } from "../useCase/scheduleGetAllUseCase";
 
 export class ScheduleGetAllController {
   constructor(private scheduleGetAllUseCase: ScheduleGetAllUseCase) {}
@@ -9,16 +9,13 @@ export class ScheduleGetAllController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // Verifica a autenticação do usuário
     const auth = await requireAuth(request);
-    try {
-      const schedules = await this.scheduleGetAllUseCase.execute(auth);
 
-      return response.status(200).send(schedules);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // Executa o caso de uso para obter todos os schedules do usuário autenticado
+    const existSchedules = await this.scheduleGetAllUseCase.execute(auth);
+
+    // Retorna os schedules encontrados
+    return response.status(200).send(existSchedules);
   }
 }

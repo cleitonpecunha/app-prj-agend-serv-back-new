@@ -20,13 +20,10 @@ const timeString = (fieldLabel: string) =>
 
 export const addScheduleSchema = z
   .object({
-    /*  userId: z.coerce
-      .number()
-      .int("userId deve ser um número inteiro.")
-      .positive("userId deve ser um número inteiro positivo."), */
     dayOfWeek: dayOfWeekEnum,
     startTime: timeString("Horário inicial"),
     endTime: timeString("Horário final"),
+    isActive: z.boolean(),
   })
   .refine((data) => data.startTime < data.endTime, {
     message: "O horário inicial deve ser menor que o horário final.",
@@ -35,13 +32,10 @@ export const addScheduleSchema = z
 
 export const updateScheduleSchema = z
   .object({
-    /* userId: z.coerce
-      .number()
-      .int("userId deve ser um número inteiro.")
-      .positive("userId deve ser um número inteiro positivo."), */
     dayOfWeek: dayOfWeekEnum,
     startTime: timeString("Horário inicial"),
     endTime: timeString("Horário final"),
+    isActive: z.boolean(),
   })
   .refine((data) => data.startTime < data.endTime, {
     message: "O horário inicial deve ser menor que o horário final.",
@@ -49,22 +43,9 @@ export const updateScheduleSchema = z
   });
 
 export const scheduleParamsSchema = z.object({
-  id: z.coerce
-    .number()
-    .int("ID deve ser um número inteiro.")
-    .positive("ID deve ser um número inteiro positivo."),
-});
-
-export const providerSchedulesParamsSchema = z.object({
-  providerId: z.coerce
-    .number()
-    .int("providerId deve ser um número inteiro.")
-    .positive("providerId deve ser um número inteiro positivo."),
+  id: z.string().min(1, "ID do schedule é obrigatório."),
 });
 
 export type CreateScheduleInput = z.infer<typeof addScheduleSchema>;
 export type UpdateScheduleInput = z.infer<typeof updateScheduleSchema>;
 export type ScheduleParams = z.infer<typeof scheduleParamsSchema>;
-export type ProviderSchedulesParams = z.infer<
-  typeof providerSchedulesParamsSchema
->;

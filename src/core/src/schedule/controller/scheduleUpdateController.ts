@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { requireAuth } from "@/lib/auth";
-import { parseWith } from "@/lib/validate";
-import { ScheduleUpdateUseCase } from "../useCase/scheduleUpdateUseCase";
 import { IScheduleUpdateRequestDTO } from "../dto/scheduleDTO";
-import { updateScheduleSchema } from "../schemas";
+import { parseWith } from "@/lib/validate";
+import { requireAuth } from "@/lib/auth";
+import { scheduleParamsSchema, updateScheduleSchema } from "../schemas";
+import { ScheduleUpdateUseCase } from "../useCase/scheduleUpdateUseCase";
 
 export class ScheduleUpdateController {
   constructor(private scheduleUpdateUseCase: ScheduleUpdateUseCase) {}
@@ -12,27 +12,28 @@ export class ScheduleUpdateController {
     request: FastifyRequest<{ Body: IScheduleUpdateRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // valida autenticação
     const auth = await requireAuth(request);
 
+    // extrai o id do schedule dos parâmetros da rota
+    const { id } = request.params as { id: string };
+
+    // valida e parseia o ID do schedule
+    const paramsParsedID = parseWith(scheduleParamsSchema, { id });
+    if (!paramsParsedID.success) throw paramsParsedID.error;
+
+    // valida e parseia o body da requisição do schedule
     const bodyParsed = parseWith(updateScheduleSchema, request.body);
     if (!bodyParsed.success) throw bodyParsed.error;
 
-    const { dayOfWeek, startTime, endTime, isActive } = request.body;
+    // executa a lógica de atualização do schedule
+    await this.scheduleUpdateUseCase.execute(
+      paramsParsedID.data.id,
+      auth,
+      bodyParsed.data,
+    );
 
-    try {
-      const { id } = request.params as { id: string };
-      await this.scheduleUpdateUseCase.execute(id, auth, {
-        dayOfWeek,
-        startTime,
-        endTime,
-        isActive,
-      });
-      return response.status(200).send();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // retorna uma resposta de sucesso
+    return response.status(200).send();
   }
 }

@@ -1,5 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
+import { parseWith } from "@/lib/validate";
 import { ScheduleGetAllByUserIdUseCase } from "../useCase/scheduleGetAllByUserIdUseCase";
+import { userParamsSchema } from "../../user/schemas";
 
 export class ScheduleGetAllByUserIdController {
   constructor(
@@ -10,20 +12,19 @@ export class ScheduleGetAllByUserIdController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
-    try {
-      const { userId } = request.params as { userId: string };
+    // Extrai o userId dos parâmetros da rota
+    const { userId } = request.params as { userId: string };
 
-      //console.log("userId:", userId);
+    // valida e parseia o ID do usuário
+    const paramsParsedID = parseWith(userParamsSchema, { id: userId });
+    if (!paramsParsedID.success) throw paramsParsedID.error;
 
-      const schedules =
-        await this.scheduleGetAllByUserIdUseCase.execute(userId);
+    // Executa o caso de uso para obter todos os schedules do usuário informado
+    const existSchedules = await this.scheduleGetAllByUserIdUseCase.execute(
+      paramsParsedID.data.id,
+    );
 
-      return response.status(200).send(schedules);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // Retorna os schedules encontrados
+    return response.status(200).send(existSchedules);
   }
 }

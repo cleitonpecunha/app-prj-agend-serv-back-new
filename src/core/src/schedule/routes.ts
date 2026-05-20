@@ -5,18 +5,18 @@ import {
 } from "./dto/scheduleDTO";
 import { PostgresSchedulesRepository } from "./repositories/PostgresSchedulesRepository";
 import { PostgresUsersRepository } from "../user/repositories/PostgresUsersRepository";
-import { ScheduleAddUseCase } from "./useCase/scheduleAddUseCase";
-import { ScheduleDeleteUseCase } from "./useCase/scheduleDeleteUseCase";
-import { ScheduleGetAllByUserIdUseCase } from "./useCase/scheduleGetAllByUserIdUseCase";
-import { ScheduleUpdateUseCase } from "./useCase/scheduleUpdateUseCase";
 import { ScheduleAddController } from "./controller/scheduleAddController";
-import { ScheduleUpdateController } from "./controller/scheduleUpdateController";
+import { ScheduleAddUseCase } from "./useCase/scheduleAddUseCase";
 import { ScheduleDeleteController } from "./controller/scheduleDeleteController";
+import { ScheduleDeleteUseCase } from "./useCase/scheduleDeleteUseCase";
 import { ScheduleGetAllByUserIdController } from "./controller/scheduleGetAllByUserIdController";
-import { ScheduleGetByIdUseCase } from "./useCase/scheduleGetByIdUseCase";
-import { ScheduleGetByIdController } from "./controller/scheduleGetByIdController";
-import { ScheduleGetAllUseCase } from "./useCase/scheduleGetAllUseCase";
+import { ScheduleGetAllByUserIdUseCase } from "./useCase/scheduleGetAllByUserIdUseCase";
 import { ScheduleGetAllController } from "./controller/scheduleGetAllController";
+import { ScheduleGetAllUseCase } from "./useCase/scheduleGetAllUseCase";
+import { ScheduleGetByIdController } from "./controller/scheduleGetByIdController";
+import { ScheduleGetByIdUseCase } from "./useCase/scheduleGetByIdUseCase";
+import { ScheduleUpdateController } from "./controller/scheduleUpdateController";
+import { ScheduleUpdateUseCase } from "./useCase/scheduleUpdateUseCase";
 
 // rota publica para buscar todos os horarios de atendimento um usuário/prestador
 export async function userScheduleRoutes(app: FastifyInstance) {
@@ -57,10 +57,7 @@ export async function scheduleRoutes(app: FastifyInstance) {
   const scheduleGetByIdUseCase = new ScheduleGetByIdUseCase(
     schedulesRepository,
   );
-  const scheduleGetAllUseCase = new ScheduleGetAllUseCase(
-    schedulesRepository,
-    usersRepository,
-  );
+  const scheduleGetAllUseCase = new ScheduleGetAllUseCase(schedulesRepository);
 
   // Instanciar os Controllers com os UseCases
   const addSchedule = new ScheduleAddController(scheduleAddUseCase);
@@ -93,7 +90,7 @@ export async function scheduleRoutes(app: FastifyInstance) {
   });
 
   // listar todos horario de atendimentos
-  app.get("/", async (_request, reply) => {
+  app.get("/all", async (_request, reply) => {
     return await getAllSchedules.handle(_request, reply);
   });
 }

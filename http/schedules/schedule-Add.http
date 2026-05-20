@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3333
 
-@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NjA1MTksImV4cCI6MTc3ODg3NDkxOX0.I0-iPaYxMEZSADACvGNrG5iXWNe9t3voG26ovJxNchE
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYjhlYWFjYS00N2I1LTRkZDItYjU4NC1kZjYwODZhMWM3NjUiLCJpZCI6IjNiOGVhYWNhLTQ3YjUtNGRkMi1iNTg0LWRmNjA4NmExYzc2NSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzkyODMzOTcsImV4cCI6MTc3OTI5Nzc5N30.zwqzrudYIhqogKywoKYhSPelBFhPB-39O7pcJhWSR3s
 
 ### [SUCESSO] Criar horário válido na segunda-feira
 # Esperado: 201 com objeto do horário criado
@@ -11,7 +11,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "monday",
   "startTime": "08:00",
-  "endTime": "11:00"
+  "endTime": "11:00",
+  "isActive": true
 }
 
 ###
@@ -25,7 +26,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "monday",
   "startTime": "13:00",
-  "endTime": "17:00"
+  "endTime": "17:00",
+  "isActive": true
 }
 
 ###
@@ -39,7 +41,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "tuesday",
   "startTime": "07:00",
-  "endTime": "12:00"
+  "endTime": "12:00",
+  "isActive": true
 }
 
 ###
@@ -53,7 +56,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "wednesday",
   "startTime": "08:00",
-  "endTime": "11:00"
+  "endTime": "11:00",
+  "isActive": true
 }
 
 ###
@@ -67,7 +71,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "wednesday",
   "startTime": "13:00",
-  "endTime": "17:00"
+  "endTime": "17:00",
+  "isActive": true
 }
 
 ###
@@ -81,7 +86,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "thursday",
   "startTime": "07:00",
-  "endTime": "12:00"
+  "endTime": "12:00",
+  "isActive": true
 }
 
 ###
@@ -95,7 +101,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "friday",
   "startTime": "08:00",
-  "endTime": "11:00"
+  "endTime": "11:00",
+  "isActive": true
 }
 
 ###
@@ -109,7 +116,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "friday",
   "startTime": "13:00",
-  "endTime": "17:00"
+  "endTime": "17:00",
+  "isActive": true
 }
 
 ###
@@ -123,7 +131,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "saturday",
   "startTime": "08:00",
-  "endTime": "17:00"
+  "endTime": "17:00",
+  "isActive": true
 }
 
 ###
@@ -137,7 +146,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "monday",
   "startTime": "10:00",
-  "endTime": "14:00"
+  "endTime": "14:00",
+  "isActive": true
 }
 
 ###
@@ -151,7 +161,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "segunda",
   "startTime": "09:00",
-  "endTime": "17:00"
+  "endTime": "17:00",
+  "isActive": true
 }
 
 ###
@@ -165,7 +176,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "monday",
   "startTime": "9h00",
-  "endTime": "17:00"
+  "endTime": "17:00",
+  "isActive": true
 }
 
 ###
@@ -179,7 +191,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "monday",
   "startTime": "09:00",
-  "endTime": "99:99"
+  "endTime": "99:99",
+  "isActive": true
 }
 
 ###
@@ -193,7 +206,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "monday",
   "startTime": "18:00",
-  "endTime": "09:00"
+  "endTime": "09:00",
+  "isActive": true
 }
 
 ###
@@ -207,7 +221,8 @@ Authorization: Bearer {{accessTokenAbmael}}
 {
   "dayOfWeek": "monday",
   "startTime": "09:00",
-  "endTime": "09:00"
+  "endTime": "09:00",
+  "isActive": true
 }
 
 ###
@@ -220,7 +235,8 @@ Content-Type: application/json
 {
   "dayOfWeek": "monday",
   "startTime": "09:00",
-  "endTime": "17:00"
+  "endTime": "17:00",
+  "isActive": true
 }
 
 ###

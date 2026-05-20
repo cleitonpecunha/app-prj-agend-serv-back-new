@@ -1,8 +1,9 @@
-import { ConflictError, NotFoundError } from "@/lib/errors";
-import { IScheduleUpdateRequestDTO } from "../dto/scheduleDTO";
 import { ISchedulesRepository } from "../repositories/ISchedulesRepository";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
-import { assertProviderOwnership } from "@/lib/auth";
+import {
+  IScheduleFindConflictsParams,
+  IScheduleUpdateRequestDTO,
+} from "../dto/scheduleDTO";
+import { ScheduleServices } from "../services/scheduleServices";
 
 export class ScheduleUpdateUseCase {
   constructor(private schedulesRepository: ISchedulesRepository) {}
@@ -12,30 +13,23 @@ export class ScheduleUpdateUseCase {
     auth: { userId: string },
     data: IScheduleUpdateRequestDTO,
   ) {
-    //console.log("Auth userId:", auth.userId);
+    // Instanciar os serviços de horário
+    const scheduleServices = new ScheduleServices(this.schedulesRepository);
 
-    // Verificar se existe o horário e se há conflitos de horário
-    const [existingSchedule, existingConflicts] = await Promise.all([
-      this.schedulesRepository.findById(id, auth.userId),
-      this.schedulesRepository.findConflicts({
-        userId: auth.userId,
-        dayOfWeek: data.dayOfWeek,
-        startTime: data.startTime,
-        endTime: data.endTime,
-        ignoreId: id,
-      }),
-    ]);
+    // Validar se o horário existe e pertence ao usuário
+    await scheduleServices.buscarHorarioPorIdUserId(id, auth.userId);
 
-    if (!existingSchedule) {
-      throw new NotFoundError(MensagensPadronizadas.HORARIO_NAO_ENCONTRADO);
-    }
+    // atribuir os dados para o método de verificação de conflitos
+    let scheduleParams = {
+      ...data,
+      userId: auth.userId,
+      ignoreId: id,
+    } as IScheduleFindConflictsParams;
 
-    if (existingConflicts.length > 0) {
-      throw new ConflictError(MensagensPadronizadas.HORARIO_JA_CADASTRADO);
-    }
+    // Verificar se há conflitos de horário
+    await scheduleServices.verificarConflitosDeHorario(scheduleParams);
 
-    assertProviderOwnership(auth.userId, existingSchedule.userId!);
-
+    // Atualizar o horário
     await this.schedulesRepository.update(id, auth.userId, data);
   }
 }

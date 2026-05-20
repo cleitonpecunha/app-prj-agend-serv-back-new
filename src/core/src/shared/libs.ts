@@ -1,6 +1,7 @@
 import { IAppointmentServiceResponseDTO } from "../appointment/dto/appointmentDTO";
 import { IScheduleResponseDTO } from "../schedule/dto/scheduleDTO";
 import { dayofweek } from "./dayofweek";
+import { DayOrder } from "./dayorder";
 
 export function toDateString(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -102,4 +103,21 @@ export function hasAppointmentConflict(
 export function formatDate(dateStr: string): string {
   const [year, month, day] = dateStr.split("-");
   return `${day}/${month}/${year}`;
+}
+
+export function sortSchedules<
+  T extends { dayOfWeek: string; startTime: string },
+>(schedules: T[]): T[] {
+  return [...schedules].sort((a, b) => {
+    const dayDiff = DayOrder[a.dayOfWeek]! - DayOrder[b.dayOfWeek]!;
+    if (dayDiff !== 0) return dayDiff;
+    return a.startTime.localeCompare(b.startTime);
+  });
+}
+
+export function isSortableSchedule(s: {
+  dayOfWeek?: string;
+  startTime?: string;
+}): s is { dayOfWeek: string; startTime: string } {
+  return typeof s.dayOfWeek === "string" && typeof s.startTime === "string";
 }
