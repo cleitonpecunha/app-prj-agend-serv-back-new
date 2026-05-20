@@ -1,9 +1,9 @@
-import { FastifyRequest, FastifyReply } from "fastify";
-import { requireAuth } from "@/lib/auth";
-import { parseWith } from "@/lib/validate";
-import { ScheduleAddUseCase } from "../useCase/scheduleAddUseCase";
-import { IScheduleAddRequestDTO } from "../dto/scheduleDTO";
 import { addScheduleSchema } from "../schemas";
+import { FastifyRequest, FastifyReply } from "fastify";
+import { IScheduleAddRequestDTO } from "../dto/scheduleDTO";
+import { parseWith } from "@/lib/validate";
+import { requireAuth } from "@/lib/auth";
+import { ScheduleAddUseCase } from "../useCase/scheduleAddUseCase";
 
 export class ScheduleAddController {
   constructor(private scheduleAddUseCase: ScheduleAddUseCase) {}
@@ -12,29 +12,17 @@ export class ScheduleAddController {
     request: FastifyRequest<{ Body: IScheduleAddRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // valida autenticação
     const auth = await requireAuth(request);
 
-    const parsed = parseWith(addScheduleSchema, request.body);
-    if (!parsed.success) throw parsed.error;
+    // valida e parseia o body da requisição
+    const bodyParsed = parseWith(addScheduleSchema, request.body);
+    if (!bodyParsed.success) throw bodyParsed.error;
 
-    const { id, userId, dayOfWeek, startTime, endTime, isActive } =
-      request.body;
+    // executa a lógica de negócio para adicionar um novo schedule
+    await this.scheduleAddUseCase.execute(auth, bodyParsed.data);
 
-    try {
-      await this.scheduleAddUseCase.execute(auth, {
-        id,
-        userId,
-        dayOfWeek,
-        startTime,
-        endTime,
-        isActive,
-      });
-      return response.status(201).send();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // retorna uma resposta de sucesso
+    return response.status(201).send();
   }
 }

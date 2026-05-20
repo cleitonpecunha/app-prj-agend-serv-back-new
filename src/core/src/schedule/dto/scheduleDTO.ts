@@ -1,6 +1,4 @@
 export interface IScheduleAddRequestDTO {
-  id: string;
-  userId: string;
   dayOfWeek: string;
   startTime: string;
   endTime: string;

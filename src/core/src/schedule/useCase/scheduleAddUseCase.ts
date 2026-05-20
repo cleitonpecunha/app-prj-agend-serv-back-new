@@ -1,45 +1,40 @@
-import { ConflictError, NotFoundError } from "@/lib/errors";
-import { IUsersRepository } from "../../user/repositories/IUsersRepository";
-import { IScheduleAddRequestDTO } from "../dto/scheduleDTO";
-import Schedule from "../model/schedule";
+import {
+  IScheduleAddRequestDTO,
+  IScheduleFindConflictsParams,
+} from "../dto/scheduleDTO";
 import { ISchedulesRepository } from "../repositories/ISchedulesRepository";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
-import { assertProviderOwnership } from "@/lib/auth";
+import { IUsersRepository } from "../../user/repositories/IUsersRepository";
+import { ScheduleServices } from "../services/scheduleServices";
+import { UserServices } from "../../user/services/userServices";
+import Schedule from "../model/schedule";
 
 export class ScheduleAddUseCase {
   constructor(
     private readonly schedulesRepository: ISchedulesRepository,
-    private readonly userRepository: IUsersRepository,
+    private readonly usersRepository: IUsersRepository,
   ) {}
 
   async execute(
     auth: { userId: string },
     data: IScheduleAddRequestDTO,
   ): Promise<void> {
-    // Verificar se o usuário/prestador logado existe e se há conflitos de horário
-    const [existingUser, existingConflicts] = await Promise.all([
-      this.userRepository.findById(auth.userId),
-      this.schedulesRepository.findConflicts({
-        userId: auth.userId,
-        dayOfWeek: data.dayOfWeek,
-        startTime: data.startTime,
-        endTime: data.endTime,
-      }),
-    ]);
+    // Instanciar os serviços do usuário
+    const userServices = new UserServices(this.usersRepository);
 
-    // Se o usuário/prestador logado não existir, lançar um erro
-    if (!existingUser) {
-      throw new NotFoundError(MensagensPadronizadas.USUARIO_NAO_ENCONTRADO);
-    }
+    // Verificar se o usuário existe
+    await userServices.buscarUsuarioPorId(auth.userId);
 
-    if (existingConflicts.length > 0) {
-      throw new ConflictError(MensagensPadronizadas.HORARIO_JA_CADASTRADO);
-    }
+    // Instanciar os serviços de horário
+    const scheduleServices = new ScheduleServices(this.schedulesRepository);
 
-    // Verificar se o usuário autenticado é o proprietário do serviço
-    assertProviderOwnership(auth.userId, existingUser.id!);
+    // atribuir os dados para o método de verificação de conflitos
+    let scheduleParams = {
+      ...data,
+      userId: auth.userId,
+    } as IScheduleFindConflictsParams;
 
-    //console.log("Dados recebidos para criação do serviço:", data);
+    // Verificar se há conflitos de horário
+    await scheduleServices.verificarConflitosDeHorario(scheduleParams);
 
     // Criar a instância do hoario e salvar no repositório
     const schedule = new Schedule({

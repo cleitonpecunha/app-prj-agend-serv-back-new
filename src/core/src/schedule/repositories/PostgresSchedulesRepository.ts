@@ -1,11 +1,11 @@
-import Schedule from "@/core/src/schedule/model/schedule";
-import { prisma } from "@/lib/prisma";
 import {
   IScheduleFindConflictsParams,
   IScheduleResponseDTO,
   IScheduleUpdateRequestDTO,
 } from "../dto/scheduleDTO";
 import { ISchedulesRepository } from "./ISchedulesRepository";
+import { prisma } from "@/lib/prisma";
+import Schedule from "@/core/src/schedule/model/schedule";
 
 export class PostgresSchedulesRepository implements ISchedulesRepository {
   async save(data: Schedule): Promise<void> {
@@ -22,13 +22,17 @@ export class PostgresSchedulesRepository implements ISchedulesRepository {
     return schedules;
   }
 
-  async findById(id: string, userId: string): Promise<Schedule> {
+  async findByIdUserId(
+    id: string,
+    userId: string,
+  ): Promise<IScheduleResponseDTO> {
     const schedule = await prisma.schedule.findUnique({
       where: { id: id, userId: userId },
     });
     return schedule!;
   }
 
+  /*
   async findConflicts({
     userId,
     dayOfWeek,
@@ -42,6 +46,23 @@ export class PostgresSchedulesRepository implements ISchedulesRepository {
         dayOfWeek,
         ...(ignoreId !== undefined ? { id: { not: ignoreId } } : {}),
         AND: [{ startTime: { lt: endTime } }, { endTime: { gt: startTime } }],
+      },
+    });
+  }
+  */
+
+  async findConflicts(
+    data: IScheduleFindConflictsParams,
+  ): Promise<IScheduleResponseDTO[]> {
+    return prisma.schedule.findMany({
+      where: {
+        userId: data.userId,
+        dayOfWeek: data.dayOfWeek,
+        ...(data.ignoreId !== undefined ? { id: { not: data.ignoreId } } : {}),
+        AND: [
+          { startTime: { lt: data.endTime } },
+          { endTime: { gt: data.startTime } },
+        ],
       },
     });
   }

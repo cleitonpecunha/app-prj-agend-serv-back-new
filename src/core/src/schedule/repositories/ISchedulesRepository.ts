@@ -1,23 +1,12 @@
 import Schedule from "@/core/src/schedule/model/schedule";
 import {
+  IScheduleFindConflictsParams,
   IScheduleResponseDTO,
   IScheduleUpdateRequestDTO,
 } from "../dto/scheduleDTO";
 
 export interface ISchedulesRepository {
   save(data: Schedule): Promise<void>;
-
-  findByManyUserId(userId: string): Promise<IScheduleResponseDTO[]>;
-
-  findById(id: string, userId: string): Promise<Schedule>;
-
-  findConflicts(params: {
-    userId: string;
-    dayOfWeek: string;
-    startTime: string;
-    endTime: string;
-    ignoreId?: string;
-  }): Promise<Schedule[]>;
 
   update(
     id: string,
@@ -26,4 +15,12 @@ export interface ISchedulesRepository {
   ): Promise<void>;
 
   delete(id: string, userId: string): Promise<void>;
+
+  findByIdUserId(id: string, userId: string): Promise<IScheduleResponseDTO>;
+
+  findByManyUserId(userId: string): Promise<IScheduleResponseDTO[]>;
+
+  findConflicts(
+    params: IScheduleFindConflictsParams,
+  ): Promise<IScheduleResponseDTO[]>;
 }
