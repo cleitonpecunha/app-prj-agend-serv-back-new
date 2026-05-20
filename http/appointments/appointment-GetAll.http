@@ -1,25 +1,27 @@
 @baseUrl = http://localhost:3333
 @providerId = 1
-@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjIyOThmOS1lZTBiLTQ5MzUtODU1Ni00YmIyYzVhMGRhOGEiLCJpZCI6IjQyMjI5OGY5LWVlMGItNDkzNS04NTU2LTRiYjJjNWEwZGE4YSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg4NzUxMjcsImV4cCI6MTc3ODg4OTUyN30.9tYtyL8U1yfqb43bau8eCfvDBmYThIU8XGEc-VbYbV0
+@accessTokenAbmael = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYjhlYWFjYS00N2I1LTRkZDItYjU4NC1kZjYwODZhMWM3NjUiLCJpZCI6IjNiOGVhYWNhLTQ3YjUtNGRkMi1iNTg0LWRmNjA4NmExYzc2NSIsIm5hbWUiOiJBYm1hZWwgTWl0byBUcm9uY28iLCJlbWFpbCI6ImFibWFlbEBlbGV0cmljaXN0YS5jb20iLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzkzMDY0MDAsImV4cCI6MTc3OTMyMDgwMH0.5ZL0Cj8xR71sfg7gHObhLjKDTr_eo6EDpwf9RTiu0kY
 
 @accessTokenCarlos = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Yjg5ZTNmYy0xNmU2LTQ1Y2QtYmE5ZC0yZTFkZDA3NmExNzAiLCJpZCI6IjhiODllM2ZjLTE2ZTYtNDVjZC1iYTlkLTJlMWRkMDc2YTE3MCIsIm5hbWUiOiJDYXJsb3MgTGltYSIsImVtYWlsIjoiY2FybG9zQGxpbWEuY29tIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzc4NzkzNjUwLCJleHAiOjE3Nzg4MDgwNTB9.PUDCCtlIs5OpM8xWqlD10NgJ9zHedvxvqh26fInCRvk
 
+### [FALHA] Sem token de autenticação
+# Esperado: 401 UnauthorizedError
+GET {{baseUrl}}/api/appointments/all
+
+###
+
 ### [SUCESSO] Listar agendamentos do prestador
 # Esperado: 200 com array de agendamentos ordenado por data e hora
-GET {{baseUrl}}/api/appointments
+GET {{baseUrl}}/api/appointments/all
 Authorization: Bearer {{accessTokenAbmael}}
 
 ###
 
 ### [SUCESSO] Prestador existente sem agendamentos
 # Esperado: 200 com array vazio
-GET {{baseUrl}}/api/appointments
+GET {{baseUrl}}/api/appointments/all
 Authorization: Bearer {{accessTokenCarlos}}
 
 ###
 
-### [FALHA] Sem token de autenticação
-# Esperado: 401 UnauthorizedError
-GET {{baseUrl}}/api/appointments
 
-###
