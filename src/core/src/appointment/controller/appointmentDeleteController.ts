@@ -1,6 +1,8 @@
-import { FastifyRequest, FastifyReply } from "fastify";
-import { requireAuth } from "@/lib/auth";
 import { AppointmentDeleteUseCase } from "../useCase/appointmentDeleteUseCase";
+import { appointmentParamsSchema } from "../schemas";
+import { FastifyRequest, FastifyReply } from "fastify";
+import { parseWith } from "@/lib/validate";
+import { requireAuth } from "@/lib/auth";
 
 export class AppointmentDeleteController {
   constructor(private appointmentDeleteUseCase: AppointmentDeleteUseCase) {}
@@ -9,19 +11,20 @@ export class AppointmentDeleteController {
     request: FastifyRequest,
     response: FastifyReply,
   ): Promise<FastifyReply> {
+    // Verifica autenticação
     const auth = await requireAuth(request);
 
-    try {
-      const { id } = request.params as { id: string };
+    // Extrai o ID do agendamento dos parâmetros da rota
+    const { id } = request.params as { id: string };
 
-      await this.appointmentDeleteUseCase.execute(id, auth);
+    // valida e parseia o ID do agendamento
+    const paramsParsedID = parseWith(appointmentParamsSchema, { id });
+    if (!paramsParsedID.success) throw paramsParsedID.error;
 
-      return response.status(204).send();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(404).send({
-        message,
-      });
-    }
+    // Executa a lógica de deletar o agendamento
+    await this.appointmentDeleteUseCase.execute(paramsParsedID.data.id, auth);
+
+    // Retorna uma resposta de sucesso
+    return response.status(204).send();
   }
 }

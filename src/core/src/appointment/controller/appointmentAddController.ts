@@ -1,8 +1,9 @@
-import { FastifyRequest, FastifyReply } from "fastify";
+import { addAppointmentSchema } from "../schemas";
 import { AppointmentAddUseCase } from "../useCase/appointmentAddUseCase";
+import { FastifyRequest, FastifyReply } from "fastify";
 import { IAppointmentAddRequestDTO } from "../dto/appointmentDTO";
 import { parseWith } from "@/lib/validate";
-import { addAppointmentSchema } from "../schemas";
+import { serviceParamsSchema } from "../../service/schemas";
 
 export class AppointmentAddController {
   constructor(private appointmentAddUseCase: AppointmentAddUseCase) {}
@@ -11,34 +12,24 @@ export class AppointmentAddController {
     request: FastifyRequest<{ Body: IAppointmentAddRequestDTO }>,
     response: FastifyReply,
   ): Promise<FastifyReply> {
-    const parsed = parseWith(addAppointmentSchema, request.body);
-    if (!parsed.success) throw parsed.error;
+    // Extrai o ID do serviço dos parâmetros da rota
+    const { serviceId } = request.params as { serviceId: string };
 
-    const {
-      appointmentDate,
-      startTime,
-      clientName,
-      clientEmail,
-      clientPhone,
-      notes,
-    } = request.body;
+    // valida e parseia o ID do serviço
+    const paramsParsedID = parseWith(serviceParamsSchema, { id: serviceId });
+    if (!paramsParsedID.success) throw paramsParsedID.error;
 
-    try {
-      const { serviceId } = request.params as { serviceId: string };
-      await this.appointmentAddUseCase.execute(serviceId, {
-        appointmentDate,
-        startTime,
-        clientName,
-        clientEmail,
-        clientPhone,
-        notes,
-      });
-      return response.status(201).send();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unexpected error.";
-      return response.status(400).send({
-        message,
-      });
-    }
+    // Valida e parseia o corpo da requisição
+    const bodyParsed = parseWith(addAppointmentSchema, request.body);
+    if (!bodyParsed.success) throw bodyParsed.error;
+
+    // Executa a lógica de adicionar o agendamento
+    await this.appointmentAddUseCase.execute(
+      paramsParsedID.data.id,
+      bodyParsed.data,
+    );
+
+    // Retorna uma resposta de sucesso
+    return response.status(201).send();
   }
 }

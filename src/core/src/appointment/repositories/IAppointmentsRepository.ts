@@ -16,7 +16,10 @@ export interface IAppointmentsRepository {
 
   delete(id: string, userId: string): Promise<void>;
 
-  findById(id: string, userId: string): Promise<IAppointmentServiceResponseDTO>;
+  findByIdUserId(
+    id: string,
+    userId: string,
+  ): Promise<IAppointmentServiceResponseDTO>;
 
   findByManyUserId(userId: string): Promise<IAppointmentServiceResponseDTO[]>;
 

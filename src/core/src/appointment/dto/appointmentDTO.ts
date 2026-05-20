@@ -1,10 +1,10 @@
 export interface IAppointmentAddRequestDTO {
-  appointmentDate: Date;
+  appointmentDate: string;
   startTime: string;
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  notes: string | null;
+  notes?: string | undefined;
 }
 
 export interface IAppointmentUpdateRequestDTO {
@@ -21,7 +21,7 @@ export interface IAppointmentResponseDTO {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  notes: string | null;
+  notes: string | undefined;
 }
 
 export interface IAppointmentServiceResponseDTO {

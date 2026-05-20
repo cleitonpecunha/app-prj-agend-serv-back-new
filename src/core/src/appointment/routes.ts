@@ -120,13 +120,12 @@ export async function appointmentRoutes(app: FastifyInstance) {
   });
 
   // buscar agendamento
-
   app.get("/:id", async (request, reply) => {
     return appointmentGetByIdController.handle(request, reply);
   });
 
   // listar todos agendamentos
-  app.get("/", async (request, reply) => {
+  app.get("/all", async (request, reply) => {
     return appointmentGetAll.handle(request, reply);
   });
 }

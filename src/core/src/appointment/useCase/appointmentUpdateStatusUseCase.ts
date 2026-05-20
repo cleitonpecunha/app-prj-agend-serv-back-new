@@ -1,8 +1,5 @@
-import { AppointmentStatus } from "@/generated/prisma/enums";
+import { AppointmentServices } from "../services/appointmentServices";
 import { IAppointmentsRepository } from "../repositories/IAppointmentsRepository";
-import { AppError, ConflictError, NotFoundError } from "@/lib/errors";
-import { MensagensPadronizadas } from "../../shared/mensagensPadronizadas";
-import { assertProviderOwnership } from "@/lib/auth";
 import { IAppointmentUpdateRequestDTO } from "../dto/appointmentDTO";
 
 export class AppointmentUpdateStatusUseCase {
@@ -13,30 +10,24 @@ export class AppointmentUpdateStatusUseCase {
     auth: { userId: string },
     data: IAppointmentUpdateRequestDTO,
   ) {
-    // Verificar se existe o agendamento
-    const [existingAppointment] = await Promise.all([
-      this.appointmentsRepository.findById(id, auth.userId),
-    ]);
+    // Criar uma instância dos serviços de agendamento
+    const appointmentServices = new AppointmentServices(
+      this.appointmentsRepository,
+    );
 
-    if (!existingAppointment) {
-      throw new NotFoundError(MensagensPadronizadas.AGENDAMENTO_NAO_ENCONTRADO);
-    }
+    // Buscar o agendamento pelo ID e UserID usando os serviços de agendamento
+    const existingAppointment =
+      await appointmentServices.buscarAgendamentoPorIdUserId(id, auth.userId);
 
-    assertProviderOwnership(auth.userId, existingAppointment.userId!);
+    // validar se o status atual do agendamento for diferente de "scheduled" que pode ser alterado
+    await appointmentServices.validarPermiteAtualizarStatus(
+      existingAppointment.status,
+    );
 
-    if (existingAppointment.status !== AppointmentStatus.scheduled) {
-      throw new ConflictError(
-        MensagensPadronizadas.AGENDAMENTO_STATUS_INVALIDO,
-      );
-    }
+    // validar se o novo status é "scheduled", o que não é permitido
+    await appointmentServices.validarNovoStatusParaAtualizacao(data.status);
 
-    if (data.status === AppointmentStatus.scheduled) {
-      throw new AppError(
-        MensagensPadronizadas.AGENDAMENTO_STATUS_INVALIDO_PARA_ATUALIZACAO,
-        422,
-      );
-    }
-
+    // Atualizar o status do agendamento usando o repositório
     await this.appointmentsRepository.updateStatus(id, auth.userId, data);
   }
 }
